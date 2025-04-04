@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Staff - Staff Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Manage Staff Members</h1>
+            <a href="{% url 'applications' %}" class="text-purple-400 hover:text-purple-300 flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Current Staff Members -->
+            <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                <h2 class="text-xl font-bold mb-4">Current Staff Members</h2>
+                {% if staff_members %}
+                    <div class="space-y-4">
+                        {% for user in staff_members %}
+                            <div class="flex items-center justify-between bg-slate-700/30 p-4 rounded-lg">
+                                <div class="flex items-center">
+                                    {% if user.avatar_url %}
+                                        <img src="{{ user.avatar_url }}" alt="{{ user.username }}" class="w-10 h-10 rounded-full mr-3">
+                                    {% endif %}
+                                    <div>
+                                        <div class="font-medium">{{ user.username }}</div>
+                                        {% if user.discord_tag %}
+                                            <div class="text-sm text-slate-400">{{ user.discord_tag }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <form method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="hidden" name="action" value="remove_staff">
+                                    <button type="submit" class="text-red-400 hover:text-red-300">
+                                        <i class="fas fa-user-minus"></i> Remove Staff
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-slate-400">No staff members found.</p>
+                {% endif %}
+            </div>
+            
+            <!-- Add Staff Members -->
+            <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                <h2 class="text-xl font-bold mb-4">Add Staff Members</h2>
+                {% if non_staff_users %}
+                    <div class="space-y-4">
+                        {% for user in non_staff_users %}
+                            <div class="flex items-center justify-between bg-slate-700/30 p-4 rounded-lg">
+                                <div class="flex items-center">
+                                    {% if user.avatar_url %}
+                                        <img src="{{ user.avatar_url }}" alt="{{ user.username }}" class="w-10 h-10 rounded-full mr-3">
+                                    {% endif %}
+                                    <div>
+                                        <div class="font-medium">{{ user.username }}</div>
+                                        {% if user.discord_tag %}
+                                            <div class="text-sm text-slate-400">{{ user.discord_tag }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <form method="POST" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <input type="hidden" name="action" value="add_staff">
+                                    <button type="submit" class="text-green-400 hover:text-green-300">
+                                        <i class="fas fa-user-plus"></i> Add Staff
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-slate-400">No users available to add as staff.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

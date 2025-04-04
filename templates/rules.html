@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Rules - Vibe City Roleplay{% endblock %}
+
+{% block extra_css %}
+<style>
+    .rules-container {
+        min-height: calc(100vh - 8rem);
+        margin-bottom: 4rem;
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .rule-section {
+        margin-bottom: 4rem;
+        background: rgba(26, 26, 26, 0.3);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .rule-section h2 {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .rule-section ol, .rule-section ul {
+        margin-left: 1.5rem;
+    }
+    
+    .rule-section li {
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
+    }
+    
+    .last-updated {
+        text-align: center;
+        margin-top: 4rem;
+        padding: 2rem;
+        background: rgba(26, 26, 26, 0.3);
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    @media (max-width: 768px) {
+        .rules-container {
+            padding: 1rem;
+        }
+        
+        .rule-section {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rules-container">
+    <h1 class="text-4xl font-bold mb-12 text-center neon-text">Server Rules</h1>
+    
+    <div class="space-y-8">
+        <!-- General Rules -->
+        <div id="general-rules" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">General Rules</h2>
+            <ol class="list-decimal space-y-2">
+                <li>Stay Updated: Regularly check our Discord for any updates or modifications to the rules.</li>
+                <li>No Erotic Roleplay: Explicit or sexually suggestive content is strictly prohibited.</li>
+                <li>No Encouraging Rule Breaking: Do not influence or encourage others to break the rules.</li>
+                <li>Sensitive Topics: Real-life events such as suicide, terrorism, pandemics, and mental illnesses are not permitted in roleplay.</li>
+                <li>Roleplay Consent: Roleplay should proceed unless all participants agree to pause or stop.</li>
+                <li>Appropriate Names: Avoid using explicit or offensive names on any platform.</li>
+                <li>Zero Tolerance Policy: Racism, trolling, discrimination, homophobia, and sexism are not tolerated.</li>
+                <li>Derogatory Terms: The use of derogatory language is strictly forbidden.</li>
+                <li>Respect Across Platforms: Do not engage in harmful behaviour on other platforms.</li>
+                <li>Content Creator Responsibility: Content creators must actively moderate their communities.</li>
+            </ol>
+        </div>
+
+        <!-- Account and Character Guidelines -->
+        <div id="account-guidelines" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Account and Character Guidelines</h2>
+            <ol class="list-decimal space-y-2">
+                <li>Account Responsibility: You are responsible for all activities under your account.</li>
+                <li>No Buying/Selling Accounts: Trading accounts or valuables is strictly prohibited.</li>
+                <li>Lost Account Access: If you lose access to your Discord account, you must reapply for whitelist status.</li>
+                <li>Character Integrity: Maintain realistic character backstories and personalities.</li>
+                <li>No Unrealistic Characters: Avoid unrealistic character names or appearances.</li>
+                <li>Character Separation: Keep characters distinct with no shared knowledge.</li>
+                <li>Camera Usage: Only characters with cameras can use recordings as legal evidence.</li>
+                <li>Unique Concepts: Special character concepts require staff approval.</li>
+                <li>Property Management: Inactive properties may be removed after 90 days.</li>
+                <li>Character Permanent Death: Three or more "no pulse" instances result in permanent character death.</li>
+            </ol>
+        </div>
+
+        <!-- Engagement Standards -->
+        <div id="engagement-standards" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Engagement Standards</h2>
+            <ol class="list-decimal space-y-2">
+                <li>No Cop Baiting: Intentionally provoking police without proper roleplay is prohibited.</li>
+                <li>No Money Simulator Gameplay: Focus on roleplay, not just accumulating wealth.</li>
+                <li>Cooperation with EMS: Refusing to cooperate with EMS staff can lead to removal.</li>
+                <li>Quality Roleplay: Maintain high-quality roleplay standards at all times.</li>
+                <li>No Toxic Behaviour: Including shooting downed bodies, disruptive music, or excessive screaming.</li>
+                <li>No Hospital Camping: Waiting near hospitals to provoke players is not allowed.</li>
+                <li>Scene Utilization: Use scenes to enhance roleplay and immersion.</li>
+                <li>Police Interactions: Provide valid reasoning before engaging in combat with police.</li>
+                <li>Vehicle Destruction: No random vehicle destruction without proper initiation.</li>
+            </ol>
+        </div>
+
+        <!-- Crime and Gangs -->
+        <div id="crime-gangs" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Crime and Gangs</h2>
+            <ol class="list-decimal space-y-2">
+                <li>5-Man Rule: Criminal activities are limited to five participants at a time.</li>
+                <li>Mechanic Restrictions: No F1 menu usage during criminal activities.</li>
+                <li>Independent Groups: Groups must operate independently during criminal activities.</li>
+                <li>Prison Transports: Attacking prison transports is a separate scenario.</li>
+                <li>No Fake Hostages: All criminal activities must be realistic.</li>
+                <li>Robbery Planning: Proper planning required for all major robberies.</li>
+                <li>Robbing Players: Must be done with high-quality roleplay and justified context.</li>
+                <li>Cooldown Periods: Respect cooldown times between criminal activities.</li>
+                <li>No Restricted Area Robberies: Areas with teleport options are off-limits.</li>
+                <li>Scamming Rules: Must be conducted through in-game roleplay with valid reasons.</li>
+            </ol>
+        </div>
+
+        <!-- Cheating and Exploiting -->
+        <div id="cheating-exploiting" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Cheating and Exploiting</h2>
+            <ol class="list-decimal space-y-2">
+                <li>No Unfair Modifications: Prohibited modifications include speed hacks, no night vision, health regen, etc.</li>
+                <li>Permissible Modifications: Visual enhancements are allowed if they don't provide unfair advantages.</li>
+                <li>No Macroing: Using third-party software to automate actions is forbidden.</li>
+                <li>Shadow Settings: All players must have shadows enabled.</li>
+                <li>No Bug Exploitation: Exploiting client or server bugs is strictly prohibited.</li>
+                <li>No Spawn Camping: Camping animal and vehicle spawns is not allowed.</li>
+                <li>No Emote Cooldown Bypass: Circumventing emote cooldowns is prohibited.</li>
+                <li>Bug Reporting: Report all bugs through Discord.</li>
+            </ol>
+        </div>
+
+        <!-- Consequences -->
+        <div id="consequences" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Consequences</h2>
+            <p class="mb-4">Violation of these rules may result in:</p>
+            <ul class="list-disc space-y-2">
+                <li>Warning</li>
+                <li>Temporary ban</li>
+                <li>Permanent ban</li>
+                <li>Character reset</li>
+                <li>Item/vehicle removal</li>
+                <li>Other appropriate actions as determined by staff</li>
+            </ul>
+        </div>
+
+        <div class="last-updated">
+            <p class="text-textSecondary">By playing on Vibe City Roleplay, you agree to follow these rules and accept the consequences of breaking them.</p>
+            <p class="text-textSecondary mt-2">Last updated: {% now "F j, Y" %}</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

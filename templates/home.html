@@ -1,0 +1,557 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vibe City Roleplay - Premium FiveM Server{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    /* Modern Black Theme */
+    :root {
+        --primary: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --secondary: #EC4899;
+        --dark: #0F172A;
+        --darker: #020617;
+        --light: #F8FAFC;
+        --gray: #1E293B;
+    }
+
+    body {
+        background-color: var(--darker);
+        color: var(--light);
+        font-family: 'Inter', sans-serif;
+    }
+
+    .hero-section {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        background-color: black;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 30;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 1rem;
+    }
+
+    .hero-title {
+        font-size: 4.5rem;
+        font-weight: 800;
+        color: white;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        color: white;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        margin-bottom: 2.5rem;
+        max-width: 48rem;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1.5rem;
+        flex-direction: column;
+    }
+
+    @media (min-width: 640px) {
+        .hero-buttons {
+            flex-direction: row;
+        }
+        .hero-title {
+            font-size: 6rem;
+        }
+        .hero-subtitle {
+            font-size: 2rem;
+        }
+    }
+
+    .hero-gradient {
+        background: linear-gradient(135deg, rgba(2, 6, 23, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+    }
+    
+    .feature-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1);
+    }
+    
+    .feature-icon {
+        background: rgba(139, 92, 246, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+    
+    .glass-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+    }
+    
+    .timeline-dot {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    .stats-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .media-card {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .media-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(2, 6, 23, 0.95) 100%);
+    }
+    
+    .section-title {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    }
+    
+    /* Modern Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: var(--darker);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://e1.pxfuel.com/desktop-wallpaper/440/966/desktop-wallpaper-gta-roleplay-fivem.jpg" alt="Vibe City" class="w-full h-full object-cover opacity-50">
+    </div>
+    
+    <!-- Overlay Gradient -->
+    <div class="absolute inset-0 bg-black/70 z-10"></div>
+    
+    <!-- Particles Effect -->
+
+    
+    <!-- Content -->
+    <div class="hero-content">
+        <div class="animate__animated animate__fadeInDown">
+            <h1 class="hero-title">
+                VIBE CITY
+            </h1>
+            <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mb-8"></div>
+        </div>
+        
+        <p class="hero-subtitle animate__animated animate__fadeIn animate__delay-1s">
+            Experience the ultimate roleplay adventure in our immersive FiveM server
+        </p>
+        
+        <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-1s">
+            <a href="{% url 'login' %}" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium flex items-center justify-center text-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg">
+                Join Now <i class="fas fa-chevron-right ml-3"></i>
+            </a>
+            <a href="{% url 'whitelist_apply' %}" class="px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium hover:bg-white/20 transition-colors flex items-center justify-center text-lg shadow-lg">
+                Apply for Whitelist <i class="fas fa-file-alt ml-3"></i>
+            </a>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <a href="#features" class="text-white hover:text-white transition-colors">
+                <i class="fas fa-chevron-down text-2xl animate-bounce"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Server Stats Bar -->
+<div class="bg-dark border-y border-purple-900/30" >
+    <div class="container mx-auto py-6 px-4" >
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="stats-card p-6 rounded-xl text-center">
+                <div class="text-purple-400 mb-1"><i class="fas fa-users text-2xl"></i></div>
+                <div class="text-3xl font-bold text-white">250+</div>
+                <div class="text-slate-400">Active Players</div>
+            </div>
+            <div class="stats-card p-6 rounded-xl text-center">
+                <div class="text-purple-400 mb-1"><i class="fas fa-building text-2xl"></i></div>
+                <div class="text-3xl font-bold text-white">30+</div>
+                <div class="text-slate-400">Custom Locations</div>
+            </div>
+            <div class="stats-card p-6 rounded-xl text-center">
+                <div class="text-purple-400 mb-1"><i class="fas fa-briefcase text-2xl"></i></div>
+                <div class="text-3xl font-bold text-white">20+</div>
+                <div class="text-slate-400">Unique Jobs</div>
+            </div>
+            <div class="stats-card p-6 rounded-xl text-center">
+                <div class="text-purple-400 mb-1"><i class="fas fa-car text-2xl"></i></div>
+                <div class="text-3xl font-bold text-white">100+</div>
+                <div class="text-slate-400">Custom Vehicles</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div id="features" class="py-24 bg-darker">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Server Features</h2>
+            <p class="text-slate-400 text-lg">Discover what makes Vibe City the premier FiveM roleplay experience with our unique features and custom content.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="feature-card p-8 rounded-2xl">
+                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-users text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Active Community</h3>
+                <p class="text-slate-400">Join our thriving community of roleplayers and make new friends in Vibe City. Our server is home to hundreds of dedicated players.</p>
+                <ul class="mt-4 space-y-2 text-slate-400">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Regular community events</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Active Discord server</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Friendly environment</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card p-8 rounded-2xl">
+                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-gamepad text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Custom Scripts</h3>
+                <p class="text-slate-400">Experience unique gameplay with our custom-built scripts and mechanics that you won't find on any other server.</p>
+                <ul class="mt-4 space-y-2 text-slate-400">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Advanced economy system</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Unique job opportunities</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Custom vehicle modifications</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card p-8 rounded-2xl">
+                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-shield-alt text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Dedicated Staff</h3>
+                <p class="text-slate-400">Our professional staff team ensures a fair and enjoyable experience for everyone with 24/7 moderation.</p>
+                <ul class="mt-4 space-y-2 text-slate-400">
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 24/7 staff presence</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Fair and transparent rules</li>
+                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Quick response to reports</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Media Section -->
+<div class="py-24 bg-dark relative overflow-hidden" id="gallery">
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Server Showcase</h2>
+            <p class="text-slate-400 text-lg">Take a look at what awaits you in Vibe City with our gallery of screenshots and videos.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="media-card rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1605806616949-59450419c3a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-2">Downtown Vibe City</h3>
+                    <p class="text-slate-400">The bustling heart of our city with custom buildings and NPCs.</p>
+                </div>
+            </div>
+            
+            <div class="media-card rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1567449303078-57ad995bd17a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-2">Custom Vehicles</h3>
+                    <p class="text-slate-400">Our server features over 100 custom vehicles with unique handling.</p>
+                </div>
+            </div>
+            
+            <div class="media-card rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1517994112540-009c47ea476b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
+                <div class="p-6">
+                    <h3 class="font-bold text-lg mb-2">Nightlife</h3>
+                    <p class="text-slate-400">Experience the vibrant nightlife with custom clubs and events.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How to Join Section -->
+<div class="py-24 bg-darker">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">How to Join</h2>
+            <p class="text-slate-400 text-lg">Follow these simple steps to become part of our thriving community.</p>
+        </div>
+        
+        <div class="max-w-4xl mx-auto">
+            <div class="relative">
+                <div class="absolute left-8 md:left-12 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-600 to-pink-600 rounded-full"></div>
+                
+                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
+                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
+                        01
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Create an Account</h3>
+                        <p class="text-slate-300 mb-4">Sign up using your Discord account for seamless integration with our community.</p>
+                        <a href="{% url 'login' %}" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
+                            Create Account <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
+                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
+                        02
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Submit Whitelist Application</h3>
+                        <p class="text-slate-300 mb-4">Fill out our whitelist application to tell us about yourself and your roleplay experience.</p>
+                        <a href="{% url 'whitelist_apply' %}" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
+                            Apply Now <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
+                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
+                        03
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Await Approval</h3>
+                        <p class="text-slate-300 mb-4">Our staff will review your application. You'll receive a notification on Discord when approved.</p>
+                        <a href="#" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
+                            Join Discord <i class="fab fa-discord ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="timeline-item relative pl-20 md:pl-28 group">
+                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
+                        04
+                    </div>
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Join the Server</h3>
+                        <p class="text-slate-300 mb-4">Once approved, connect to our server using the FiveM client and start your new life in Vibe City!</p>
+                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700 mt-4">
+                            <p class="text-slate-300 font-medium">Server Connection Info:</p>
+                            <code class="text-purple-300 block mt-2">connect play.vibecityrp.com</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="py-20 cta-section relative overflow-hidden">
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto glass-card rounded-3xl p-10">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Start Your Journey?</h2>
+                <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Join hundreds of players already experiencing the ultimate roleplay adventure in Vibe City.</p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'login' %}" class="px-8 py-4 rounded-full btn-primary text-white font-medium flex items-center justify-center text-lg">
+                        Join Now <i class="fas fa-chevron-right ml-3"></i>
+                    </a>
+                    <a href="#" class="px-8 py-4 rounded-full glass-card text-white font-medium hover:bg-white/10 transition-colors flex items-center justify-center text-lg">
+                        <i class="fab fa-discord mr-3"></i> Join Discord
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Particles.js -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#8B5CF6"
+                },
+                shape: {
+                    type: "circle"
+                },
+                opacity: {
+                    value: 0.3,
+                    random: true
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#8B5CF6",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Animate elements when they come into view
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.feature-card, .timeline-item, .glass-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        };
+        
+        // Run on load
+        animateOnScroll();
+        
+        // Run on scroll
+        window.addEventListener('scroll', animateOnScroll);
+    });
+</script>
+{% endblock %}

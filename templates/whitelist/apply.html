@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Whitelist Application - Vibe City Roleplay{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">Whitelist Application</h1>
+            <p class="text-slate-300 text-xl font-medium">Join the Vibe City Roleplay community</p>
+        </div>
+        
+        <div class="bg-slate-900/90 border border-slate-600/30 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold mb-4 text-white">Application Form</h2>
+                <p class="text-slate-300 text-lg leading-relaxed">Please fill out this form honestly and thoroughly. Your responses will help us determine if you're a good fit for our community.</p>
+            </div>
+            
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <div class="space-y-6 bg-slate-800/40 p-8 rounded-xl border border-slate-600/20">
+                    {{ form|crispy }}
+                </div>
+                
+                <div class="pt-6">
+                    <button type="submit" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold text-lg transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-xl focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Enhanced form field styling */
+    .form-control {
+        background-color: rgba(15, 23, 42, 0.7) !important;
+        border: 2px solid rgba(100, 116, 139, 0.3) !important;
+        color: #f1f5f9 !important;
+        border-radius: 0.75rem !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 1rem !important;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .form-control:focus {
+        background-color: rgba(15, 23, 42, 0.9) !important;
+        border-color: #60a5fa !important;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2) !important;
+        outline: none !important;
+    }
+    
+    .form-control:hover {
+        border-color: rgba(100, 116, 139, 0.5) !important;
+    }
+    
+    .form-control::placeholder {
+        color: #94a3b8 !important;
+        opacity: 0.7 !important;
+    }
+    
+    label {
+        color: #e2e8f0 !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        letter-spacing: 0.025em !important;
+    }
+    
+    .help-block {
+        color: #94a3b8 !important;
+        font-size: 0.875rem !important;
+        margin-top: 0.25rem !important;
+    }
+
+    /* Style for select dropdowns */
+    select.form-control {
+        appearance: none !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+        background-position: right 0.75rem center !important;
+        background-repeat: no-repeat !important;
+        background-size: 1.5em 1.5em !important;
+        padding-right: 2.5rem !important;
+    }
+
+    /* Style for textareas */
+    textarea.form-control {
+        min-height: 100px !important;
+        resize: vertical !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Custom toggle button style */
+    .toggle-button-group {
+        display: flex !important;
+        gap: 0.5rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .toggle-button {
+        flex: 1 !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.75rem !important;
+        font-weight: 500 !important;
+        text-align: center !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease-in-out !important;
+        border: 2px solid rgba(100, 116, 139, 0.3) !important;
+        background-color: rgba(15, 23, 42, 0.7) !important;
+        color: #94a3b8 !important;
+    }
+
+    .toggle-button:hover {
+        background-color: rgba(15, 23, 42, 0.9) !important;
+        border-color: rgba(100, 116, 139, 0.5) !important;
+    }
+
+    .toggle-button.active {
+        background-color: #60a5fa !important;
+        border-color: #60a5fa !important;
+        color: white !important;
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+    }
+
+    /* Hide original checkbox */
+    input[type="checkbox"] {
+        display: none !important;
+    }
+
+    /* Style for form groups */
+    .form-group {
+        margin-bottom: 1.5rem !important;
+    }
+
+    /* Style for error messages */
+    .errorlist {
+        color: #f87171 !important;
+        font-size: 0.875rem !important;
+        margin-top: 0.25rem !important;
+        list-style: none !important;
+        padding-left: 0 !important;
+    }
+
+    /* Style for required field indicators */
+    .requiredField {
+        color: #f87171 !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Find all checkbox inputs
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    checkboxes.forEach(checkbox => {
+        // Create toggle button container
+        const container = document.createElement('div');
+        container.className = 'toggle-button-group';
+        
+        // Create Yes button
+        const yesButton = document.createElement('div');
+        yesButton.className = 'toggle-button';
+        yesButton.textContent = 'Yes';
+        yesButton.addEventListener('click', () => {
+            checkbox.checked = true;
+            updateButtons(yesButton, noButton);
+        });
+        
+        // Create No button
+        const noButton = document.createElement('div');
+        noButton.className = 'toggle-button';
+        noButton.textContent = 'No';
+        noButton.addEventListener('click', () => {
+            checkbox.checked = false;
+            updateButtons(yesButton, noButton);
+        });
+        
+        // Add buttons to container
+        container.appendChild(yesButton);
+        container.appendChild(noButton);
+        
+        // Insert container after checkbox
+        checkbox.parentNode.insertBefore(container, checkbox.nextSibling);
+        
+        // Update button states based on initial checkbox value
+        updateButtons(yesButton, noButton);
+        
+        function updateButtons(yesBtn, noBtn) {
+            if (checkbox.checked) {
+                yesBtn.classList.add('active');
+                noBtn.classList.remove('active');
+            } else {
+                noBtn.classList.add('active');
+                yesBtn.classList.remove('active');
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
