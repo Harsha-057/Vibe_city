@@ -6,6 +6,10 @@ from django.http import JsonResponse
 from whitelist.models import WhitelistApplication
 from accounts.models import User
 from discord_bot.bot import send_application_result
+from django.core.paginator import Paginator
+from .models import LogEntry
+from jobs.models import JobApplication
+from jobs.views import can_access_review_list
 
 def staff_required(view_func):
     """Decorator to check if user is staff"""
@@ -19,17 +23,43 @@ def staff_required(view_func):
 @login_required
 @staff_required
 def dashboard_view(request):
-    # Get counts for dashboard stats
-    pending_count = WhitelistApplication.objects.filter(status='pending').count()
-    approved_count = WhitelistApplication.objects.filter(status='approved').count()
-    rejected_count = WhitelistApplication.objects.filter(status='rejected').count()
+    # Whitelist application counts
+    pending_whitelist_count = WhitelistApplication.objects.filter(status='pending').count()
+    approved_whitelist_count = WhitelistApplication.objects.filter(status='approved').count()
+    rejected_whitelist_count = WhitelistApplication.objects.filter(status='rejected').count()
     total_users = User.objects.count()
     
+    # Get job apps queryset user can review
+    job_apps_queryset = JobApplication.objects.select_related('applicant').order_by('-submitted_at')
+    allowed_job_types = [] # Keep track for filtering
+    if not request.user.is_superuser:
+        can_review_sasp = request.user.groups.filter(name="SASP Reviewers").exists()
+        can_review_ems = request.user.groups.filter(name="EMS Reviewers").exists()
+        can_review_mech = request.user.groups.filter(name="Mechanic Reviewers").exists()
+        if can_review_sasp: allowed_job_types.append('SASP')
+        if can_review_ems: allowed_job_types.append('EMS')
+        if can_review_mech: allowed_job_types.append('MECHANIC')
+        job_apps_queryset = job_apps_queryset.filter(job_type__in=allowed_job_types)
+    
+    pending_job_apps_count = job_apps_queryset.filter(status='PENDING').count()
+    user_can_review_jobs = can_access_review_list(request.user)
+
+    # Get recent job applications (that user can review)
+    recent_job_applications = job_apps_queryset[:5] # Get latest 5
+
+    # Get recent whitelist applications (assuming all staff can see these for now)
+    # If whitelist apps also need permission checks, apply similar logic here
+    recent_whitelist_applications = WhitelistApplication.objects.select_related('user').order_by('-created_at')[:5]
+
     context = {
-        'pending_count': pending_count,
-        'approved_count': approved_count,
-        'rejected_count': rejected_count,
+        'pending_whitelist_count': pending_whitelist_count,
+        'approved_whitelist_count': approved_whitelist_count,
+        'rejected_whitelist_count': rejected_whitelist_count,
         'total_users': total_users,
+        'pending_job_apps_count': pending_job_apps_count,
+        'user_can_review_jobs': user_can_review_jobs,
+        'recent_job_applications': recent_job_applications,
+        'recent_whitelist_applications': recent_whitelist_applications, # Pass recent whitelist apps
     }
     
     return render(request, 'dashboard/index.html', context)
@@ -81,7 +111,7 @@ def application_detail_view(request, application_id):
                 print(f"Error sending Discord notification: {e}")
                 messages.success(request, f"Application has been {application.status}, but there was an error sending the Discord notification.")
             
-            return redirect('dashboard_applications')
+            return redirect('dashboard')
     
     return render(request, 'dashboard/application_detail.html', {'application': application})
 
@@ -117,3 +147,8 @@ def manage_staff_view(request):
     }
     
     return render(request, 'dashboard/manage_staff.html', context)
+
+@login_required
+@staff_required
+def logs_view(request):
+    return render(request, 'dashboard/logs.html')

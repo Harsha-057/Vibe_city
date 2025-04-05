@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Available Job Applications{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Available Job Applications</h1>
+    <ul class="list-disc pl-5 space-y-2">
+        <li><a href="{% url 'sasp_apply' %}" class="text-blue-600 hover:underline">San Andreas State Police (SASP) Application</a></li>
+        <li><a href="{% url 'ems_apply' %}" class="text-blue-600 hover:underline">Emergency Medical Services (EMS) Application</a></li>
+        <li><a href="{% url 'mechanic_apply' %}" class="text-blue-600 hover:underline">Mechanic Application</a></li>
+    </ul>
+</div>
+{% endblock %} 

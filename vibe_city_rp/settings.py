@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'accounts',
     'whitelist',
     'dashboard',
+    'jobs',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,19 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.discord.DiscordOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',  # <--- this is critical
+    'social_core.pipeline.user.user_details',
+)
+
 # Discord OAuth2 settings
 SOCIAL_AUTH_DISCORD_KEY = os.getenv('DISCORD_CLIENT_ID')
 SOCIAL_AUTH_DISCORD_SECRET = os.getenv('DISCORD_CLIENT_SECRET')
@@ -145,3 +159,4 @@ DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 DISCORD_GUILD_ID = os.getenv('DISCORD_GUILD_ID')
 DISCORD_APPLICATIONS_CHANNEL_ID = os.getenv('DISCORD_APPLICATIONS_CHANNEL_ID')
 DISCORD_NOTIFICATIONS_CHANNEL_ID = os.getenv('DISCORD_NOTIFICATIONS_CHANNEL_ID')
+DISCORD_WHITELIST_ROLE_ID = os.getenv('DISCORD_WHITELIST_ROLE_ID')

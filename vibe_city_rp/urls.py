@@ -12,6 +12,7 @@ urlpatterns = [
     path('whitelist/', include('whitelist.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('social-auth/', include('social_django.urls', namespace='social')),
+    path('jobs/', include('jobs.urls')),
 ]
 
 if settings.DEBUG:

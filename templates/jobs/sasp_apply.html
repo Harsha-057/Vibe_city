@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ job_title }} Job Application{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center">{{ job_title }} Application</h1>
+        
+        <form method="post" class="card p-8 space-y-4">
+            {% csrf_token %}
+            
+            {# Crispy forms should pick up input/textarea styles from base.html #}
+            {{ form|crispy }}
+            
+            <div class="flex items-center justify-end pt-4">
+                <button class="btn-primary py-2 px-6" type="submit">
+                    Submit Application
+                </button>
+            </div>
+        </form>
+        
+        <div class="text-center mt-6">
+             <a href="{% url 'available_jobs' %}" class="text-sm text-textMuted hover:text-accent transition">&larr; Back to Available Jobs</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Available Jobs{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-10 text-center neon-text">Join the Team</h1>
+
+    <div class="grid md:grid-cols-3 gap-8">
+        <!-- SASP -->
+        <div class="card p-6 text-center border-highlight/30 hover:border-highlight">
+             <i class="fas fa-shield-alt text-highlight text-4xl mb-4"></i>
+            <h2 class="text-2xl font-semibold mb-4 text-highlight">San Andreas State Police</h2>
+            <p class="text-textSecondary mb-6 h-24"> {# Fixed height for alignment #}
+                Uphold the law, protect the citizens, and patrol the streets of San Andreas. 
+                Requires dedication, professionalism, and courage.
+            </p>
+            <a href="{% url 'sasp_apply' %}" class="btn-secondary hover:bg-highlight/20 hover:border-highlight hover:text-highlight inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for SASP</a>
+        </div>
+
+        <!-- EMS -->
+        <div class="card p-6 text-center border-accent/30 hover:border-accent">
+             <i class="fas fa-briefcase-medical text-accent text-4xl mb-4"></i>
+            <h2 class="text-2xl font-semibold mb-4 text-accent">Emergency Medical Services</h2>
+            <p class="text-textSecondary mb-6 h-24">
+                Provide critical medical care, respond to emergencies, and save lives. 
+                Requires quick thinking, compassion, and medical knowledge.
+            </p>
+            <a href="{% url 'ems_apply' %}" class="btn-secondary hover:bg-accent/20 hover:border-accent hover:text-accent inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for EMS</a>
+        </div>
+
+        <!-- Mechanic -->
+        <div class="card p-6 text-center border-yellow-400/30 hover:border-yellow-400">
+            <i class="fas fa-wrench text-yellow-400 text-4xl mb-4"></i>
+            <h2 class="text-2xl font-semibold mb-4 text-yellow-400">Mechanic</h2>
+            <p class="text-textSecondary mb-6 h-24">
+                Keep the city moving by repairing, maintaining, and customizing vehicles. 
+                Requires technical skill, problem-solving, and a passion for cars.
+            </p>
+            <a href="{% url 'mechanic_apply' %}" class="btn-secondary hover:bg-yellow-400/20 hover:border-yellow-400 hover:text-yellow-400 inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for Mechanic</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %} 

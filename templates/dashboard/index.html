@@ -51,79 +51,143 @@
                 <div class="text-3xl font-bold mb-1">{{ total_users }}</div>
                 <p class="text-slate-400 text-sm">Registered users</p>
             </div>
+            
+            {# Conditionally show Job Apps Pending Card #}
+            {% if user_can_review_jobs %}
+            <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold">Pending Job Apps</h2>
+                    <div class="text-purple-400">
+                        <i class="fas fa-briefcase text-2xl"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold mb-1">{{ pending_job_apps_count }}</div>
+                <p class="text-slate-400 text-sm">Job applications needing review</p>
+                 <a href="{% url 'job_application_list' %}" class="text-sm text-purple-400 hover:underline mt-2 inline-block">Review Job Apps &rarr;</a>
+            </div>
+            {% endif %}
         </div>
         
         {% if user.is_superuser %}
         <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
             <h2 class="text-xl font-bold mb-4">Admin Actions</h2>   
             <div class="flex flex-wrap gap-4">
-                <a href="{% url 'manage_staff' %}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center">
+                <a href="{% url 'manage_staff' %}" class="btn-secondary flex items-center">
                     <i class="fas fa-user-shield mr-2"></i> Manage Staff Members
                 </a>
+                 {# Optional: Add direct link to Django Admin Jobs #}
+                 <a href="{% url 'admin:jobs_jobapplication_changelist' %}" class="btn-secondary flex items-center">
+                     <i class="fas fa-th-list mr-2"></i> All Job Apps (Admin)
+                 </a>
             </div>
         </div>
         {% endif %}
         
-        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+        {# Recent Whitelist Applications Table #}
+        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6 mb-6">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold">Recent Applications</h2>
-                <a href="{% url 'applications' %}" class="text-purple-400 hover:text-purple-300 flex items-center">
-                    View All <i class="fas fa-arrow-right ml-2"></i>
+                <h2 class="text-xl font-bold">Recent Whitelist Applications</h2>
+                <a href="{% url 'applications' %}" class="text-purple-400 hover:text-purple-300 flex items-center text-sm">
+                    View All Whitelist Apps <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
-            
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full text-sm">
                     <thead>
                         <tr class="text-left border-b border-slate-700">
-                            <th class="pb-3 font-medium text-slate-300">User</th>
-                            <th class="pb-3 font-medium text-slate-300">Age</th>
-                            <th class="pb-3 font-medium text-slate-300">Status</th>
-                            <th class="pb-3 font-medium text-slate-300">Submitted</th>
-                            <th class="pb-3 font-medium text-slate-300">Actions</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">User</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Age</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Status</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Submitted</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for application in applications %}
+                        {# Use new context variable #}
+                        {% for application in recent_whitelist_applications %}
                             <tr class="border-b border-slate-700/50">
-                                <td class="py-4">
+                                <td class="py-3">
                                     <div class="flex items-center">
                                         <img src="{{ application.user.avatar_url }}" alt="{{ application.user.username }}" class="w-8 h-8 rounded-full mr-3">
                                         <span>{{ application.user.discord_tag|default:application.user.username }}</span>
                                     </div>
                                 </td>
-                                <td class="py-4">{{ application.age }}</td>
-                                <td class="py-4">
-                                    {% if application.status == 'pending' %}
-                                        <span class="px-2 py-1 rounded-full bg-yellow-900/30 text-yellow-400 border border-yellow-800 text-xs">
-                                            Pending
-                                        </span>
-                                    {% elif application.status == 'approved' %}
-                                        <span class="px-2 py-1 rounded-full bg-green-900/30 text-green-400 border border-green-800 text-xs">
-                                            Approved
-                                        </span>
-                                    {% elif application.status == 'rejected' %}
-                                        <span class="px-2 py-1 rounded-full bg-red-900/30 text-red-400 border border-red-800 text-xs">
-                                            Rejected
-                                        </span>
-                                    {% endif %}
+                                <td class="py-3">{{ application.age }}</td>
+                                <td class="py-3">
+                                    <span class="px-2 py-1 rounded-full text-xs {% if application.status == 'pending' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif application.status == 'approved' %}bg-green-900/30 text-green-400 border border-green-800{% elif application.status == 'rejected' %}bg-red-900/30 text-red-400 border border-red-800{% endif %}">
+                                        {{ application.status|title }}
+                                    </span>
                                 </td>
-                                <td class="py-4 text-slate-400">{{ application.created_at|date:"M d, Y" }}</td>
-                                <td class="py-4">
-                                    <a href="{% url 'application_detail' application.id %}" class="text-purple-400 hover:text-purple-300">
+                                <td class="py-3 text-slate-400">{{ application.created_at|date:"M d, Y" }}</td>
+                                <td class="py-3">
+                                    <a href="{% url 'application_detail' application.id %}" class="text-highlight hover:underline">
                                         <i class="fas fa-eye mr-1"></i> View
                                     </a>
                                 </td>
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="5" class="py-4 text-center text-slate-400">No applications found.</td>
+                                <td colspan="5" class="py-4 text-center text-slate-400">No recent whitelist applications found.</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+        
+        {# Recent Job Applications Table (conditional) #}
+        {% if user_can_review_jobs %}
+        <div class="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Recent Job Applications</h2>
+                <a href="{% url 'job_application_list' %}" class="text-purple-400 hover:text-purple-300 flex items-center text-sm">
+                    View All Job Apps <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left border-b border-slate-700">
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Applicant</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Job Type</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Status</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Submitted</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in recent_job_applications %}
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <img src="{{ app.applicant.avatar_url }}" alt="{{ app.applicant.username }}" class="w-8 h-8 rounded-full mr-3">
+                                        <span>{{ app.applicant.discord_tag|default:app.applicant.username }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3">{{ app.get_job_type_display }}</td>
+                                <td class="py-3">
+                                    <span class="px-2 py-1 rounded-full text-xs {% if app.status == 'PENDING' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif app.status == 'APPROVED' %}bg-green-900/30 text-green-400 border border-green-800{% elif app.status == 'REJECTED' %}bg-red-900/30 text-red-400 border border-red-800{% endif %}">
+                                        {{ app.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="py-3 text-slate-400">{{ app.submitted_at|date:"M d, Y H:i" }}</td>
+                                <td class="py-3">
+                                    <a href="{% url 'job_application_detail' app.pk %}" class="text-highlight hover:underline">
+                                        <i class="fas fa-eye mr-1"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-4 text-center text-slate-400">No recent job applications found for you to review.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </div>
 {% endblock %}
