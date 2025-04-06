@@ -4,26 +4,40 @@
 {% block title %}{{ job_title }} Job Application{% endblock %}
 
 {% block content %}
+<style>
+  /* Force labels, inputs, textareas, selects, and help text to be white */
+  form label,
+  form input,
+  form textarea,
+  form select,
+  form .form-text, /* Common class for help text */
+  form small /* Another possibility for help text */
+  {
+    color: white !important;
+  }
+  /* Style placeholder text */
+  form input::placeholder,
+  form textarea::placeholder {
+      color: #cbd5e1; /* Use a lighter gray (e.g., slate-300) for placeholder */
+      opacity: 1; /* Ensure placeholder is visible */
+  }
+</style>
 <div class="container mx-auto px-4 py-12">
-    <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center">{{ job_title }} Application</h1>
-        
-        <form method="post" class="card p-8 space-y-4">
-            {% csrf_token %}
-            
-            {# Crispy forms should pick up input/textarea styles from base.html #}
+    <h1 class="text-4xl font-bold mb-8 text-center text-white">{{ job_title }} Job Application</h1>
+    <form method="post" class="bg-slate-900/75 backdrop-blur-md border border-white/20 text-white shadow-lg rounded-lg px-10 pt-8 pb-10 mb-4 max-w-xl mx-auto">
+        {% csrf_token %}
+        <div class="space-y-6">
             {{ form|crispy }}
-            
-            <div class="flex items-center justify-end pt-4">
-                <button class="btn-primary py-2 px-6" type="submit">
-                    Submit Application
-                </button>
-            </div>
-        </form>
-        
-        <div class="text-center mt-6">
-             <a href="{% url 'available_jobs' %}" class="text-sm text-textMuted hover:text-accent transition">&larr; Back to Available Jobs</a>
         </div>
+        <div class="flex items-center justify-center mt-10">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out" type="submit">
+                Submit Application
+            </button>
+        </div>
+    </form>
+    
+    <div class="text-center mt-6">
+         <a href="{% url 'available_jobs' %}" class="text-sm text-white hover:text-gray-300 transition">&larr; Back to Available Jobs</a>
     </div>
 </div>
 {% endblock %} 

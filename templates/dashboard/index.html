@@ -78,7 +78,7 @@
                  {# Optional: Add direct link to Django Admin Jobs #}
                  <a href="{% url 'admin:jobs_jobapplication_changelist' %}" class="btn-secondary flex items-center">
                      <i class="fas fa-th-list mr-2"></i> All Job Apps (Admin)
-                 </a>
+                </a>
             </div>
         </div>
         {% endif %}
@@ -116,7 +116,7 @@
                                 <td class="py-3">
                                     <span class="px-2 py-1 rounded-full text-xs {% if application.status == 'pending' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif application.status == 'approved' %}bg-green-900/30 text-green-400 border border-green-800{% elif application.status == 'rejected' %}bg-red-900/30 text-red-400 border border-red-800{% endif %}">
                                         {{ application.status|title }}
-                                    </span>
+                                        </span>
                                 </td>
                                 <td class="py-3 text-slate-400">{{ application.created_at|date:"M d, Y" }}</td>
                                 <td class="py-3">
@@ -168,7 +168,7 @@
                                 <td class="py-3">
                                     <span class="px-2 py-1 rounded-full text-xs {% if app.status == 'PENDING' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif app.status == 'APPROVED' %}bg-green-900/30 text-green-400 border border-green-800{% elif app.status == 'REJECTED' %}bg-red-900/30 text-red-400 border border-red-800{% endif %}">
                                         {{ app.get_status_display }}
-                                    </span>
+                                        </span>
                                 </td>
                                 <td class="py-3 text-slate-400">{{ app.submitted_at|date:"M d, Y H:i" }}</td>
                                 <td class="py-3">

@@ -50,7 +50,7 @@ def dashboard_view(request):
     # Get recent whitelist applications (assuming all staff can see these for now)
     # If whitelist apps also need permission checks, apply similar logic here
     recent_whitelist_applications = WhitelistApplication.objects.select_related('user').order_by('-created_at')[:5]
-
+    
     context = {
         'pending_whitelist_count': pending_whitelist_count,
         'approved_whitelist_count': approved_whitelist_count,

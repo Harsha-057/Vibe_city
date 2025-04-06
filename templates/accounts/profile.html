@@ -32,6 +32,23 @@
                                     <i class="fas fa-shield-alt mr-1"></i> Staff Member
                                 </span>
                             {% endif %}
+
+                            {# --- Job Employment Tags --- #}
+                            {% if user.is_sasp_employee %}
+                                <span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 border border-blue-800 text-sm">
+                                    <i class="fas fa-user-shield mr-1"></i> SASP Employee
+                                </span>
+                            {% endif %}
+                            {% if user.is_ems_employee %}
+                                <span class="px-3 py-1 rounded-full bg-red-900/30 text-red-400 border border-red-800 text-sm">
+                                    <i class="fas fa-briefcase-medical mr-1"></i> EMS Employee
+                                </span>
+                            {% endif %}
+                            {% if user.is_mechanic_employee %}
+                                <span class="px-3 py-1 rounded-full bg-orange-900/30 text-orange-400 border border-orange-800 text-sm">
+                                    <i class="fas fa-wrench mr-1"></i> Mechanic Employee
+                                </span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

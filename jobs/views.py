@@ -72,11 +72,11 @@ class JobListView(ListView):
 @login_required
 def sasp_apply_view(request):
     job_type = 'SASP'
-    # Check for existing PENDING or APPROVED application for this job
+    # Check for existing PENDING, INTERVIEW_PENDING, HIRED, or APPROVED application for this job
     existing_app = JobApplication.objects.filter(
-        applicant=request.user, 
-        job_type=job_type, 
-        status__in=['PENDING', 'APPROVED']
+        applicant=request.user,
+        job_type=job_type,
+        status__in=['PENDING', 'INTERVIEW_PENDING', 'HIRED', 'APPROVED']
     ).first()
 
     if existing_app:
@@ -106,10 +106,11 @@ def sasp_apply_view(request):
 @login_required
 def ems_apply_view(request):
     job_type = 'EMS'
+    # Check for existing PENDING, INTERVIEW_PENDING, HIRED, or APPROVED application for this job
     existing_app = JobApplication.objects.filter(
-        applicant=request.user, 
-        job_type=job_type, 
-        status__in=['PENDING', 'APPROVED']
+        applicant=request.user,
+        job_type=job_type,
+        status__in=['PENDING', 'INTERVIEW_PENDING', 'HIRED', 'APPROVED']
     ).first()
 
     if existing_app:
@@ -139,10 +140,11 @@ def ems_apply_view(request):
 @login_required
 def mechanic_apply_view(request):
     job_type = 'MECHANIC'
+    # Check for existing PENDING, INTERVIEW_PENDING, HIRED, or APPROVED application for this job
     existing_app = JobApplication.objects.filter(
-        applicant=request.user, 
-        job_type=job_type, 
-        status__in=['PENDING', 'APPROVED']
+        applicant=request.user,
+        job_type=job_type,
+        status__in=['PENDING', 'INTERVIEW_PENDING', 'HIRED', 'APPROVED']
     ).first()
 
     if existing_app:
@@ -302,6 +304,17 @@ def update_job_application_status(request, pk):
                 application.interview_reviewed_at = timezone.now()
                 application.interview_feedback = feedback_text
                 application.save()
+                
+                # Update user's employment status
+                hired_user = application.applicant
+                if application.job_type == 'SASP':
+                    hired_user.is_sasp_employee = True
+                elif application.job_type == 'EMS':
+                    hired_user.is_ems_employee = True
+                elif application.job_type == 'MECHANIC':
+                    hired_user.is_mechanic_employee = True
+                hired_user.save()
+                
                 messages.success(request, "Applicant Hired!")
                 # TODO: Assign job role/tag in Discord?
                 # Send notification

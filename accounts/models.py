@@ -14,6 +14,11 @@ class User(AbstractUser):
     can_review_sasp = models.BooleanField(_("Can Review SASP Apps"), default=False)
     can_review_ems = models.BooleanField(_("Can Review EMS Apps"), default=False)
     can_review_mechanic = models.BooleanField(_("Can Review Mechanic Apps"), default=False)
+
+    # --- Employment Status --- #
+    is_sasp_employee = models.BooleanField(_("Is SASP Employee"), default=False)
+    is_ems_employee = models.BooleanField(_("Is EMS Employee"), default=False)
+    is_mechanic_employee = models.BooleanField(_("Is Mechanic Employee"), default=False)
     
     def __str__(self):
         if self.discord_username:

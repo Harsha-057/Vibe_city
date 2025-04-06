@@ -222,9 +222,11 @@
             <a href="{% url 'login' %}" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium flex items-center justify-center text-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg">
                 Join Now <i class="fas fa-chevron-right ml-3"></i>
             </a>
+            {% if not user.is_whitelisted %}
             <a href="{% url 'whitelist_apply' %}" class="px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium hover:bg-white/20 transition-colors flex items-center justify-center text-lg shadow-lg">
                 Apply for Whitelist <i class="fas fa-file-alt ml-3"></i>
             </a>
+            {% endif %}
         </div>
         
         <!-- Scroll Indicator -->
