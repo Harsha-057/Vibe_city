@@ -10,9 +10,11 @@ class JobApplication(models.Model):
         ('MECHANIC', 'Mechanic'),
     ]
     STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('APPROVED', 'Approved'),
-        ('REJECTED', 'Rejected'),
+        ('PENDING', 'Pending Form Review'),
+        ('INTERVIEW_PENDING', 'Pending Interview'),
+        ('HIRED', 'Hired'),
+        ('REJECTED', 'Rejected (Form Stage)'),
+        ('REJECTED_INTERVIEW', 'Rejected (Interview Stage)'),
     ]
 
     applicant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -21,16 +23,28 @@ class JobApplication(models.Model):
     date_of_birth = models.DateField(help_text="In-game character date of birth")
     previous_experience = models.TextField(blank=True, help_text="Describe any relevant previous experience.")
     reason = models.TextField(help_text="Why are you applying for this position?")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
     submitted_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField(null=True, blank=True)
-    reviewer = models.ForeignKey(
+    
+    form_reviewed_at = models.DateTimeField(null=True, blank=True)
+    form_reviewer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='reviewed_job_applications'
+        related_name='reviewed_job_forms'
     )
+    form_feedback = models.TextField(null=True, blank=True, help_text="Feedback provided during form review.")
+
+    interview_reviewed_at = models.DateTimeField(null=True, blank=True)
+    interview_reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='interviewed_job_applicants'
+    )
+    interview_feedback = models.TextField(null=True, blank=True, help_text="Feedback provided during/after interview.")
 
     # --- Job Specific Fields --- #
     # SASP
@@ -45,8 +59,5 @@ class JobApplication(models.Model):
     mechanic_skills = models.TextField(null=True, blank=True, help_text="List your relevant mechanical skills and experience (e.g., engine repair, tuning, bodywork).")
     mechanic_tool_knowledge = models.BooleanField(null=True, blank=True, help_text="Do you own or have extensive knowledge of specialized mechanic tools? (Optional)")
 
-    # --- Reviewer Feedback --- #
-    feedback = models.TextField(null=True, blank=True, help_text="Feedback provided by the reviewer.")
-
     def __str__(self):
-        return f"{self.applicant.username} - {self.get_job_type_display()} Application"
+        return f"{self.applicant.username} - {self.get_job_type_display()} ({self.get_status_display()})"

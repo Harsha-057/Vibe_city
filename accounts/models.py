@@ -10,6 +10,11 @@ class User(AbstractUser):
     is_whitelisted = models.BooleanField(default=False)
     is_staff_member = models.BooleanField(default=False)
     
+    # --- Job Review Permissions --- #
+    can_review_sasp = models.BooleanField(_("Can Review SASP Apps"), default=False)
+    can_review_ems = models.BooleanField(_("Can Review EMS Apps"), default=False)
+    can_review_mechanic = models.BooleanField(_("Can Review Mechanic Apps"), default=False)
+    
     def __str__(self):
         if self.discord_username:
             return f"{self.discord_username}#{self.discord_discriminator}"

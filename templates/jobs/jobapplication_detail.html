@@ -70,38 +70,71 @@
             {% endwith %}
             
             <div>
-                <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">Status & Review</h2>
+                <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">Status & Review History</h2>
                 <p class="text-sm mb-2"><strong>Current Status:</strong> 
-                     <span class="font-semibold px-2 py-0.5 rounded text-xs {% if application.status == 'APPROVED' %}bg-green-500/50 text-green-300{% elif application.status == 'PENDING' %}bg-yellow-500/50 text-yellow-300{% elif application.status == 'REJECTED' %}bg-red-500/50 text-red-300{% else %}bg-slate-500/50{% endif %}">
+                     <span class="font-semibold px-2 py-0.5 rounded text-xs {% if application.status == 'HIRED' %}bg-green-500/50 text-green-300{% elif application.status == 'INTERVIEW_PENDING' %}bg-blue-500/50 text-blue-300 {% elif application.status == 'PENDING' %}bg-yellow-500/50 text-yellow-300{% elif 'REJECTED' in application.status %}bg-red-500/50 text-red-300{% else %}bg-slate-500/50{% endif %}">
                         {{ application.get_status_display }}
                     </span>
                 </p>
-                {% if application.reviewer %}
-                <p class="text-sm mb-1"><strong>Reviewed By:</strong> {{ application.reviewer.username }}</p>
-                <p class="text-sm mb-2"><strong>Reviewed At:</strong> {{ application.reviewed_at|date:"Y-m-d H:i" }}</p>
+                
+                {# Form Review Details #}
+                {% if application.form_reviewer %}
+                <div class="mt-3 text-sm">
+                    <h3 class="font-semibold text-textSecondary">Form Review:</h3>
+                    <p class="ml-4">Reviewed By: {{ application.form_reviewer.username }} on {{ application.form_reviewed_at|date:"Y-m-d H:i" }}</p>
+                    {% if application.form_feedback %}
+                        <p class="ml-4 mt-1 p-2 bg-primary-100/50 rounded border border-slate-700">Feedback: {{ application.form_feedback|linebreaksbr }}</p>
+                    {% endif %}
+                </div>
                 {% endif %}
-                {% if application.feedback %}
-                <div class="mt-3">
-                    <h3 class="font-semibold text-textSecondary text-sm">Reviewer Feedback:</h3>
-                    <p class="ml-4 text-textPrimary mt-1 text-sm p-2 bg-primary-100/50 rounded border border-slate-700">{{ application.feedback|linebreaksbr }}</p>
+                
+                {# Interview Review Details #}
+                 {% if application.interview_reviewer %}
+                <div class="mt-3 text-sm">
+                    <h3 class="font-semibold text-textSecondary">Interview/Final Decision:</h3>
+                    <p class="ml-4">Reviewed By: {{ application.interview_reviewer.username }} on {{ application.interview_reviewed_at|date:"Y-m-d H:i" }}</p>
+                     {% if application.interview_feedback %}
+                         <p class="ml-4 mt-1 p-2 bg-primary-100/50 rounded border border-slate-700">Feedback: {{ application.interview_feedback|linebreaksbr }}</p>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
 
-            {# --- Actions for Pending Applications --- #}
-            {% if application.status == 'PENDING' %}
+            {# --- Actions for Pending Form Review --- #}
+            {% if application.status == 'PENDING' and user_can_review %}
             <form method="post" action="{% url 'update_job_application_status' pk=application.pk %}" class="mt-4 border-t border-slate-700 pt-6">
                 {% csrf_token %}
+                <h3 class="text-lg font-semibold mb-3">Form Review Actions</h3>
                 <div class="mb-4">
-                    <label for="feedback" class="block text-textSecondary text-sm font-bold mb-2">Feedback (Optional but recommended for rejection):</label>
-                    <textarea name="feedback" id="feedback" rows="3" class="input"></textarea> {# Uses base.html textarea style #}
+                    <label for="form_feedback" class="block text-textSecondary text-sm font-bold mb-2">Form Feedback (Optional for approval, recommended for rejection):</label>
+                    <textarea name="feedback" id="form_feedback" rows="3" class="input"></textarea>
                 </div>
                 <div class="flex space-x-4 justify-end">
-                     <button type="submit" name="status" value="APPROVED" class="btn-secondary hover:bg-green-500/30 hover:border-green-500 hover:text-green-400 text-sm py-2 px-5">
-                        <i class="fas fa-check mr-1"></i> Approve
+                     <button type="submit" name="action" value="APPROVE_FORM" class="btn-secondary hover:bg-blue-500/30 hover:border-blue-500 hover:text-blue-400 text-sm py-2 px-5">
+                        <i class="fas fa-check mr-1"></i> Pass to Interview
                     </button>
-                     <button type="submit" name="status" value="REJECTED" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
-                        <i class="fas fa-times mr-1"></i> Reject
+                     <button type="submit" name="action" value="REJECT_FORM" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
+                        <i class="fas fa-times mr-1"></i> Reject (Form Stage)
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+            
+            {# --- Actions for Pending Interview --- #}
+            {% if application.status == 'INTERVIEW_PENDING' and user_can_hire %}
+             <form method="post" action="{% url 'update_job_application_status' pk=application.pk %}" class="mt-4 border-t border-slate-700 pt-6">
+                {% csrf_token %}
+                <h3 class="text-lg font-semibold mb-3">Interview/Hiring Actions</h3>
+                <div class="mb-4">
+                    <label for="interview_feedback" class="block text-textSecondary text-sm font-bold mb-2">Interview Feedback (Optional for hire, recommended for rejection):</label>
+                    <textarea name="feedback" id="interview_feedback" rows="3" class="input"></textarea>
+                </div>
+                <div class="flex space-x-4 justify-end">
+                     <button type="submit" name="action" value="HIRE" class="btn-secondary hover:bg-green-500/30 hover:border-green-500 hover:text-green-400 text-sm py-2 px-5">
+                        <i class="fas fa-check mr-1"></i> Hire Applicant
+                    </button>
+                     <button type="submit" name="action" value="REJECT_INTERVIEW" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
+                        <i class="fas fa-times mr-1"></i> Reject (Interview Stage)
                     </button>
                 </div>
             </form>

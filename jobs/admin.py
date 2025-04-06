@@ -1,12 +1,13 @@
 from django.contrib import admin
 from .models import JobApplication
+from django.utils import timezone # Import timezone if needed for actions
 
 @admin.register(JobApplication)
 class JobApplicationAdmin(admin.ModelAdmin):
-    list_display = ('applicant', 'job_type', 'status', 'submitted_at', 'reviewed_at', 'reviewer')
-    list_filter = ('job_type', 'status', 'submitted_at', 'reviewed_at')
-    search_fields = ('applicant__username', 'applicant__discord_username', 'character_name', 'reason', 'feedback')
-    readonly_fields = ('submitted_at', 'reviewed_at', 'reviewer')
+    list_display = ('applicant', 'job_type', 'status', 'submitted_at', 'form_reviewed_at', 'form_reviewer', 'interview_reviewed_at', 'interview_reviewer')
+    list_filter = ('job_type', 'status', 'submitted_at', 'form_reviewed_at', 'interview_reviewed_at')
+    search_fields = ('applicant__username', 'applicant__discord_username', 'character_name', 'reason', 'form_feedback', 'interview_feedback')
+    readonly_fields = ('submitted_at', 'form_reviewed_at', 'form_reviewer', 'interview_reviewed_at', 'interview_reviewer')
     list_per_page = 25
 
     fieldsets = (
@@ -17,15 +18,18 @@ class JobApplicationAdmin(admin.ModelAdmin):
             'fields': ('previous_experience', 'reason')
         }),
         ('Job Specific Answers', {
-            'classes': ('collapse',), # Collapsible section
+            'classes': ('collapse',),
             'fields': (
                 'sasp_scenario_response', 'sasp_leadership_experience',
                 'ems_medical_certification', 'ems_pressure_handling',
                 'mechanic_skills', 'mechanic_tool_knowledge'
             )
         }),
-        ('Review', {
-             'fields': ('reviewer', 'reviewed_at', 'feedback')
+        ('Form Review', {
+             'fields': ('form_reviewer', 'form_reviewed_at', 'form_feedback')
+        }),
+        ('Interview/Final Decision', {
+             'fields': ('interview_reviewer', 'interview_reviewed_at', 'interview_feedback')
         }),
     )
 

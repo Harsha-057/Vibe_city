@@ -11,36 +11,46 @@ from django.utils.module_loading import import_string
 from .models import JobApplication
 from .forms import SASPApplicationForm, EMSApplicationForm, MechanicApplicationForm
 
-# --- Permission Check Functions --- #
+# --- Permission Check Functions (Updated for Boolean Fields) --- #
 
 def is_staff(user):
     """Decorator to check if user is staff."""
     return user.is_staff
 
 def can_review_job_application(user, application):
-    """Checks if a user can review a specific application based on group membership."""
+    """Checks if a user can review a specific application based on boolean fields."""
     if not user.is_authenticated or not user.is_staff:
         return False
     
-    required_group_name = None
-    if application.job_type == 'SASP':
-        required_group_name = "SASP Reviewers"
-    elif application.job_type == 'EMS':
-        required_group_name = "EMS Reviewers"
-    elif application.job_type == 'MECHANIC':
-        required_group_name = "Mechanic Reviewers"
+    if user.is_superuser:
+        return True
+
+    if application.job_type == 'SASP' and user.can_review_sasp:
+        return True
+    elif application.job_type == 'EMS' and user.can_review_ems:
+        return True
+    elif application.job_type == 'MECHANIC' and user.can_review_mechanic:
+        return True
     
-    if required_group_name:
-        return user.groups.filter(name=required_group_name).exists() or user.is_superuser
-    
-    return user.is_superuser
+    return False # Deny if no specific permission matches
 
 def can_access_review_list(user):
-    """Checks if a user can access the review list (in any reviewer group or superuser)."""
+    """Checks if a user can access the review list (has any review perm or superuser)."""
     if not user.is_authenticated or not user.is_staff:
         return False
-    reviewer_groups = ["SASP Reviewers", "EMS Reviewers", "Mechanic Reviewers"]
-    return user.groups.filter(name__in=reviewer_groups).exists() or user.is_superuser
+    
+    return (
+        user.is_superuser or 
+        user.can_review_sasp or 
+        user.can_review_ems or 
+        user.can_review_mechanic
+    )
+
+def can_conduct_interview(user, application):
+    """Checks if a user can make hiring decisions."""
+    # Simplified: For now, reuse the form review permission check
+    # TODO: Implement specific fields like user.can_hire_sasp if needed
+    return can_review_job_application(user, application) 
 
 # --- Public Views --- #
 
@@ -81,6 +91,13 @@ def sasp_apply_view(request):
             application.job_type = job_type
             application.save()
             messages.success(request, 'SASP application submitted successfully!')
+            # Send NEW application notification
+            try:
+                send_new_notification_func = import_string('discord_bot.bot.send_new_job_application_notification')
+                send_new_notification_func(application)
+            except Exception as e:
+                messages.warning(request, f"Application submitted, but failed to send Discord notification: {e}")
+                print(f"Error triggering NEW Discord notification for JobApp {application.id}: {e}")
             return redirect('profile') # Redirect to profile after success
     else:
         form = SASPApplicationForm()
@@ -107,6 +124,13 @@ def ems_apply_view(request):
             application.job_type = job_type
             application.save()
             messages.success(request, 'EMS application submitted successfully!')
+            # Send NEW application notification
+            try:
+                send_new_notification_func = import_string('discord_bot.bot.send_new_job_application_notification')
+                send_new_notification_func(application)
+            except Exception as e:
+                messages.warning(request, f"Application submitted, but failed to send Discord notification: {e}")
+                print(f"Error triggering NEW Discord notification for JobApp {application.id}: {e}")
             return redirect('profile')
     else:
         form = EMSApplicationForm()
@@ -133,13 +157,20 @@ def mechanic_apply_view(request):
             application.job_type = job_type
             application.save()
             messages.success(request, 'Mechanic application submitted successfully!')
+            # Send NEW application notification
+            try:
+                send_new_notification_func = import_string('discord_bot.bot.send_new_job_application_notification')
+                send_new_notification_func(application)
+            except Exception as e:
+                messages.warning(request, f"Application submitted, but failed to send Discord notification: {e}")
+                print(f"Error triggering NEW Discord notification for JobApp {application.id}: {e}")
             return redirect('profile')
     else:
         form = MechanicApplicationForm()
     return render(request, 'jobs/mechanic_apply.html', {'form': form, 'job_title': 'Mechanic'})
 
 
-# --- Application Review Views --- #
+# --- Application Review Views (Updated for Boolean Field Checks) --- #
 
 @method_decorator(user_passes_test(can_access_review_list), name='dispatch')
 class JobApplicationReviewListView(ListView):
@@ -150,19 +181,16 @@ class JobApplicationReviewListView(ListView):
 
     def get_queryset(self):
         status_filter = self.request.GET.get('status', 'PENDING')
-        job_type_filter = self.request.GET.get('job_type', '') # Get job_type filter
+        job_type_filter = self.request.GET.get('job_type', '') 
 
         queryset = JobApplication.objects.select_related('applicant').order_by('-submitted_at')
         
         # Filter by Job Type user is allowed to review (if not superuser)
         if not self.request.user.is_superuser:
             allowed_job_types = []
-            if self.request.user.groups.filter(name="SASP Reviewers").exists():
-                allowed_job_types.append('SASP')
-            if self.request.user.groups.filter(name="EMS Reviewers").exists():
-                allowed_job_types.append('EMS')
-            if self.request.user.groups.filter(name="Mechanic Reviewers").exists():
-                allowed_job_types.append('MECHANIC')
+            if self.request.user.can_review_sasp: allowed_job_types.append('SASP')
+            if self.request.user.can_review_ems: allowed_job_types.append('EMS')
+            if self.request.user.can_review_mechanic: allowed_job_types.append('MECHANIC')
             queryset = queryset.filter(job_type__in=allowed_job_types)
         
         # Apply explicit filters from GET params
@@ -180,15 +208,15 @@ class JobApplicationReviewListView(ListView):
         
         # Get job types the user can review for the filter dropdown
         allowed_job_types_choices = []
-        if self.request.user.is_superuser:
-            allowed_job_types_choices = JobApplication.JOB_CHOICES
-        else:
-            if self.request.user.groups.filter(name="SASP Reviewers").exists():
-                 allowed_job_types_choices.append(('SASP', JobApplication._meta.get_field('job_type').choices[0][1])) # Get display name
-            if self.request.user.groups.filter(name="EMS Reviewers").exists():
-                 allowed_job_types_choices.append(('EMS', JobApplication._meta.get_field('job_type').choices[1][1]))
-            if self.request.user.groups.filter(name="Mechanic Reviewers").exists():
-                 allowed_job_types_choices.append(('MECHANIC', JobApplication._meta.get_field('job_type').choices[2][1]))
+        # Use field.choices to get value/display pairs correctly
+        all_choices_dict = dict(JobApplication._meta.get_field('job_type').choices)
+        
+        if self.request.user.is_superuser or self.request.user.can_review_sasp:
+             allowed_job_types_choices.append(('SASP', all_choices_dict.get('SASP', 'SASP')))
+        if self.request.user.is_superuser or self.request.user.can_review_ems:
+             allowed_job_types_choices.append(('EMS', all_choices_dict.get('EMS', 'EMS')))
+        if self.request.user.is_superuser or self.request.user.can_review_mechanic:
+             allowed_job_types_choices.append(('MECHANIC', all_choices_dict.get('MECHANIC', 'Mechanic')))
         
         context['job_type_choices'] = allowed_job_types_choices
         context['current_job_type'] = self.request.GET.get('job_type', '')
@@ -203,39 +231,111 @@ class JobApplicationReviewDetailView(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
         application_obj = self.get_object()
-        if not can_review_job_application(request.user, application_obj):
+        # Perform permission checks
+        self.user_can_review = can_review_job_application(request.user, application_obj)
+        self.user_can_hire = can_conduct_interview(request.user, application_obj)
+
+        if not self.user_can_review:
             messages.error(request, "You do not have permission to view this application.")
             return redirect('job_application_list')
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Pass permission results to the template
+        context['user_can_review'] = getattr(self, 'user_can_review', False)
+        context['user_can_hire'] = getattr(self, 'user_can_hire', False)
+        return context
+
     def get_queryset(self):
-        return super().get_queryset().select_related('applicant', 'reviewer')
+        # Renamed reviewer field, update select_related if needed
+        return super().get_queryset().select_related('applicant', 'form_reviewer', 'interview_reviewer')
 
 
 @login_required
 def update_job_application_status(request, pk):
     application = get_object_or_404(JobApplication, pk=pk)
-    if not can_review_job_application(request.user, application):
-         messages.error(request, "You do not have permission to update this application's status.")
-         return redirect('job_application_detail', pk=pk)
+    current_status = application.status
+    user_can_review_form = can_review_job_application(request.user, application)
+    user_can_hire = can_conduct_interview(request.user, application) # Check hiring permission
+
     if request.method == 'POST':
-        new_status = request.POST.get('status')
+        action = request.POST.get('action') # Use 'action' instead of 'status' for clarity
         feedback_text = request.POST.get('feedback', '').strip()
-        if new_status in ['APPROVED', 'REJECTED']:
-            application.status = new_status
-            application.reviewer = request.user
-            application.reviewed_at = timezone.now()
-            application.feedback = feedback_text
-            application.save()
-            messages.success(request, f'Application status updated to {application.get_status_display()}. Feedback saved.')
-            try:
-                send_notification_func = import_string('discord_bot.bot.send_job_application_result')
-                send_notification_func(application)
-            except Exception as e:
-                messages.error(request, f"Failed to send Discord notification: {e}")
-                print(f"Error triggering Discord notification for JobApp {pk}: {e}")
+
+        if current_status == 'PENDING' and user_can_review_form:
+            if action == 'APPROVE_FORM':
+                application.status = 'INTERVIEW_PENDING'
+                application.form_reviewer = request.user
+                application.form_reviewed_at = timezone.now()
+                application.form_feedback = feedback_text
+                application.save()
+                messages.success(request, "Application form approved. Status set to Pending Interview.")
+                # Send notification for interview pending
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    send_notification_func(application)
+                except Exception as e:
+                    messages.error(request, f"Failed to send Discord notification: {e}")
+                    print(f"Error triggering Discord notification for JobApp {pk}: {e}")
+            elif action == 'REJECT_FORM':
+                application.status = 'REJECTED'
+                application.form_reviewer = request.user
+                application.form_reviewed_at = timezone.now()
+                application.form_feedback = feedback_text
+                application.save()
+                messages.success(request, "Application form rejected.")
+                # Send notification (using renamed feedback field)
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    send_notification_func(application)
+                except Exception as e:
+                    messages.error(request, f"Failed to send Discord notification: {e}")
+                    print(f"Error triggering Discord notification for JobApp {pk}: {e}")
+            else:
+                messages.error(request, "Invalid action for current status.")
+        
+        elif current_status == 'INTERVIEW_PENDING' and user_can_hire:
+            if action == 'HIRE':
+                application.status = 'HIRED'
+                application.interview_reviewer = request.user
+                application.interview_reviewed_at = timezone.now()
+                application.interview_feedback = feedback_text
+                application.save()
+                messages.success(request, "Applicant Hired!")
+                # TODO: Assign job role/tag in Discord?
+                # Send notification
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    send_notification_func(application)
+                except Exception as e:
+                    messages.error(request, f"Failed to send Discord notification: {e}")
+                    print(f"Error triggering Discord notification for JobApp {pk}: {e}")
+            elif action == 'REJECT_INTERVIEW':
+                application.status = 'REJECTED_INTERVIEW'
+                application.interview_reviewer = request.user
+                application.interview_reviewed_at = timezone.now()
+                application.interview_feedback = feedback_text
+                application.save()
+                messages.success(request, "Applicant Rejected after interview.")
+                # Send notification
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    send_notification_func(application)
+                except Exception as e:
+                    messages.error(request, f"Failed to send Discord notification: {e}")
+                    print(f"Error triggering Discord notification for JobApp {pk}: {e}")
+            else:
+                messages.error(request, "Invalid action for current status.")
+
         else:
-            messages.error(request, 'Invalid status provided.')
+            # Handle cases where user doesn't have permission or status isn't actionable
+            if not user_can_review_form and not user_can_hire:
+                 messages.error(request, "You do not have permission to update this application's status.")
+            else:
+                 messages.warning(request, f"No action taken. Application status is currently '{application.get_status_display()}' or you lack permission for this stage.")
+        
         return redirect('job_application_detail', pk=pk)
     else:
+        # GET request, just redirect back
         return redirect('job_application_detail', pk=pk)

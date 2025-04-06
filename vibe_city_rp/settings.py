@@ -1,5 +1,4 @@
 import os
-import dj_database_url
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -74,16 +73,16 @@ WSGI_APPLICATION = 'vibe_city_rp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME':  BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME':  BASE_DIR / "db.sqlite3",
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+# }
 
 # Authentication
 AUTH_USER_MODEL = 'accounts.User'
@@ -166,3 +165,4 @@ DISCORD_GUILD_ID = os.getenv('DISCORD_GUILD_ID')
 DISCORD_APPLICATIONS_CHANNEL_ID = os.getenv('DISCORD_APPLICATIONS_CHANNEL_ID')
 DISCORD_NOTIFICATIONS_CHANNEL_ID = os.getenv('DISCORD_NOTIFICATIONS_CHANNEL_ID')
 DISCORD_WHITELIST_ROLE_ID = os.getenv('DISCORD_WHITELIST_ROLE_ID')
+DISCORD_JOB_RESPONSES_CHANNEL_ID = os.getenv('DISCORD_JOB_RESPONSES_CHANNEL_ID')
