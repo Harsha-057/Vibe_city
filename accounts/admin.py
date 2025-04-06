@@ -5,7 +5,7 @@ from .models import User
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     list_display = (
-        'username', 'email', 'discord_tag', 'is_whitelisted', 
+        'username', 'email', 'discord_tag', 'is_whitelisted', 'is_staff_member',
         'is_staff', 'is_active', 
         'can_review_sasp', 'can_review_ems', 'can_review_mechanic'
     )
@@ -20,7 +20,7 @@ class CustomUserAdmin(UserAdmin):
         ('Permissions', {
             'fields': (
                 'is_active', 'is_staff', 'is_superuser', 
-                'is_whitelisted', 
+                'is_whitelisted', 'is_staff_member',
                 'can_review_sasp', 'can_review_ems', 'can_review_mechanic',
                 'groups', 'user_permissions',
             ),

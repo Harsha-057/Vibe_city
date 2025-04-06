@@ -1,13 +1,14 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import LogEntry
+from django.apps import apps
+import sys
 
 @receiver(post_save)
-def log_model_save(sender, instance, created, **kwargs):
-    if sender != LogEntry:  # Avoid logging LogEntry saves
-        action = 'Created' if created else 'Updated'
-        LogEntry.objects.create(
-            user=instance.user if hasattr(instance, 'user') else None,
-            action=action,
-            description=f'{sender.__name__} instance {action.lower()} with ID {instance.pk}'
-        ) 
+def log_model_save(sender, instance, **kwargs):
+    # Don't run during migration commands
+    if 'makemigrations' in sys.argv or 'migrate' in sys.argv:
+        return
+
+    LogEntry = apps.get_model('dashboard', 'LogEntry')
+    action = 'Created' if kwargs.get('created', False) else 'Updated'
+
