@@ -22,6 +22,22 @@ class VibeCity(commands.Bot):
         print(f'Logged in as {self.user.name} ({self.user.id})')
         bot_ready.set()
 
+    async def on_message(self, message):
+        # Prevent the bot from replying to itself
+        if message.author == self.user:
+            return
+        
+        # Check for keywords in the message
+        keywords = ['form', 'apply', 'whitelist']
+        if any(keyword in message.content.lower() for keyword in keywords):
+            response = (
+                "To apply, please visit: [Soon]\n\n"
+                "⌛Processing Times:\n"
+                "Regular applications: Cleared within 1 day\n\n"
+                "If your application is taking longer, we're working hard through the workload and will get it out ASAP. Thanks for your patience!"
+            )
+            await message.channel.send(response)
+
 def run_bot():
     global bot
     bot = VibeCity()
@@ -494,3 +510,102 @@ def send_new_job_application_notification(application):
 
     asyncio.run_coroutine_threadsafe(send(), bot.loop)
     print(f"[JobAppNewNotify-{application.id}] Coroutine scheduled.") 
+
+def send_ticket_notification(ticket, action_type, message=None):
+    """Sends Discord notifications for ticket updates."""
+    if not bot_ready.is_set():
+        print("Bot not ready yet, waiting...")
+        bot_ready.wait(timeout=10)
+    
+    if not bot:
+        print("Bot not initialized")
+        return
+    
+    async def send():
+        try:
+            # Get the ticket channel
+            channel_id = int(settings.DISCORD_SUPPORT_CHANNEL_ID)
+            channel = bot.get_channel(channel_id)
+            if not channel:
+                print(f"Channel not found: {channel_id}")
+                return
+            
+            # Create embed based on action type
+            if action_type == 'created':
+                embed = discord.Embed(
+                    title="New Support Ticket Created",
+                    description=f"Ticket #{ticket.id}: {ticket.title}",
+                    color=discord.Color.blue()
+                )
+                embed.add_field(name="User", value=f"<@{ticket.user.discord_id}> ({ticket.user.discord_tag})", inline=True)
+                embed.add_field(name="Priority", value=ticket.get_priority_display(), inline=True)
+                embed.add_field(name="Description", value=ticket.description[:1024] + "..." if len(ticket.description) > 1024 else ticket.description, inline=False)
+                embed.set_footer(text="Please review this ticket in the staff dashboard")
+                
+            elif action_type == 'status_change':
+                embed = discord.Embed(
+                    title=f"Ticket #{ticket.id} Status Updated",
+                    description=f"Status changed to: {ticket.get_status_display()}",
+                    color=discord.Color.gold()
+                )
+                embed.add_field(name="Ticket", value=ticket.title, inline=True)
+                embed.add_field(name="User", value=f"<@{ticket.user.discord_id}>", inline=True)
+                if ticket.assigned_to:
+                    embed.add_field(name="Assigned To", value=f"<@{ticket.assigned_to.discord_id}>", inline=True)
+                
+            elif action_type == 'message':
+                embed = discord.Embed(
+                    title=f"New Message on Ticket #{ticket.id}",
+                    description=f"From: {'Staff' if message.is_staff_message else 'User'}",
+                    color=discord.Color.green()
+                )
+                embed.add_field(name="Ticket", value=ticket.title, inline=True)
+                embed.add_field(name="User", value=f"<@{message.user.discord_id}>", inline=True)
+                embed.add_field(name="Message", value=message.message[:1024] + "..." if len(message.message) > 1024 else message.message, inline=False)
+                
+            elif action_type == 'reopened':
+                embed = discord.Embed(
+                    title=f"Ticket #{ticket.id} Reopened",
+                    description=f"Ticket has been reopened by {ticket.user.discord_tag}",
+                    color=discord.Color.orange()
+                )
+                embed.add_field(name="Ticket", value=ticket.title, inline=True)
+                embed.add_field(name="User", value=f"<@{ticket.user.discord_id}>", inline=True)
+            
+            # Send to channel
+            await channel.send(embed=embed)
+            
+            # Send DM to user if not staff message
+            if action_type in ['status_change', 'message'] and not message.is_staff_message:
+                try:
+                    guild = bot.get_guild(int(settings.DISCORD_GUILD_ID))
+                    if not guild:
+                        print(f"Guild not found: {settings.DISCORD_GUILD_ID}")
+                        return
+                    
+                    member = await guild.fetch_member(int(ticket.user.discord_id))
+                    if not member:
+                        print(f"Member not found: {ticket.user.discord_id}")
+                        return
+                    
+                    dm_embed = discord.Embed(
+                        title=f"Update on Ticket #{ticket.id}",
+                        color=discord.Color.blue()
+                    )
+                    
+                    if action_type == 'status_change':
+                        dm_embed.description = f"Your ticket status has been updated to: {ticket.get_status_display()}"
+                        if ticket.assigned_to:
+                            dm_embed.add_field(name="Assigned To", value=f"<@{ticket.assigned_to.discord_id}>", inline=True)
+                    else:
+                        dm_embed.description = f"New message on your ticket from staff"
+                        dm_embed.add_field(name="Message", value=message.message[:1024] + "..." if len(message.message) > 1024 else message.message, inline=False)
+                    
+                    await member.send(embed=dm_embed)
+                except Exception as e:
+                    print(f"Error sending DM to user: {e}")
+        
+        except Exception as e:
+            print(f"Error sending ticket notification: {e}")
+    
+    asyncio.run_coroutine_threadsafe(send(), bot.loop)
