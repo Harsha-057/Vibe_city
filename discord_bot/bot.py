@@ -132,11 +132,11 @@ def send_application_result(application):
             # Set image based on status
             if application.status == 'approved':
                 # TODO: Replace with your approval image URL
-                embed.set_image(url="https://media.discordapp.net/attachments/1274763426866008234/1358112763691663529/20250327_174238.png?ex=67f2a893&is=67f15713&hm=6e8175f3b658e284d8a24d09a036bb462220c031d4090ba3776156087539236d&=&format=webp&quality=lossless&width=778&height=778")
+                embed.set_image(url="https://media.discordapp.net/attachments/1355815776853954571/1359898472077328424/1.png?ex=67f927a5&is=67f7d625&hm=247bb852a2c1c14c3a2635b84435ce08b48302f744d4b1d37f456c17c87033bb&=&format=webp&quality=lossless&width=1385&height=778")
                 pass # Placeholder if no image URL yet
             else:
                 # TODO: Replace with your rejection image URL
-                # embed.set_image(url="YOUR_REJECTION_IMAGE_URL")
+                embed.set_image(url="https://media.discordapp.net/attachments/1355815776853954571/1359898514884268102/2.png?ex=67f927af&is=67f7d62f&hm=c38c71e3af713fd58e070a26315ce9abbc6b854d9486f6cd2d512c9e3c30744e&=&format=webp&quality=lossless&width=1385&height=778")
                 pass # Placeholder if no image URL yet
 
             # Mention the user in the channel message content
