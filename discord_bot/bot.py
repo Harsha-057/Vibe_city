@@ -316,13 +316,12 @@ def send_job_application_result(application):
                 public_channel_id_setting = getattr(settings, 'DISCORD_JOB_RESPONSES_CHANNEL_ID', None)
                 if public_channel_id_setting:
                     public_channel_id = int(public_channel_id_setting)
-                    public_channel = bot.get_guild(public_channel_id)
+                    public_channel = bot.get_channel(public_channel_id)
                     if not public_channel:
                         print(f"[JobAppNotify-{application.id}] Public responses channel not found: {public_channel_id}")
                     else:
                         # Create a simplified embed for public view
                         public_embed = discord.Embed(
-                            # title=f"{application.get_job_type_display()} Application Update", # Alternative title
                             color=status_color
                         )
                         
@@ -335,8 +334,6 @@ def send_job_application_result(application):
                         elif application.status == 'INTERVIEW_PENDING':
                              public_embed.description = f"📄 {mention}'s application for **{job_display}** has passed the initial review and is moving to the interview stage!"
                         elif application.status == 'REJECTED' or application.status == 'REJECTED_INTERVIEW':
-                             # Decide if you want to announce rejections publicly
-                             # If not, you can comment out this block or add a condition
                              stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
                              public_embed.description = f"❗️ Regarding {mention}'s application for **{job_display}**: The application was not successful at this time ({stage})."
                         else:
