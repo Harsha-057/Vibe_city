@@ -5,19 +5,23 @@
 
 {% block content %}
 <style>
-  /* Force labels, inputs, textareas, selects, and help text to be white */
+  /* Force labels and help text to be white */
   form label,
-  form input,
-  form textarea,
-  form select,
   form .form-text, /* Common class for help text */
   form small /* Another possibility for help text */
   {
     color: white !important;
   }
+  /* Style all input fields text to be black */
+  form input,
+  form textarea,
+  form select {
+    color: black !important;
+  }
   /* Style placeholder text */
   form input::placeholder,
-  form textarea::placeholder {
+  form textarea::placeholder,
+  form select::placeholder {
       color: #cbd5e1; /* Use a lighter gray (e.g., slate-300) for placeholder */
       opacity: 1; /* Ensure placeholder is visible */
   }

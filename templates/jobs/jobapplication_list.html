@@ -3,6 +3,28 @@
 {% block title %}Review Job Applications{% endblock %}
 
 {% block content %}
+<style>
+  /* Force labels and help text to be white */
+  form label,
+  form .form-text, /* Common class for help text */
+  form small /* Another possibility for help text */
+  {
+    color: white !important;
+  }
+  /* Style all input fields text to be black */
+  form input,
+  form textarea,
+  form select {
+    color: black !important;
+  }
+  /* Style placeholder text */
+  form input::placeholder,
+  form textarea::placeholder,
+  form select::placeholder {
+      color: #cbd5e1; /* Use a lighter gray (e.g., slate-300) for placeholder */
+      opacity: 1; /* Ensure placeholder is visible */
+  }
+</style>
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">Review Job Applications</h1>
 
