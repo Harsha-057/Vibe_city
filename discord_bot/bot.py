@@ -110,9 +110,9 @@ def send_application_result(application):
     async def send():
         try:
             # Get the channel
-            channel = bot.get_channel(int(settings.DISCORD_NOTIFICATIONS_CHANNEL_ID))
+            channel = bot.get_channel(int(settings.DISCORD_WHITELIST_RESPONSES_CHANNEL_ID))
             if not channel:
-                print(f"Channel not found: {settings.DISCORD_NOTIFICATIONS_CHANNEL_ID}")
+                print(f"Channel not found: {settings.DISCORD_WHITELIST_RESPONSES_CHANNEL_ID}")
                 return
             
             # Get application data using sync_to_async
@@ -337,8 +337,8 @@ def send_job_application_result(application):
                                 inline=False
                             )
                             public_embed.add_field(
-                                name="Welcome Message",
-                                value="Please join us in welcoming them to the team!",
+                                name="Achievement",
+                                value="Successfully completed the application and interview process.",
                                 inline=False
                             )
                             public_embed.set_footer(text="Vibe City RP | Department Recruitment")
