@@ -109,41 +109,40 @@ def send_application_result(application):
     
     async def send():
         try:
-            # Send to notifications channel
+            # Get the channel
             channel = bot.get_channel(int(settings.DISCORD_NOTIFICATIONS_CHANNEL_ID))
             if not channel:
                 print(f"Channel not found: {settings.DISCORD_NOTIFICATIONS_CHANNEL_ID}")
                 return
+            
+            # Get application data using sync_to_async
+            user = await sync_to_async(lambda: application.user)()
+            reviewed_by = await sync_to_async(lambda: application.reviewed_by)()
             
             status_color = discord.Color.green() if application.status == 'approved' else discord.Color.red()
             status_text = "APPROVED" if application.status == 'approved' else "REJECTED"
             
             embed = discord.Embed(
                 title=f"Whitelist Application {status_text}",
-                description=f"{application.user.username}'s whitelist application has been {application.status}.",
+                description=f"{user.username}'s whitelist application has been {application.status}.",
                 color=status_color
             )
             
-            embed.add_field(name="Applicant", value=f"<@{application.user.discord_id}>", inline=True)
-            embed.add_field(name="\u200b", value="\u200b", inline=False) # Add a blank field to start a new line
-            embed.add_field(name="Reviewed By", value=f"<@{application.reviewed_by.discord_id}>" if application.reviewed_by.discord_id else application.reviewed_by.username, inline=True)
+            embed.add_field(name="Applicant", value=f"<@{user.discord_id}>", inline=True)
+            embed.add_field(name="\u200b", value="\u200b", inline=False)
+            embed.add_field(name="Reviewed By", value=f"<@{reviewed_by.discord_id}>" if reviewed_by.discord_id else reviewed_by.username, inline=True)
             embed.add_field(name="Reviewed At", value=application.reviewed_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"), inline=True)
             
-            
-            embed.set_thumbnail(url=application.user.avatar_url)
+            embed.set_thumbnail(url=user.avatar_url)
             
             # Set image based on status
             if application.status == 'approved':
-                # TODO: Replace with your approval image URL
                 embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
-                pass # Placeholder if no image URL yet
             else:
-                # TODO: Replace with your rejection image URL
                 embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
-                pass # Placeholder if no image URL yet
 
             # Mention the user in the channel message content
-            await channel.send(content=f"Status update for <@{application.user.discord_id}>:", embed=embed)
+            await channel.send(content=f"Status update for <@{user.discord_id}>:", embed=embed)
             
             # Assign whitelist role if approved
             if application.status == 'approved':
@@ -153,9 +152,9 @@ def send_application_result(application):
                         print(f"Guild not found: {settings.DISCORD_GUILD_ID}")
                         return
                     
-                    member = await guild.fetch_member(int(application.user.discord_id))
+                    member = await guild.fetch_member(int(user.discord_id))
                     if not member:
-                        print(f"Member not found: {application.user.discord_id}")
+                        print(f"Member not found: {user.discord_id}")
                         return
                     
                     whitelist_role = guild.get_role(int(settings.DISCORD_WHITELIST_ROLE_ID))
@@ -174,9 +173,9 @@ def send_application_result(application):
                     print(f"Guild not found: {settings.DISCORD_GUILD_ID}")
                     return
                 
-                member = await guild.fetch_member(int(application.user.discord_id))
+                member = await guild.fetch_member(int(user.discord_id))
                 if not member:
-                    print(f"Member not found: {application.user.discord_id}")
+                    print(f"Member not found: {user.discord_id}")
                     return
                 
                 dm_embed = discord.Embed(
@@ -199,13 +198,9 @@ def send_application_result(application):
                 
                 # Set image based on status for DM
                 if application.status == 'approved':
-                    # TODO: Replace with your approval image URL
                     dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
-                    pass # Placeholder if no image URL yet
                 else:
-                    # TODO: Replace with your rejection image URL
                     dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
-                    pass # Placeholder if no image URL yet
 
                 await member.send(embed=dm_embed)
             except Exception as e:
