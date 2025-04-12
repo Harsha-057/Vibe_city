@@ -31,12 +31,12 @@ class VibeCity(commands.Bot):
         keywords = ['form', 'apply', 'whitelist']
         if any(keyword in message.content.lower() for keyword in keywords):
             response = (
-                "To apply, please visit: [Soon]\n\n"
+                "To apply, please visit: [Vibe City RP Website](http://104.234.180.225/)\n\n"
                 "⌛Processing Times:\n"
-                "Regular applications: Cleared within 1 day\n\n"
+                "Regular applications: ``Cleared within 1 day``\n\n"
                 "If your application is taking longer, we're working hard through the workload and will get it out ASAP. Thanks for your patience!"
             )
-            await message.channel.send(response)
+            await message.reply(response)
 
 def run_bot():
     global bot
@@ -124,19 +124,21 @@ def send_application_result(application):
             )
             
             embed.add_field(name="Applicant", value=f"<@{application.user.discord_id}>", inline=True)
-            embed.add_field(name="Reviewed By", value=f"<@{application.reviewed_by.discord_id}> ({application.reviewed_by.discord_tag})" if application.reviewed_by.discord_id else application.reviewed_by.username, inline=True)
+            embed.add_field(name="\u200b", value="\u200b", inline=False) # Add a blank field to start a new line
+            embed.add_field(name="Reviewed By", value=f"<@{application.reviewed_by.discord_id}>" if application.reviewed_by.discord_id else application.reviewed_by.username, inline=True)
             embed.add_field(name="Reviewed At", value=application.reviewed_at.strftime("%Y-%m-%d %H:%M UTC"), inline=True)
+            
             
             embed.set_thumbnail(url=application.user.avatar_url)
             
             # Set image based on status
             if application.status == 'approved':
                 # TODO: Replace with your approval image URL
-                embed.set_image(url="https://media.discordapp.net/attachments/1355815776853954571/1359898472077328424/1.png?ex=67f927a5&is=67f7d625&hm=247bb852a2c1c14c3a2635b84435ce08b48302f744d4b1d37f456c17c87033bb&=&format=webp&quality=lossless&width=1385&height=778")
+                embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
                 pass # Placeholder if no image URL yet
             else:
                 # TODO: Replace with your rejection image URL
-                embed.set_image(url="https://media.discordapp.net/attachments/1355815776853954571/1359898514884268102/2.png?ex=67f927af&is=67f7d62f&hm=c38c71e3af713fd58e070a26315ce9abbc6b854d9486f6cd2d512c9e3c30744e&=&format=webp&quality=lossless&width=1385&height=778")
+                embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
                 pass # Placeholder if no image URL yet
 
             # Mention the user in the channel message content
@@ -197,11 +199,11 @@ def send_application_result(application):
                 # Set image based on status for DM
                 if application.status == 'approved':
                     # TODO: Replace with your approval image URL
-                    # dm_embed.set_image(url="YOUR_APPROVAL_IMAGE_URL")
+                    dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
                     pass # Placeholder if no image URL yet
                 else:
                     # TODO: Replace with your rejection image URL
-                    # dm_embed.set_image(url="YOUR_REJECTION_IMAGE_URL")
+                    dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
                     pass # Placeholder if no image URL yet
 
                 await member.send(embed=dm_embed)
@@ -291,6 +293,22 @@ def send_job_application_result(application):
                     if final_feedback:
                          channel_embed.add_field(name="Feedback", value=final_feedback[:1020] + "..." if len(final_feedback)>1024 else final_feedback, inline=False)
 
+                    # Add job-specific image for approved/rejected applications
+                    if application.status == 'HIRED':
+                        if application.job_type == 'SASP':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
+                        elif application.job_type == 'EMS':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
+                        elif application.job_type == 'MECHANIC':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
+                    elif 'REJECTED' in application.status:
+                        if application.job_type == 'SASP':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
+                        elif application.job_type == 'EMS':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
+                        elif application.job_type == 'MECHANIC':
+                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
+
                     # Mention user in content
                     await channel.send(content=f"Job application update for <@{applicant_discord_id}>:", embed=channel_embed)
                     print(f"[JobAppNotify-{application.id}] Sent channel message for status {status_text}")
@@ -371,6 +389,14 @@ def send_job_application_result(application):
                     dm_embed.add_field(name="Next Steps", value="Please contact the relevant department lead or HR in Discord for onboarding instructions.", inline=False)
                     if final_feedback:
                         dm_embed.add_field(name="Additional Comments from Hiring Manager", value=final_feedback, inline=False)
+                    
+                    # Add job-specific image for approved applications
+                    if application.job_type == 'SASP':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
+                    elif application.job_type == 'EMS':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
+                    elif application.job_type == 'MECHANIC':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
                 elif application.status == 'INTERVIEW_PENDING':
                      dm_embed.description = f"Good news! Your initial application for **{application.get_job_type_display()}** has passed review."
                      dm_embed.add_field(name="Next Step: Interview", value="You will be contacted shortly by a department representative to schedule an interview. Please be prepared.", inline=False)
@@ -381,6 +407,14 @@ def send_job_application_result(application):
                     dm_embed.description = f"We regret to inform you that your application for the **{application.get_job_type_display()}** position was not successful at the **{stage}**."
                     dm_embed.add_field(name="Reason/Feedback", value=final_feedback or "No specific feedback provided.", inline=False)
                     dm_embed.add_field(name="What Next?", value="You may be able to reapply after a cooldown period. Check department guidelines or contact HR.", inline=False)
+                    
+                    # Add job-specific image for rejected applications
+                    if application.job_type == 'SASP':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
+                    elif application.job_type == 'EMS':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
+                    elif application.job_type == 'MECHANIC':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
                 # No DM needed for PENDING status usually
                 else:
                      print(f"[JobAppNotify-{application.id}] No DM configured for status {application.status}")
