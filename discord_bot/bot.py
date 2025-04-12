@@ -5,6 +5,7 @@ import os
 from django.conf import settings
 import threading
 from asgiref.sync import sync_to_async
+import pytz
 
 # Global bot instance
 bot = None
@@ -82,7 +83,7 @@ def send_application_notification(application):
             
             embed.add_field(name="Applicant", value=f"<@{application.user.discord_id}> ({application.user.discord_tag})", inline=True)
             embed.add_field(name="Age", value=str(application.age), inline=True)
-            embed.add_field(name="Submitted At", value=application.created_at.strftime("%Y-%m-%d %H:%M UTC"), inline=True)
+            embed.add_field(name="Submitted At", value=application.created_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"), inline=True)
             embed.add_field(name="Status", value="Pending Review", inline=True)
             embed.add_field(name="Application ID", value=application.id, inline=True)
             
@@ -126,7 +127,7 @@ def send_application_result(application):
             embed.add_field(name="Applicant", value=f"<@{application.user.discord_id}>", inline=True)
             embed.add_field(name="\u200b", value="\u200b", inline=False) # Add a blank field to start a new line
             embed.add_field(name="Reviewed By", value=f"<@{application.reviewed_by.discord_id}>" if application.reviewed_by.discord_id else application.reviewed_by.username, inline=True)
-            embed.add_field(name="Reviewed At", value=application.reviewed_at.strftime("%Y-%m-%d %H:%M UTC"), inline=True)
+            embed.add_field(name="Reviewed At", value=application.reviewed_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"), inline=True)
             
             
             embed.set_thumbnail(url=application.user.avatar_url)
@@ -288,7 +289,7 @@ def send_job_application_result(application):
                     # Add reviewed date based on stage
                     reviewed_at = application.interview_reviewed_at if application.status in ['HIRED', 'REJECTED_INTERVIEW'] else application.form_reviewed_at
                     if reviewed_at:
-                         channel_embed.add_field(name="Processed At", value=reviewed_at.strftime("%Y-%m-%d %H:%M"), inline=True)
+                         channel_embed.add_field(name="Processed At", value=reviewed_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"), inline=True)
                     
                     if final_feedback:
                          channel_embed.add_field(name="Feedback", value=final_feedback[:1020] + "..." if len(final_feedback)>1024 else final_feedback, inline=False)
@@ -475,7 +476,7 @@ def send_new_job_application_notification(application):
             applicant_avatar_url = await sync_to_async(lambda: applicant_obj.avatar_url)()
 
             job_type_display = application.get_job_type_display()
-            submitted_at_str = application.submitted_at.strftime("%Y-%m-%d %H:%M UTC")
+            submitted_at_str = application.submitted_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST")
 
             # --- Notify Staff Channel --- #
             try:
