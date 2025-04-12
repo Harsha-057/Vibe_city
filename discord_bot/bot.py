@@ -322,24 +322,75 @@ def send_job_application_result(application):
                     else:
                         # Create a simplified embed for public view
                         public_embed = discord.Embed(
+                            title=f"Job Application Update: {application.get_job_type_display()}",
                             color=status_color
                         )
                         
                         mention = f"<@{applicant_discord_id}>"
-                        job_display = application.get_job_type_display()
                         
                         # Tailor message based on status
                         if application.status == 'HIRED':
-                            public_embed.description = f"🎉 Congratulations to {mention} on being **HIRED** for the **{job_display}** team! Welcome aboard!"
+                            public_embed.description = f"🎉 **Congratulations!**"
+                            public_embed.add_field(
+                                name="New Team Member",
+                                value=f"{mention} has been **HIRED** for the **{application.get_job_type_display()}** team!",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Welcome Message",
+                                value="Please join us in welcoming them to the team!",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                            
                         elif application.status == 'INTERVIEW_PENDING':
-                             public_embed.description = f"📄 {mention}'s application for **{job_display}** has passed the initial review and is moving to the interview stage!"
+                            public_embed.description = f"📋 **Application Update**"
+                            public_embed.add_field(
+                                name="Status Update",
+                                value=f"{mention}'s application for **{application.get_job_type_display()}** has passed the initial review.",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Next Stage",
+                                value="Moving forward to the interview stage.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                            
                         elif application.status == 'REJECTED' or application.status == 'REJECTED_INTERVIEW':
-                             stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
-                             public_embed.description = f"❗️ Regarding {mention}'s application for **{job_display}**: The application was not successful at this time ({stage})."
+                            stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
+                            public_embed.description = f"📝 **Application Update**"
+                            public_embed.add_field(
+                                name="Status Update",
+                                value=f"Regarding {mention}'s application for **{application.get_job_type_display()}**:",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Decision",
+                                value=f"The application was not successful at the **{stage}**.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
                         else:
                             public_embed = None # Don't announce other statuses publicly?
                         
                         if public_embed:
+                            # Add appropriate image based on status
+                            if application.status == 'HIRED':
+                                if application.job_type == 'SASP':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
+                                elif application.job_type == 'EMS':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
+                                elif application.job_type == 'MECHANIC':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
+                            elif 'REJECTED' in application.status:
+                                if application.job_type == 'SASP':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
+                                elif application.job_type == 'EMS':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
+                                elif application.job_type == 'MECHANIC':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
+                            
                             # Send mention in content for ping
                             await public_channel.send(content=f"Application update for <@{applicant_discord_id}>:", embed=public_embed)
                             print(f"[JobAppNotify-{application.id}] Sent PUBLIC response to channel {public_channel.name}.")
