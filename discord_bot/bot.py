@@ -19,43 +19,50 @@ async def create_welcome_banner(member):
     """Create a custom welcome banner with user avatar"""
     try:
         # Load the background template
-        background = Image.open('discord_bot/assets/welcome_template.png')
+        background = Image.open('discord_bot/assets/welcome_template.png').convert('RGBA')
         
         # Download and process user avatar
         async with aiohttp.ClientSession() as session:
             avatar_url = str(member.avatar.url if member.avatar else member.default_avatar.url)
             async with session.get(avatar_url) as resp:
                 avatar_data = await resp.read()
-                avatar = Image.open(BytesIO(avatar_data))
+                avatar = Image.open(BytesIO(avatar_data)).convert('RGBA')
         
-        # Resize avatar and make it circular (increased size from 200 to 400)
+        # Resize avatar and make it circular
         avatar = avatar.resize((600, 600))  # Much larger avatar
+        
+        # Create circular mask
         mask = Image.new('L', avatar.size, 0)
         draw = ImageDraw.Draw(mask)
-        draw.ellipse((0, 0) + avatar.size, fill=255)
-        output = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
+        draw.ellipse((0, 0, avatar.size[0], avatar.size[1]), fill=255)
+        
+        # Apply mask to avatar
+        output = Image.new('RGBA', avatar.size, (0, 0, 0, 0))
+        output.paste(avatar, (0, 0))
         output.putalpha(mask)
         
-        # Calculate positions (adjusted for larger avatar)
+        # Calculate positions
         avatar_pos = ((background.width - avatar.width) // 2, 250)  # Moved up to accommodate larger size
         
-        # Paste avatar onto background
-        background.paste(output, avatar_pos, output)
+        # Create a new image for compositing
+        composite = Image.new('RGBA', background.size, (0, 0, 0, 0))
+        composite.paste(background, (0, 0))
+        composite.paste(output, avatar_pos, output)
         
         # Add username text
-        draw = ImageDraw.Draw(background)
+        draw = ImageDraw.Draw(composite)
         try:
-            font = ImageFont.truetype('discord_bot/assets/font.ttf', 500)  # Doubled font size from 60 to 120
+            font = ImageFont.truetype('discord_bot/assets/font.ttf', 500)
         except:
             font = ImageFont.load_default()
         
         username = member.name
         text_width = draw.textlength(username, font=font)
-        text_position = ((background.width - text_width) // 2, 900)  # Adjusted position for larger avatar
+        text_position = ((background.width - text_width) // 2, 900)
         
-        # Add text shadow/outline effect (increased shadow for larger text)
-        shadow_offset = 4  # Increased shadow offset for larger text
-        shadow_color = (100, 100, 100)  # Gray shadow
+        # Add text shadow/outline effect
+        shadow_offset = 4
+        shadow_color = (100, 100, 100, 255)  # Added alpha channel
         
         # Add multiple shadow layers for stronger effect
         for offset in range(1, shadow_offset + 1):
@@ -63,16 +70,21 @@ async def create_welcome_banner(member):
                      username, font=font, fill=shadow_color)
         
         # Draw main text
-        draw.text(text_position, username, font=font, fill='white')
+        draw.text(text_position, username, font=font, fill=(255, 255, 255, 255))  # Added alpha channel
+        
+        # Convert to RGB for saving as PNG
+        final_image = composite.convert('RGB')
         
         # Save to BytesIO
         output_buffer = BytesIO()
-        background.save(output_buffer, format='PNG')
+        final_image.save(output_buffer, format='PNG')
         output_buffer.seek(0)
         
         return output_buffer
     except Exception as e:
         print(f"Error creating welcome banner: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 class VibeCity(commands.Bot):
