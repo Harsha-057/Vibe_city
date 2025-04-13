@@ -6,10 +6,74 @@ from django.conf import settings
 import threading
 from asgiref.sync import sync_to_async
 import pytz
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import requests
+from io import BytesIO
+import aiohttp
 
 # Global bot instance
 bot = None
 bot_ready = threading.Event()
+
+async def create_welcome_banner(member):
+    """Create a custom welcome banner with user avatar"""
+    try:
+        # Load the background template
+        background = Image.open('discord_bot/assets/welcome_template.png')
+        
+        # Download and process user avatar
+        async with aiohttp.ClientSession() as session:
+            avatar_url = str(member.avatar.url if member.avatar else member.default_avatar.url)
+            async with session.get(avatar_url) as resp:
+                avatar_data = await resp.read()
+                avatar = Image.open(BytesIO(avatar_data))
+        
+        # Resize avatar and make it circular (increased size from 200 to 400)
+        avatar = avatar.resize((600, 600))  # Much larger avatar
+        mask = Image.new('L', avatar.size, 0)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse((0, 0) + avatar.size, fill=255)
+        output = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
+        output.putalpha(mask)
+        
+        # Calculate positions (adjusted for larger avatar)
+        avatar_pos = ((background.width - avatar.width) // 2, 250)  # Moved up to accommodate larger size
+        
+        # Paste avatar onto background
+        background.paste(output, avatar_pos, output)
+        
+        # Add username text
+        draw = ImageDraw.Draw(background)
+        try:
+            font = ImageFont.truetype('discord_bot/assets/font.ttf', 500)  # Doubled font size from 60 to 120
+        except:
+            font = ImageFont.load_default()
+        
+        username = member.name
+        text_width = draw.textlength(username, font=font)
+        text_position = ((background.width - text_width) // 2, 900)  # Adjusted position for larger avatar
+        
+        # Add text shadow/outline effect (increased shadow for larger text)
+        shadow_offset = 4  # Increased shadow offset for larger text
+        shadow_color = (100, 100, 100)  # Gray shadow
+        
+        # Add multiple shadow layers for stronger effect
+        for offset in range(1, shadow_offset + 1):
+            draw.text((text_position[0] + offset, text_position[1] + offset), 
+                     username, font=font, fill=shadow_color)
+        
+        # Draw main text
+        draw.text(text_position, username, font=font, fill='white')
+        
+        # Save to BytesIO
+        output_buffer = BytesIO()
+        background.save(output_buffer, format='PNG')
+        output_buffer.seek(0)
+        
+        return output_buffer
+    except Exception as e:
+        print(f"Error creating welcome banner: {e}")
+        return None
 
 class VibeCity(commands.Bot):
     def __init__(self):
@@ -18,10 +82,94 @@ class VibeCity(commands.Bot):
         intents.members = True
         
         super().__init__(command_prefix='!', intents=intents)
+        
+        # Register slash commands
+        self.tree.command(name="testwelcome", description="Test the welcome message")(self.testwelcome)
+    
+    async def setup_hook(self):
+        # Sync slash commands
+        await self.tree.sync()
+    
+    async def testwelcome(self, interaction: discord.Interaction):
+        """Test command to simulate the welcome message"""
+        try:
+            member = interaction.user
+            
+            # Generate welcome banner
+            welcome_banner = await create_welcome_banner(member)
+            if not welcome_banner:
+                await interaction.response.send_message("Error generating welcome image", ephemeral=True)
+                return
+            
+            # Create embed
+            embed = discord.Embed(
+                title="Vibe City 2.0",
+                description=f"Welcome {member.mention} to Vibe City 2.0",
+                color=discord.Color.blue()
+            )
+            
+            # Add the bullet points
+            embed.add_field(
+                name="",
+                value="🔹 Make sure to read Server Rules.\n🔹 Explore the <#1318598674690867250> and <#1315379733806059590> channels.",
+                inline=False
+            )
+            
+            # Set the footer
+            embed.set_footer(text="#VibeCity2.0")
+            
+            # Send the welcome banner and embed
+            file = discord.File(welcome_banner, filename="welcome.png")
+            embed.set_image(url="attachment://welcome.png")
+            
+            await interaction.response.send_message(content=f"{member.mention}", file=file, embed=embed)
+            
+        except Exception as e:
+            print(f"Error sending test welcome message: {e}")
+            await interaction.response.send_message("Error generating welcome message", ephemeral=True)
     
     async def on_ready(self):
         print(f'Logged in as {self.user.name} ({self.user.id})')
         bot_ready.set()
+
+    async def on_member_join(self, member):
+        try:
+            # Get the welcome channel
+            welcome_channel = self.get_channel(int(settings.DISCORD_WELCOME_CHANNEL_ID))
+            if not welcome_channel:
+                print(f"Welcome channel not found")
+                return
+            
+            # Generate welcome banner
+            welcome_banner = await create_welcome_banner(member)
+            if not welcome_banner:
+                return
+            
+            # Create embed
+            embed = discord.Embed(
+                title="Vibe City 2.0",
+                description=f"Welcome {member.mention} to Vibe City 2.0",
+                color=discord.Color.blue()
+            )
+            
+            # Add the bullet points
+            embed.add_field(
+                name="",
+                value="🔹 Make sure to read Server Rules.\n🔹 Explore the <#1318598674690867250> and <#1315379733806059590> channels.",
+                inline=False
+            )
+            
+            # Set the footer
+            embed.set_footer(text="#LifeinVibeCity2.0")
+            
+            # Send the welcome banner and embed
+            file = discord.File(welcome_banner, filename="welcome.png")
+            embed.set_image(url="attachment://welcome.png")
+            
+            await welcome_channel.send(content=f"{member.mention}", file=file, embed=embed)
+            
+        except Exception as e:
+            print(f"Error sending welcome message: {e}")
 
     async def on_message(self, message):
         # Prevent the bot from replying to itself
