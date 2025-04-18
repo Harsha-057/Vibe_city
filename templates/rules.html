@@ -27,11 +27,48 @@
         margin-bottom: 1.5rem;
     }
     
-    .rule-section ol, .rule-section ul {
+    .rule-section h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #00ffff;
+    }
+    
+    .rule-section ol {
+        margin-left: 1.5rem;
+        counter-reset: item;
+        list-style-type: none;
+    }
+    
+    .rule-section ol li {
+        margin-bottom: 0.75rem;
+        line-height: 1.6;
+        position: relative;
+        padding-left: 2.5rem;
+    }
+    
+    .rule-section ol li:before {
+        content: counter(item);
+        counter-increment: item;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba(0, 255, 255, 0.1);
+        color: #00ffff;
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+    }
+    
+    .rule-section ul {
         margin-left: 1.5rem;
     }
     
-    .rule-section li {
+    .rule-section ul li {
         margin-bottom: 0.75rem;
         line-height: 1.6;
     }
@@ -45,6 +82,29 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
+    .category-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .category-item {
+        background: rgba(0, 255, 255, 0.1);
+        color: #00ffff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 2rem;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .category-item:hover {
+        background: rgba(0, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+    
     @media (max-width: 768px) {
         .rules-container {
             padding: 1rem;
@@ -52,6 +112,15 @@
         
         .rule-section {
             padding: 1.5rem;
+        }
+        
+        .category-list {
+            flex-direction: column;
+        }
+        
+        .category-item {
+            width: 100%;
+            text-align: center;
         }
     }
 </style>
@@ -62,105 +131,277 @@
     <h1 class="text-4xl font-bold mb-12 text-center neon-text">Server Rules</h1>
     
     <div class="space-y-8">
+        <!-- Categories -->
+        <div class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Categories</h2>
+            <div class="category-list">
+                <a href="#general-rules" class="category-item">General Rules</a>
+                <a href="#account-donations" class="category-item">Account And Donations</a>
+                <a href="#cheating-exploiting" class="category-item">Cheating And Exploiting</a>
+                <a href="#communication" class="category-item">Communication</a>
+                <a href="#crime-gangs" class="category-item">Crime And Gangs</a>
+                <a href="#roleplay-rules" class="category-item">Roleplay Rules</a>
+                <a href="#roleplay-quality" class="category-item">Roleplay Quality</a>
+            </div>
+        </div>
+
         <!-- General Rules -->
         <div id="general-rules" class="rule-section">
             <h2 class="text-2xl font-bold mb-4 neon-text-cyan">General Rules</h2>
             <ol class="list-decimal space-y-2">
-                <li>Stay Updated: Regularly check our Discord for any updates or modifications to the rules.</li>
-                <li>No Erotic Roleplay: Explicit or sexually suggestive content is strictly prohibited.</li>
-                <li>No Encouraging Rule Breaking: Do not influence or encourage others to break the rules.</li>
-                <li>Sensitive Topics: Real-life events such as suicide, terrorism, pandemics, and mental illnesses are not permitted in roleplay.</li>
-                <li>Roleplay Consent: Roleplay should proceed unless all participants agree to pause or stop.</li>
-                <li>Appropriate Names: Avoid using explicit or offensive names on any platform.</li>
-                <li>Zero Tolerance Policy: Racism, trolling, discrimination, homophobia, and sexism are not tolerated.</li>
-                <li>Derogatory Terms: The use of derogatory language is strictly forbidden.</li>
-                <li>Respect Across Platforms: Do not engage in harmful behaviour on other platforms.</li>
-                <li>Content Creator Responsibility: Content creators must actively moderate their communities.</li>
+                <li>Staying updated on any rule modifications on our website or Discord is your responsibility.</li>
+                <li>Playing content that is protected by copyright (DMCA) is strictly prohibited. This includes copyrighted movies, music, and other protected materials. It is essential to respect the rights of content creators and obtain appropriate permissions from the rights holders before performing covers or using copyrighted content. Let's ensure that we maintain a lawful and respectful environment by adhering to these guidelines.</li>
+                <li>You must have a working, clear microphone.</li>
+                <li>Engaging in Erotic Roleplay (ERP) is strictly prohibited within our community. This encompasses any form of explicit or sexually suggestive content, including the posting of nudity or lewd materials.</li>
+                <li>It is important to refrain from influencing or encouraging others to break the rules. Such behavior can have consequences, and you may receive a similar punishment for your actions.</li>
+                <li>Real-life events, including suicide roleplay, terrorism threats, pandemics, and mental illnesses, are strictly prohibited within the city. We prioritize the well-being and safety of our community members and strive to provide an enjoyable and inclusive environment. We kindly request that you refrain from incorporating or depicting such sensitive topics in your roleplay.</li>
+                <li>Roleplay should continue unless all parties involved in the scene or situation agree to pause or stop it. It is important to respect the consent and comfort of all participants. If there is a disagreement or discomfort during roleplay, it is essential to communicate openly and reach a consensus among all involved parties.</li>
+                <li>It is strictly prohibited to use explicit or offensive names on any Vibe City platforms.</li>
+                <li>We have a zero-tolerance policy towards racism, trolling, discrimination, homophobia, and sexism within our community.</li>
+                <li>Treat each other with respect, everyone is equal.</li>
+                <li>The use of derogatory terms, including but not limited to the word "retard", is strictly prohibited within our community.</li>
+                <li>Attacking or engaging in harmful behavior towards members in other Discord servers, YouTube, Twitter, or any other platform is strictly prohibited within our community. We expect all members to conduct themselves responsibly and respectfully, both within our community and in interactions with others outside of it. Any instances of attacking or harassing behavior will be taken seriously and may result in disciplinary action.</li>
+                <li>To ensure a healthy and inclusive environment for all members, content creators are expected to actively moderate their communities. Failure to do so, which includes neglecting to prevent members from engaging in attacks or other harmful behavior, may lead to a ban from the community. We prioritize creating a safe and respectful space, and your cooperation in maintaining these standards is greatly appreciated.</li>
             </ol>
         </div>
 
-        <!-- Account and Character Guidelines -->
-        <div id="account-guidelines" class="rule-section">
-            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Account and Character Guidelines</h2>
+        <!-- Account and Donations -->
+        <div id="account-donations" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Account and Donations</h2>
+            
+            <h3>Account</h3>
             <ol class="list-decimal space-y-2">
-                <li>Account Responsibility: You are responsible for all activities under your account.</li>
-                <li>No Buying/Selling Accounts: Trading accounts or valuables is strictly prohibited.</li>
-                <li>Lost Account Access: If you lose access to your Discord account, you must reapply for whitelist status.</li>
-                <li>Character Integrity: Maintain realistic character backstories and personalities.</li>
-                <li>No Unrealistic Characters: Avoid unrealistic character names or appearances.</li>
-                <li>Character Separation: Keep characters distinct with no shared knowledge.</li>
-                <li>Camera Usage: Only characters with cameras can use recordings as legal evidence.</li>
-                <li>Unique Concepts: Special character concepts require staff approval.</li>
-                <li>Property Management: Inactive properties may be removed after 90 days.</li>
-                <li>Character Permanent Death: Three or more "no pulse" instances result in permanent character death.</li>
+                <li>You are solely responsible for all activities and actions that take place on your account. It is important to maintain the security of your account and ensure that you use it in accordance with the community guidelines and applicable rules. Any unauthorized use or misuse of your account may have consequences.</li>
+                <li>The buying or selling of accounts and/or valuables from other users, except through official channels facilitated by the server owner, is strictly prohibited. Engaging in such transactions can lead to various risks, including scams, permanent character death, or bans. It is important to note that the community cannot be held accountable for any negative outcomes resulting from such unauthorized transactions. We strongly advise against engaging in these activities and encourage users to follow the official guidelines provided by the server owner for account-related transactions.</li>
+                <li>If you lose access to your Discord account, please note that we are unable to transfer the Allowlist status to another Discord account. It is crucial to ensure the security and retention of your own Discord account to maintain your Allowlist status. We recommend taking necessary precautions to protect your account, such as enabling two-factor authentication and keeping your login credentials secure. In the event of an account loss, it will be necessary to reapply for Allowlist status with your new Discord account.</li>
             </ol>
-        </div>
 
-        <!-- Engagement Standards -->
-        <div id="engagement-standards" class="rule-section">
-            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Engagement Standards</h2>
+            <h3>Donations</h3>
             <ol class="list-decimal space-y-2">
-                <li>No Cop Baiting: Intentionally provoking police without proper roleplay is prohibited.</li>
-                <li>No Money Simulator Gameplay: Focus on roleplay, not just accumulating wealth.</li>
-                <li>Cooperation with EMS: Refusing to cooperate with EMS staff can lead to removal.</li>
-                <li>Quality Roleplay: Maintain high-quality roleplay standards at all times.</li>
-                <li>No Toxic Behaviour: Including shooting downed bodies, disruptive music, or excessive screaming.</li>
-                <li>No Hospital Camping: Waiting near hospitals to provoke players is not allowed.</li>
-                <li>Scene Utilization: Use scenes to enhance roleplay and immersion.</li>
-                <li>Police Interactions: Provide valid reasoning before engaging in combat with police.</li>
-                <li>Vehicle Destruction: No random vehicle destruction without proper initiation.</li>
+                <li>We understand that mistakes or unforeseen circumstances can occur, and we strive to accommodate our community members. Therefore, we offer a 24-hour window for refund requests on donations and purchases. If you believe there has been an error or if you find yourself in a unique situation, please reach out to Flawws, the owner, within 24 hours of the transaction. They will carefully consider your request and provide assistance accordingly. Your satisfaction and overall experience within our community are important to us.</li>
+                <li>When making purchases or donations, the perks and benefits associated with them are tied to your specific account. During the process, you will be asked to specify the character to which the donation perks should be allocated. It is important to note that once the perks are granted to a character, you cannot change your selection in the future or transfer them to another character or account. Please make sure to carefully consider your choice before finalizing the allocation.</li>
+                <li>In the event that a buyer is banned for violating the server rules, it is important to note that any purchases made by the buyer will not be refunded.</li>
+                <li>In the case of a chargeback, it is important to note that any associated bans resulting from violating server rules cannot be appealed. Chargebacks refer to the reversal of a payment, and engaging in such actions can have serious consequences, including the forfeiture of the ability to appeal bans. We strongly advise against initiating chargebacks and encourage all community members to resolve any concerns or issues through proper channels, such as contacting server administrators or support. It is crucial to maintain open communication and address any concerns in a responsible and respectful manner.</li>
+                <li>The selling of any items obtained through purchases is strictly prohibited within our community. We emphasize that purchased items are intended for personal use and enjoyment, and their sale to other members or third parties is not permitted.</li>
             </ol>
-        </div>
 
-        <!-- Crime and Gangs -->
-        <div id="crime-gangs" class="rule-section">
-            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Crime and Gangs</h2>
+            <h3>Character</h3>
             <ol class="list-decimal space-y-2">
-                <li>5-Man Rule: Criminal activities are limited to five participants at a time.</li>
-                <li>Mechanic Restrictions: No F1 menu usage during criminal activities.</li>
-                <li>Independent Groups: Groups must operate independently during criminal activities.</li>
-                <li>Prison Transports: Attacking prison transports is a separate scenario.</li>
-                <li>No Fake Hostages: All criminal activities must be realistic.</li>
-                <li>Robbery Planning: Proper planning required for all major robberies.</li>
-                <li>Robbing Players: Must be done with high-quality roleplay and justified context.</li>
-                <li>Cooldown Periods: Respect cooldown times between criminal activities.</li>
-                <li>No Restricted Area Robberies: Areas with teleport options are off-limits.</li>
-                <li>Scamming Rules: Must be conducted through in-game roleplay with valid reasons.</li>
+                <li>Members serving as Police, Department of Corrections (DOC), Department of Justice (DOJ) and Emergency Medical Services (EMS) are strictly prohibited from engaging in any form of moderate or serious corruption. This includes actions such as giving away or selling equipment for personal gain. These roles are expected to uphold the highest standards of integrity, professionalism, and ethical conduct.</li>
+                <li>It is essential to maintain a clear separation between your characters. Each character should exist independently, without any knowledge of the others' personal information, such as their weed location, relationships with friends or enemies, or any other details. It is crucial to avoid creating connections or relationships between characters that extend beyond the established roleplay context. By respecting this separation, you contribute to a more immersive and authentic roleplaying experience for all community members.</li>
+                <li>Character names must adhere to a serious and appropriate tone. The use of meme names is not allowed and may result in disciplinary action or a name change without prior notice.</li>
+                <li>Having multiple characters affiliated with the same circle or gang is not permitted within our community. It is important to maintain a clear separation between your characters' affiliations and roleplay experiences. Each character should have their own unique identity, connections, and associations. This rule ensures a more diverse and authentic roleplaying environment where interactions and conflicts remain distinct and separate.</li>
+                <li>If a player has a camera on their character, they can use recordings as legal evidence, otherwise, they cannot.</li>
+                <li>The inclusion of characters such as Serial Killers, Robots, Paranormal Characters, and other unique concepts requires prior approval from the staff team.</li>
+                <li>To ensure an active and dynamic environment, we reserve the right to remove properties, including vehicles and houses, if a player has been inactive on the server for approximately 90 days. The purpose of this policy is to prevent properties from being tied up indefinitely by inactive players, allowing others to utilize them. If a player logs in sporadically, approximately once a week, with the intention of bypassing the inactivity period, it will not be considered as fulfilling the requirement, and the removal process will proceed as planned.</li>
+                <li>Indicating that you have no pulse three or more times will result in the permanent death of your character.</li>
             </ol>
         </div>
 
         <!-- Cheating and Exploiting -->
         <div id="cheating-exploiting" class="rule-section">
             <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Cheating and Exploiting</h2>
+            
+            <h3>Game Modifications, Cheating & Macros</h3>
             <ol class="list-decimal space-y-2">
-                <li>No Unfair Modifications: Prohibited modifications include speed hacks, no night vision, health regen, etc.</li>
-                <li>Permissible Modifications: Visual enhancements are allowed if they don't provide unfair advantages.</li>
-                <li>No Macroing: Using third-party software to automate actions is forbidden.</li>
-                <li>Shadow Settings: All players must have shadows enabled.</li>
-                <li>No Bug Exploitation: Exploiting client or server bugs is strictly prohibited.</li>
-                <li>No Spawn Camping: Camping animal and vehicle spawns is not allowed.</li>
-                <li>No Emote Cooldown Bypass: Circumventing emote cooldowns is prohibited.</li>
-                <li>Bug Reporting: Report all bugs through Discord.</li>
+                <li>The use of game modifications and enhancements that provide players with unfair advantages, such as increased speed, no night visual packs, gumballs, health regeneration, teleportation, and other similar modifications, is strictly prohibited within our community. We prioritize fair gameplay and maintaining a level playing field for all members. Any player found cheating by using such modifications will face permanent banning without prior warning. We take cheating seriously to ensure an enjoyable and equitable gaming experience for all.</li>
+                <li>Players are allowed to use visual enhancements or other game modifications that do not provide them with an unfair advantage or constitute cheating. These modifications should not give any player an unfair edge over others or disrupt the balance of gameplay. Additionally, binding keys to server commands or text messages for faster and more convenient access is permitted as long as it does not grant an unfair advantage.</li>
+                <li>Macroing, which refers to the use of third-party software or hardware enhancements to automate actions, is strictly prohibited within our community. Engaging in macroing activities with the intent to gain a financial benefit or bypass AFK scripts is considered a bannable offense. Any property and experience obtained through macroing will be revoked. We maintain a fair and balanced gaming environment, and the use of macros undermines the integrity of the gameplay experience.</li>
+                <li>Using no shadows is considered an unfair advantage so you must have shadows enabled.</li>
+            </ol>
+
+            <h3>Exploiting Bugs</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Exploiting client or server bugs is strictly prohibited within our community. Engaging in such activities, including the abuse of exploits, will result in a ban from the server. Additionally, any benefits or items gained from exploiting will be promptly removed.</li>
+                <li>Camping animal and vehicle spawns, where players repeatedly wait in a known spot for the specific purpose of exploiting their appearance, is considered a form of exploitation within our community. We encourage a more natural and immersive gameplay experience where encounters occur organically. Engaging in repetitive behavior solely for the purpose of exploiting spawns disrupts the intended balance and fairness of the game. We kindly request that players refrain from such practices and allow the game to unfold naturally, fostering a more dynamic and authentic environment for everyone.</li>
+                <li>Circumventing the emote cooldown by using the F8 menu or any other method is not allowed.</li>
+                <li>All bugs must be reported on our Discord.</li>
             </ol>
         </div>
 
-        <!-- Consequences -->
-        <div id="consequences" class="rule-section">
-            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Consequences</h2>
-            <p class="mb-4">Violation of these rules may result in:</p>
-            <ul class="list-disc space-y-2">
-                <li>Warning</li>
-                <li>Temporary ban</li>
-                <li>Permanent ban</li>
-                <li>Character reset</li>
-                <li>Item/vehicle removal</li>
-                <li>Other appropriate actions as determined by staff</li>
-            </ul>
+        <!-- Communication -->
+        <div id="communication" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Communication</h2>
+            
+            <h3>Communication Procedures</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Refusal to communicate with other players in English will result in a ban.</li>
+                <li>Players are permitted to communicate with each other in another language, as long as the language being used does not violate any other rules, remains respectful, and all parties involved are comfortable with its use.</li>
+                <li>Advertising other GTA V communities or engaging in cyber threats is strictly forbidden on all servers and channels within our community.</li>
+                <li>It is important to refrain from spamming identical or meaningless messages multiple times, including the use of the /me command.</li>
+                <li>In-character offensive language and threats are permitted within the boundaries of roleplay.</li>
+                <li>Out-of-character offensive language, threats, or racism are strictly prohibited within our community.</li>
+                <li>Excessively screaming swear words at individuals or directed towards a person is not tolerated within our community.</li>
+                <li>If a staff member determines that a player is abusing the in-character exception for offensive language, they have the authority to request that the player stops offending another player's character.</li>
+                <li>Players who are utilizing low-quality microphones or voice changers that negatively impact the overall voice quality will be addressed through a ticket system.</li>
+                <li>Engaging in combative behavior towards staff or causing unnecessary issues can be grounds for removal from the community.</li>
+            </ol>
+
+            <h3>OOC Terminology</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Out-of-character (OOC) discussions and conversations are encouraged to take place in Discord channels and are prohibited while in-game.</li>
+                <li>The use of immersion-breaking words is strictly prohibited within our community.</li>
+                <li>Under no circumstances are you permitted to mention or refer to other "cities" or "counties" within our community.</li>
+                <li>Referring to other characters, whether they are your own or not, as "cousins", "alter egos", or similar terms is strictly prohibited.</li>
+                <li>Using phrases like "the government" or "look to the skies" to refer to staff members is strictly prohibited.</li>
+                <li>Engaging in discussions or using terminology related to spiritual and in your head matters is not allowed.</li>
+                <li>To maintain the flow of roleplay, it is important to adapt and continue with the storyline despite encountering bugs or technical issues.</li>
+                <li>Using words such as "weird" or "strange" to target or describe someone's roleplay in a derogatory manner is not allowed.</li>
+                <li>Hinting at, or telling cops they must be bored for playing the role of their character is considered OOC terminology.</li>
+            </ol>
+
+            <h3>Report</h3>
+            <ol class="list-decimal space-y-2">
+                <li>We encourage players to utilize the Discord ticketing system to report any incidents involving other players.</li>
+                <li>While using the /report command can be helpful for addressing immediate in-game issues, it is not a replacement for the ticketing system.</li>
+                <li>When submitting a report, it is crucial to provide all necessary information and evidence related to the incident.</li>
+                <li>We strive to process reports in a timely manner and aim to provide a resolution within 48 hours.</li>
+                <li>If a player believes that a staff member is abusing their powers, they have the option to submit a player report using the Discord Ticket system.</li>
+                <li>For effective communication and prompt resolution of issues, we kindly request that players refrain from personally messaging staff members regarding community-related concerns.</li>
+                <li>Staff members have the authority to request players to pause or halt their actions in a roleplay situation if server rules have been violated or are currently being broken.</li>
+            </ol>
+        </div>
+
+        <!-- Crime and Gangs -->
+        <div id="crime-gangs" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Crime and Gangs</h2>
+            
+            <h3>Gangs</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Gangs within our community are not solely focused on engaging in constant conflicts and violence.</li>
+                <li>The expectation within our community is that players should initiate roleplay and use verbal communication before resorting to shooting or engaging in combat.</li>
+                <li>All the necessary information about gangs and the application process can be found in the comprehensive Gang Handbook.</li>
+                <li>You cannot sit idle at delivery, start, etc... spots when taxing.</li>
+                <li>When attempting to identify or apprehend individuals involved in the job that you are taxing, it is expected that you put in a considerate amount of effort and provide a high-quality roleplay experience.</li>
+                <li>At any time, staff can revoke taxing for a specific job if the overall reward made from taxing an absurd amount.</li>
+                <li>You may not use gang specific clothing, flags, or liveries that you would not realistically be able to acquire unless they have been obtained through roleplay.</li>
+            </ol>
+
+            <h3>Criminal Activities</h3>
+            <ol class="list-decimal space-y-2">
+                <li>The maximum limit for engaging in a criminal activity is set at five criminals, with the exception of the Oil Rig activity, which allows for up to six participants.</li>
+                <li>5-man rule - Establishes that criminal activities are restricted to a maximum of five players at a time.</li>
+                <li>During criminal activities, mechanics are prohibited from utilizing their F1 menu or any other abilities that are specific to their job.</li>
+                <li>When participating in criminal activities, separate groups are not allowed to collaborate and work together towards different objectives simultaneously.</li>
+                <li>Prison transports are treated as separate scenarios from the original incident that led to the arrest.</li>
+                <li>Fake hostages are strictly prohibited within our community.</li>
+                <li>For activities such as Drug Runs, Fleeca, G6, Paleto Bank, and the Pacific Standard Vault, it is expected that participants have a well-thought-out and detailed robbery plan.</li>
+                <li>After engaging in store robberies or car boosts, it is necessary to impose a self-cooldown period of 45 minutes.</li>
+                <li>Robbing other players is permitted, but must be executed with high-quality roleplay, including a justified context/reason for targeting the individual(s).</li>
+                <li>Scamming within our community must be carried out through in-game roleplay interactions.</li>
+                <li>Engaging in scams that involve accessing unauthorized menus or teleporting, with the exception of the F2 inventory menu, is strictly prohibited.</li>
+                <li>Using server functions or mechanics to gain an unfair advantage in a scam is strictly prohibited.</li>
+                <li>Any place with a 'teleport' are places you are prohibited to rob players.</li>
+                <li>Interfering in ongoing robberies is strictly prohibited within our community, unless specific circumstances apply.</li>
+                <li>Under no circumstances are players allowed to interfere in ongoing robberies based on the rationale of revenge.</li>
+                <li>Robbing government employees, such as PD, DOJ, and EMS, solely for the purpose of obtaining their belongings is strictly prohibited.</li>
+                <li>Robbing Pacific Standard, Paleto Bank, Fleeca Banks, and Vangelico Jewelry Store, as well as initiating a Drug Run, is strictly prohibited within the 60 minutes before restart and the 30 minutes after restart.</li>
+                <li>Committing any form of crime, including house robbing, selling drugs, robbing other players, and shooting weapons, is strictly prohibited within the 30 minutes before and after a server restart.</li>
+                <li>In the event of an unscheduled server restart or server crash, you must wait for a period of 15 minutes before engaging in any criminal activities.</li>
+                <li>Camping or staking out an area in order to start or commit a crime is strictly prohibited within our community.</li>
+                <li>Regardless of the scenario type, there is a 90-minute shooting cooldown.</li>
+                <li>Only two traphouses can be owned by any singular group at one time.</li>
+                <li>In the event of conflict over a traphouse, the group that currently owns it can have a maximum of five members present at the scene.</li>
+                <li>Shooting or otherwise incapacitating the traphouse locals to prevent players from obtaining the code is considered powergaming and is not allowed.</li>
+            </ol>
+        </div>
+
+        <!-- Roleplay Rules -->
+        <div id="roleplay-rules" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Roleplay Rules</h2>
+            
+            <h3>Off-limits Areas</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Fort_Zancudo and the aircraft carriers are off-limits due to heavy security.</li>
+            </ol>
+
+            <h3>Deathmatch, Revenge, Killing & Kill On Sight</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Before engaging in a shootout or any form of violent confrontation, it is essential to initiate roleplay (RP) interactions with the involved parties.</li>
+                <li>You are permitted to initiate an attack or defend yourself if another player intentionally tries to harm you, damage your property, ignores your threats and attempts to resist, or takes hostile action against you.</li>
+                <li>Random Deathmatch (RDM) is strictly prohibited within our community.</li>
+                <li>Vehicle Deathmatch (VDM) is strictly prohibited within our community.</li>
+            </ol>
+
+            <h3>New Life Rule (NLR)</h3>
+            <ol class="list-decimal space-y-2">
+                <li>New Life Rule: Triggered once you are incapacitated and respawn or are treated at the hospital, the cause of incapactation is irrelevant.</li>
+                <li>Once a player becomes incapacitated, they cannot come back to the area of their death for 30 minutes and they cannot take hostile action against the party responsible for their death for 60 minutes.</li>
+                <li>If you are downed in a scenario and it has ended, you are not allowed to return to the area of the scene to collect evidence, loot bodies, etc.</li>
+            </ol>
+
+            <h3>Combat Roleplay Logging</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Players are not permitted to disconnect or respawn from a roleplay or combat situation that could have in-character consequences.</li>
+                <li>In the event of a game crash or disconnection, it is expected that players make an effort to reconnect to the server as soon as possible and resume their roleplaying scenario.</li>
+                <li>During combat situations, it is not permissible to use emotes (such as passout, sleep, etc.) to gain an unfair advantage.</li>
+            </ol>
+
+            <h3>Metagaming, Powergaming, Torture RP</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Metagaming: Refers to the use of real-life information that is obtained outside the game to gain an unfair advantage in-character.</li>
+                <li>Engaging in metagaming to gain an in-game advantage is considered a more serious offense than accidental metagaming.</li>
+                <li>While in the city, you are not permitted to appear in livestreams of other players who are also in the city.</li>
+                <li>Powergaming: refers to the act of roleplaying with mechanics or abilities that do not exist within the game or forcing other players into situations where they have limited or no choices.</li>
+                <li>Using the /me command in a way that forces roleplay outcomes in your favor is considered a form of powergaming.</li>
+                <li>Spam jumping to speed up the movement of your character is a form of powergaming.</li>
+                <li>Putting a stash or other furniture outside the shell of a player owned property, so it is not visible to the naked eye, is not allowed.</li>
+                <li>Unnecessarily escorting, cuffing, or carrying someone with the intention of gaining an advantage over a player who is not in a downed state is strictly prohibited.</li>
+                <li>Using a vehicle to flip over another vehicle is considered powergaming.</li>
+                <li>You must never spam the attacking/melee button on someone.</li>
+                <li>Intentionally dragging a player around with the purpose of avoiding roleplay or causing annoyance is considered a serious offense and can result in a ban.</li>
+                <li>Torture roleplay, if consented to by all parties involved, must adhere to certain guidelines.</li>
+            </ol>
+        </div>
+
+        <!-- Roleplay Quality -->
+        <div id="roleplay-quality" class="rule-section">
+            <h2 class="text-2xl font-bold mb-4 neon-text-cyan">Roleplay Quality</h2>
+            
+            <h3>General</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Cop baiting, intentionally provoking or luring police officers into scenarios without proper roleplay behind it, is considered a form of low-quality roleplay.</li>
+                <li>Please avoid engaging in money simulator gameplay, which refers to prioritizing monetary gains over meaningful interactions.</li>
+                <li>Refusing to respond or cooperate with EMS staff members may lead to consequences, including a possible kick from the server.</li>
+                <li>We have a strict policy against engaging in salty and toxic behavior within the Vibe City community.</li>
+                <li>Hospital camping, which refers to intentionally waiting or lingering near a hospital to taunt or provoke players who have recently lost a fight, is not permitted.</li>
+                <li>Scenes in Vibe City should be utilized to enhance roleplay by providing context and atmosphere.</li>
+                <li>During interactions with police officers, it is essential for criminals to provide a valid and proper reasoning during initiation before resorting to shooting.</li>
+                <li>Randomly blowing up vehicles without proper initiation is strictly prohibited within Vibe City.</li>
+            </ol>
+
+            <h3>Fail/Low Quality Roleplay</h3>
+            <ol class="list-decimal space-y-2">
+                <li>FailRP, also known as Low Quality RP, refers to actions that are unrealistic or detrimental to the roleplay experience of other players.</li>
+                <li>Example: Taking a vehicle and stripping the upgrades off of it.</li>
+                <li>Example: Failing to respond to /me interactions of other players.</li>
+                <li>Example: Talking normally after you have gunshot wounds.</li>
+                <li>Example: Using a tazer to pop a tire of a vehicle.</li>
+                <li>Example: Spectating shootouts.</li>
+                <li>Example: Robbing someone without reason or sufficient roleplay.</li>
+                <li>Example: Using the same shootout location in a short amount of time.</li>
+                <li>Example: Taking a vehicle and ocean dumping it without reason.</li>
+            </ol>
+
+            <h3>Value of Life</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Value of Life: Players must prioritize their character's life and act as if they have only one life.</li>
+                <li>If you find yourself in a situation where you are at a clear disadvantage, it is expected that you comply with the demands of the other party.</li>
+                <li>In situations where you are outnumbered by a significant margin, it is generally expected that you comply with the group's demands.</li>
+                <li>A bad example of an attempt to escape would be if you are being held hostage in front of a bank and, despite the person holding a firearm ready to use, you suddenly decide to run away without any reasonable chance of success.</li>
+            </ol>
+
+            <h3>Economy Rules</h3>
+            <ol class="list-decimal space-y-2">
+                <li>Creating new characters with the purpose of transferring starter money or assets to another character is strictly prohibited within our community.</li>
+                <li>Asset limitations enforced by the LSRS application must never be bypassed and selling outside of the script in place is considered exploiting.</li>
+                <li>Example: Travis purchased an import for $360k. He is now selling it to Taylor at an agreed price of $1,000,000. Taylor sends Travis a $640,000 direct transfer and then accepts the sale through the app for the remaining amount that the script allows for. In doing so, the buyer has lower asset fees despite buying the car for a higher amount.</li>
+            </ol>
         </div>
 
         <div class="last-updated">
             <p class="text-textSecondary">By playing on Vibe City Roleplay, you agree to follow these rules and accept the consequences of breaking them.</p>
-            <p class="text-textSecondary mt-2">Last updated: {% now "F j, Y" %}</p>
+            <p class="text-textSecondary mt-2">Last updated: March 29, 2025</p>
         </div>
     </div>
 </div>
