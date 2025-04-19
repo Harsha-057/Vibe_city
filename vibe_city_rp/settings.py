@@ -100,18 +100,33 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.get_username',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',  # <--- this is critical
+    'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
 
+
 # Discord OAuth2 settings
+# Existing
 SOCIAL_AUTH_DISCORD_KEY = os.getenv('DISCORD_CLIENT_ID')
 SOCIAL_AUTH_DISCORD_SECRET = os.getenv('DISCORD_CLIENT_SECRET')
 SOCIAL_AUTH_DISCORD_SCOPE = ['identify', 'email']
 
+# Add this — ensures refresh_token is always included
+SOCIAL_AUTH_DISCORD_AUTH_EXTRA_ARGUMENTS = {
+    'prompt': 'consent'
+}
+
+# Optional but useful — store token expiration & refresh_token
+SOCIAL_AUTH_DISCORD_EXTRA_DATA = ['refresh_token', 'expires_in']
+
+# Redirects
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accounts/profile/'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/accounts/login/'
 SOCIAL_AUTH_LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_DISCORD_TOKEN_EXPIRATION = True
+SOCIAL_AUTH_REFRESH_TOKEN_EXPIRATION = True
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
