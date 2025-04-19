@@ -109,7 +109,7 @@ SOCIAL_AUTH_PIPELINE = (
 # Existing
 SOCIAL_AUTH_DISCORD_KEY = os.getenv('DISCORD_CLIENT_ID')
 SOCIAL_AUTH_DISCORD_SECRET = os.getenv('DISCORD_CLIENT_SECRET')
-SOCIAL_AUTH_DISCORD_SCOPE = ['identify', 'email']
+SOCIAL_AUTH_DISCORD_SCOPE = ['identify']
 
 # Add this — ensures refresh_token is always included
 SOCIAL_AUTH_DISCORD_AUTH_EXTRA_ARGUMENTS = {
