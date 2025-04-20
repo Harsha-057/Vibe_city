@@ -34,7 +34,6 @@ class WhitelistApplication(models.Model):
     # Character Information
     character_name = models.CharField(max_length=100, help_text="Character Name (First & Last)")
     character_age = models.PositiveIntegerField(help_text="Character Age")
-    character_backstory = models.TextField(help_text="Character Backstory (Minimum 5 sentences)")
     
     # Roleplay Knowledge
     fear_rp_explanation = models.TextField(help_text="What is FearRP?")
