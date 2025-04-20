@@ -28,7 +28,6 @@ class WhitelistApplicationForm(forms.ModelForm):
             # Character Information
             'character_name',
             'character_age',
-            'character_backstory',
             
             # Roleplay Knowledge
             'fear_rp_explanation',
@@ -48,7 +47,6 @@ class WhitelistApplicationForm(forms.ModelForm):
             'fivem_experience': forms.TextInput(attrs={'class': 'w-full'}),
             'character_name': forms.TextInput(attrs={'class': 'w-full'}),
             'character_age': forms.NumberInput(attrs={'class': 'w-full', 'min': '18'}),
-            'character_backstory': forms.Textarea(attrs={'class': 'w-full', 'rows': 5}),
             'fear_rp_explanation': forms.Textarea(attrs={'class': 'w-full', 'rows': 3}),
             'fail_rp_explanation': forms.Textarea(attrs={'class': 'w-full', 'rows': 3}),
             'robbery_response': forms.Textarea(attrs={'class': 'w-full', 'rows': 3}),
