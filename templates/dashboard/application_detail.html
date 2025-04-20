@@ -17,7 +17,7 @@
                 <div class="flex items-center">
                     <img src="{{ application.user.avatar_url }}" alt="{{ application.user.username }}" class="w-12 h-12 rounded-full mr-4">
                     <div>
-                        <h2 class="text-xl font-bold">{{ application.user.discord_tag|default:application.user.username }}</h2>
+                        <h2 class="text-xl font-bold">{{ application.discord_name }}</h2>
                         <div class="text-sm text-textSecondary">Submitted: {{ application.created_at|date:"F j, Y H:i" }}</div>
                     </div>
                 </div>
@@ -41,25 +41,40 @@
             
             <div class="p-6">
                 <div class="space-y-6">
-                    <!-- User Information -->
+                    <!-- Discord & Steam Information -->
                     <div class="bg-primary-100 rounded-lg p-4">
-                        <h3 class="text-lg font-medium mb-4">User Information</h3>
+                        <h3 class="text-lg font-medium mb-4">Discord & Steam Information</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <h4 class="text-sm font-medium text-textSecondary mb-1">Real Name</h4>
-                                <p class="text-textPrimary">{{ application.your_name }}</p>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">Discord Name & Tag</h4>
+                                <p class="text-textPrimary">{{ application.discord_name }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">Steam Name</h4>
+                                <p class="text-textPrimary">{{ application.steam_name }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">Steam Hex ID</h4>
+                                <p class="text-textPrimary">{{ application.steam_hex_id }}</p>
                             </div>
                             <div>
                                 <h4 class="text-sm font-medium text-textSecondary mb-1">Age</h4>
-                                <p class="text-textPrimary">{{ application.your_age }}</p>
+                                <p class="text-textPrimary">{{ application.age }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Server Information -->
+                    <div class="bg-primary-100 rounded-lg p-4">
+                        <h3 class="text-lg font-medium mb-4">Server Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">How did you find our server?</h4>
+                                <p class="text-textPrimary">{{ application.how_found }}</p>
                             </div>
                             <div>
-                                <h4 class="text-sm font-medium text-textSecondary mb-1">Gender</h4>
-                                <p class="text-textPrimary">{{ application.your_gender|title }}</p>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-textSecondary mb-1">Discord Username</h4>
-                                <p class="text-textPrimary">{{ application.discord_name }}</p>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">FiveM Experience</h4>
+                                <p class="text-textPrimary">{{ application.fivem_experience }}</p>
                             </div>
                         </div>
                     </div>
@@ -76,9 +91,32 @@
                                 <h4 class="text-sm font-medium text-textSecondary mb-1">Character Age</h4>
                                 <p class="text-textPrimary">{{ application.character_age }}</p>
                             </div>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="text-sm font-medium text-textSecondary mb-1">Character Backstory</h4>
+                            <p class="text-textPrimary whitespace-pre-line">{{ application.character_backstory }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Roleplay Knowledge -->
+                    <div class="bg-primary-100 rounded-lg p-4">
+                        <h3 class="text-lg font-medium mb-4">Roleplay Knowledge</h3>
+                        <div class="space-y-4">
                             <div>
-                                <h4 class="text-sm font-medium text-textSecondary mb-1">Character Gender</h4>
-                                <p class="text-textPrimary">{{ application.character_gender|title }}</p>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">What is FearRP?</h4>
+                                <p class="text-textPrimary whitespace-pre-line">{{ application.fear_rp_explanation }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">What is FailRP? Give an example.</h4>
+                                <p class="text-textPrimary whitespace-pre-line">{{ application.fail_rp_explanation }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">You're being robbed at gunpoint. What do you do, and what should your character value?</h4>
+                                <p class="text-textPrimary whitespace-pre-line">{{ application.robbery_response }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-textSecondary mb-1">What would you do if you saw someone breaking the rules?</h4>
+                                <p class="text-textPrimary whitespace-pre-line">{{ application.rule_breaking_response }}</p>
                             </div>
                         </div>
                     </div>

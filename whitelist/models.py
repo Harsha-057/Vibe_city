@@ -16,18 +16,34 @@ class WhitelistApplication(models.Model):
     
     # User Information
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='applications')
-    your_name = models.CharField(max_length=100, help_text="Your real name", null=True, blank=True)
-    your_age = models.PositiveIntegerField(help_text="Your real age", null=True, blank=True)
-    your_gender = models.CharField(max_length=10, choices=GENDER_CHOICES, help_text="Your gender", null=True, blank=True)
-    discord_name = models.CharField(max_length=100, help_text="Your Discord username", null=True, blank=True)
+    
+    # Discord Information
+    discord_name = models.CharField(max_length=100, help_text="Discord Name & Tag (e.g., JohnDoe#1234)")
+    
+    # Steam Information
+    steam_name = models.CharField(max_length=100, help_text="Steam Name")
+    steam_hex_id = models.CharField(max_length=100, help_text="Steam Hex ID")
+    
+    # Personal Information
+    age = models.PositiveIntegerField(help_text="Your age")
+    
+    # Server Information
+    how_found = models.TextField(help_text="How did you find our server?")
+    fivem_experience = models.TextField(help_text="How long have you been playing on FiveM?")
     
     # Character Information
-    character_name = models.CharField(max_length=100, help_text="Your character's name")
-    character_gender = models.CharField(max_length=10, choices=GENDER_CHOICES, help_text="Your character's gender")
-    character_age = models.PositiveIntegerField(help_text="Your character's age")
+    character_name = models.CharField(max_length=100, help_text="Character Name (First & Last)")
+    character_age = models.PositiveIntegerField(help_text="Character Age")
+    character_backstory = models.TextField(help_text="Character Backstory (Minimum 5 sentences)")
+    
+    # Roleplay Knowledge
+    fear_rp_explanation = models.TextField(help_text="What is FearRP?")
+    fail_rp_explanation = models.TextField(help_text="What is FailRP? Give an example.")
+    robbery_response = models.TextField(help_text="You're being robbed at gunpoint. What do you do, and what should your character value?")
+    rule_breaking_response = models.TextField(help_text="What would you do if you saw someone breaking the rules?")
     
     # Acknowledgment
-    rules_acknowledged = models.BooleanField(default=False, help_text="I have read and understood the server rules")
+    rules_acknowledged = models.BooleanField(default=False, help_text="Do you agree to follow all rules and respect staff decisions?")
     
     # Application Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -47,4 +63,4 @@ class WhitelistApplication(models.Model):
         ordering = ['-created_at']
     
     def __str__(self):
-        return f"Application by {self.your_name or self.user} - {self.status}"
+        return f"Application by {self.discord_name} - {self.status}"

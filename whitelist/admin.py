@@ -6,21 +6,27 @@ from django.contrib import messages
 
 @admin.register(WhitelistApplication)
 class WhitelistApplicationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'character_name', 'status', 'created_at', 'reviewed_at', 'action_buttons')
+    list_display = ('discord_name', 'character_name', 'status', 'created_at', 'reviewed_at', 'action_buttons')
     list_filter = ('status', 'created_at', 'reviewed_at')
-    search_fields = ('user__username', 'character_name', 'your_name', 'discord_name')
+    search_fields = ('discord_name', 'steam_name', 'steam_hex_id', 'character_name')
     readonly_fields = ('created_at', 'updated_at')
     actions = ['approve_applications', 'reject_applications', 'delete_selected']
     
     fieldsets = (
-        ('User Information', {
-            'fields': ('user', 'your_name', 'your_age', 'your_gender', 'discord_name')
+        ('Discord & Steam Information', {
+            'fields': ('discord_name', 'steam_name', 'steam_hex_id', 'age')
+        }),
+        ('Server Information', {
+            'fields': ('how_found', 'fivem_experience')
         }),
         ('Character Information', {
-            'fields': ('character_name', 'character_gender', 'character_age')
+            'fields': ('character_name', 'character_age', 'character_backstory')
         }),
-        ('Application Status', {
-            'fields': ('status', 'feedback', 'reviewed_by', 'reviewed_at')
+        ('Roleplay Knowledge', {
+            'fields': ('fear_rp_explanation', 'fail_rp_explanation', 'robbery_response', 'rule_breaking_response')
+        }),
+        ('Rules & Status', {
+            'fields': ('rules_acknowledged', 'status', 'feedback', 'reviewed_by', 'reviewed_at')
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
