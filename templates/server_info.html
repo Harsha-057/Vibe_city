@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Information - Vibe City Roleplay{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold mb-8 text-textPrimary">Server Information</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Server Status Card -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4 text-textPrimary">Server Status</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Status:</span>
+                        <span class="px-3 py-1 rounded-full text-sm bg-green-900/30 text-green-400 border border-green-800">
+                            <i class="fas fa-circle text-xs mr-1"></i> Online
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Players:</span>
+                        <span class="text-textPrimary">64/128</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Uptime:</span>
+                        <span class="text-textPrimary">99.9%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Details Card -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-bold mb-4 text-textPrimary">Server Details</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">IP Address:</span>
+                        <span class="text-textPrimary">play.vibecityrp.com</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Port:</span>
+                        <span class="text-textPrimary">30120</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Version:</span>
+                        <span class="text-textPrimary">1.0.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Features Card -->
+            <div class="card p-6 md:col-span-2">
+                <h2 class="text-2xl font-bold mb-4 text-textPrimary">Server Features</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-car text-accent"></i>
+                        <span class="text-textSecondary">Custom Vehicles</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-home text-accent"></i>
+                        <span class="text-textSecondary">Housing System</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-briefcase text-accent"></i>
+                        <span class="text-textSecondary">Job System</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-store text-accent"></i>
+                        <span class="text-textSecondary">Business System</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-gavel text-accent"></i>
+                        <span class="text-textSecondary">Legal System</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-shield-alt text-accent"></i>
+                        <span class="text-textSecondary">Whitelist</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Requirements Card -->
+            <div class="card p-6 md:col-span-2">
+                <h2 class="text-2xl font-bold mb-4 text-textPrimary">Requirements</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">FiveM Version:</span>
+                        <span class="text-textPrimary">Latest</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Discord:</span>
+                        <span class="text-textPrimary">Required</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-textSecondary">Whitelist:</span>
+                        <span class="text-textPrimary">Required</span>
+                    </div>
+                    <div class="mt-6">
+                        <a href="{% url 'whitelist_apply' %}" class="btn-primary w-full text-center">
+                            <i class="fas fa-user-shield mr-2"></i> Apply for Whitelist
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
