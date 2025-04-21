@@ -28,7 +28,6 @@ class WhitelistApplication(models.Model):
     age = models.PositiveIntegerField(help_text="Your age")
     
     # Server Information
-    how_found = models.TextField(help_text="How did you find our server?")
     fivem_experience = models.TextField(help_text="How long have you been playing on FiveM?")
     
     # Character Information
@@ -36,9 +35,6 @@ class WhitelistApplication(models.Model):
     character_age = models.PositiveIntegerField(help_text="Character Age")
     
     # Roleplay Knowledge
-    fear_rp_explanation = models.TextField(help_text="What is FearRP?")
-    fail_rp_explanation = models.TextField(help_text="What is FailRP? Give an example.")
-    robbery_response = models.TextField(help_text="You're being robbed at gunpoint. What do you do, and what should your character value?")
     rule_breaking_response = models.TextField(help_text="What would you do if you saw someone breaking the rules?")
     
     # Acknowledgment
