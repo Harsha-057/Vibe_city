@@ -10,7 +10,19 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 import requests
 from io import BytesIO
 import aiohttp
+import ssl
+import certifi
 
+
+original_init = aiohttp.ClientSession.__init__
+
+def new_init(self, *args, **kwargs):
+    if 'connector' not in kwargs:
+        ssl_context = ssl.create_default_context(cafile=certifi.where())
+        kwargs['connector'] = aiohttp.TCPConnector(ssl=ssl_context)
+    original_init(self, *args, **kwargs)
+
+aiohttp.ClientSession.__init__ = new_init
 # Global bot instance
 bot = None
 bot_ready = threading.Event()
