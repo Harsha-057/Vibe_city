@@ -296,7 +296,7 @@ def send_application_result(application):
             
             embed = discord.Embed(
                 title=f"Whitelist Application {status_text}",
-                description=f"{user.username}'s whitelist application has been {application.status}.",
+                description=f"<@{user.discord_id}>'s whitelist application has been {application.status}.",
                 color=status_color
             )
             
@@ -406,35 +406,37 @@ def send_job_application_result(application):
         print(f"[JobAppNotify-{application.id}] Entering async send() coroutine.") 
         try:
             applicant_obj = await sync_to_async(lambda: application.applicant)()
-            form_reviewer_obj = await sync_to_async(lambda: application.form_reviewer)()
-            interview_reviewer_obj = await sync_to_async(lambda: application.interview_reviewer)()
-            
             if not applicant_obj:
-                print(f"[JobAppNotify-{application.id}] Application has no applicant.")
+                print(f"[JobAppNotify-{application.id}] No applicant found.")
                 return
-            print(f"[JobAppNotify-{application.id}] Applicant found: {applicant_obj.username} ({applicant_obj.id})") 
             
             applicant_discord_tag = await sync_to_async(lambda: applicant_obj.discord_tag)()
             applicant_username = await sync_to_async(lambda: applicant_obj.username)()
             applicant_discord_id = await sync_to_async(lambda: applicant_obj.discord_id)()
+            applicant_avatar_url = await sync_to_async(lambda: applicant_obj.avatar_url)()
 
-            # Determine which reviewer is relevant based on current status
-            final_reviewer_obj = interview_reviewer_obj if application.status in ['HIRED', 'REJECTED_INTERVIEW'] else form_reviewer_obj
-            final_reviewer_tag = None
-            final_reviewer_username = None
-            if final_reviewer_obj:
-                 final_reviewer_tag = await sync_to_async(lambda: final_reviewer_obj.discord_tag)()
-                 final_reviewer_username = await sync_to_async(lambda: final_reviewer_obj.username)()
+            # Get the guild and member
+            guild_id = int(settings.DISCORD_GUILD_ID)
+            guild = bot.get_guild(guild_id)
+            if not guild:
+                print(f"[JobAppNotify-{application.id}] Guild not found: {guild_id}")
+                return
+            
+            member = await guild.fetch_member(int(applicant_discord_id))
+            if not member:
+                print(f"[JobAppNotify-{application.id}] Member not found: {applicant_discord_id}")
+                return
 
             # Determine status color and text for embeds
             status_color = discord.Color.default()
             if application.status == 'HIRED': status_color = discord.Color.green()
             elif application.status == 'INTERVIEW_PENDING': status_color = discord.Color.blue()
-            elif application.status == 'PENDING': status_color = discord.Color.gold() # Should not normally notify here
+            elif application.status == 'PENDING': status_color = discord.Color.gold()
+            elif application.status == 'FIRED': status_color = discord.Color.dark_gray()
             elif 'REJECTED' in application.status: status_color = discord.Color.red()
 
-            status_text = application.get_status_display() # Use display name from model
-            final_feedback = application.interview_feedback if application.status in ['HIRED', 'REJECTED_INTERVIEW'] else application.form_feedback
+            status_text = application.get_status_display()
+            final_feedback = application.interview_feedback if application.status in ['HIRED', 'FIRED', 'REJECTED_INTERVIEW'] else application.form_feedback
 
             # --- Send to Notifications Channel --- #
             try:
@@ -450,26 +452,12 @@ def send_job_application_result(application):
                     )
                     channel_embed.add_field(name="Applicant", value=applicant_discord_tag or applicant_username, inline=True)
                     channel_embed.add_field(name="Job", value=application.get_job_type_display(), inline=True)
-                    if final_reviewer_obj:
-                        channel_embed.add_field(name="Processed By", value=final_reviewer_tag or final_reviewer_username, inline=True)
-                    
-                    # Add reviewed date based on stage
-                    reviewed_at = application.interview_reviewed_at if application.status in ['HIRED', 'REJECTED_INTERVIEW'] else application.form_reviewed_at
-                    if reviewed_at:
-                         channel_embed.add_field(name="Processed At", value=reviewed_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"), inline=True)
                     
                     if final_feedback:
                          channel_embed.add_field(name="Feedback", value=final_feedback[:1020] + "..." if len(final_feedback)>1024 else final_feedback, inline=False)
 
-                    # Add job-specific image for approved/rejected applications
-                    if application.status == 'HIRED':
-                        if application.job_type == 'SASP':
-                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
-                        elif application.job_type == 'EMS':
-                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
-                        elif application.job_type == 'MECHANIC':
-                            channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
-                    elif 'REJECTED' in application.status:
+                    # Add job-specific image based on status
+                    if application.status == 'FIRED':
                         if application.job_type == 'SASP':
                             channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
                         elif application.job_type == 'EMS':
@@ -481,126 +469,36 @@ def send_job_application_result(application):
                     await channel.send(content=f"Job application update for <@{applicant_discord_id}>:", embed=channel_embed)
                     print(f"[JobAppNotify-{application.id}] Sent channel message for status {status_text}")
             except Exception as e:
-                print(f"[JobAppNotify-{application.id}] Error sending to channel {settings.DISCORD_NOTIFICATIONS_CHANNEL_ID}: {e}")
+                print(f"[JobAppNotify-{application.id}] Error sending to channel: {e}")
 
-            # --- NEW: Send to Public Responses Channel --- #
+            # --- Send DM to user --- #
             try:
-                public_channel_id_setting = getattr(settings, 'DISCORD_JOB_RESPONSES_CHANNEL_ID', None)
-                if public_channel_id_setting:
-                    public_channel_id = int(public_channel_id_setting)
-                    public_channel = bot.get_channel(public_channel_id)
-                    if not public_channel:
-                        print(f"[JobAppNotify-{application.id}] Public responses channel not found: {public_channel_id}")
-                    else:
-                        # Create a simplified embed for public view
-                        public_embed = discord.Embed(
-                            title=f"Job Application Update: {application.get_job_type_display()}",
-                            color=status_color
-                        )
-                        
-                        mention = f"<@{applicant_discord_id}>"
-                        
-                        # Tailor message based on status
-                        if application.status == 'HIRED':
-                            public_embed.description = f"🎉 **Congratulations!**"
-                            public_embed.add_field(
-                                name="New Team Member",
-                                value=f"{mention} has been **HIRED** for the **{application.get_job_type_display()}** team!",
-                                inline=False
-                            )
-                            public_embed.add_field(
-                                name="Achievement",
-                                value="Successfully completed the application and interview process.",
-                                inline=False
-                            )
-                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
-                            
-                        elif application.status == 'INTERVIEW_PENDING':
-                            public_embed.description = f"📋 **Application Update**"
-                            public_embed.add_field(
-                                name="Status Update",
-                                value=f"{mention}'s application for **{application.get_job_type_display()}** has passed the initial review.",
-                                inline=False
-                            )
-                            public_embed.add_field(
-                                name="Next Stage",
-                                value="Moving forward to the interview stage.",
-                                inline=False
-                            )
-                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
-                            
-                        elif application.status == 'REJECTED' or application.status == 'REJECTED_INTERVIEW':
-                            stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
-                            public_embed.description = f"📝 **Application Update**"
-                            public_embed.add_field(
-                                name="Status Update",
-                                value=f"Regarding {mention}'s application for **{application.get_job_type_display()}**:",
-                                inline=False
-                            )
-                            public_embed.add_field(
-                                name="Decision",
-                                value=f"The application was not successful at the **{stage}**.",
-                                inline=False
-                            )
-                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
-                        else:
-                            public_embed = None # Don't announce other statuses publicly?
-                        
-                        if public_embed:
-                            # Add appropriate image based on status
-                            if application.status == 'HIRED':
-                                if application.job_type == 'SASP':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
-                                elif application.job_type == 'EMS':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
-                                elif application.job_type == 'MECHANIC':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
-                            elif 'REJECTED' in application.status:
-                                if application.job_type == 'SASP':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
-                                elif application.job_type == 'EMS':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
-                                elif application.job_type == 'MECHANIC':
-                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
-                            
-                            # Send mention in content for ping
-                            await public_channel.send(content=f"Application update for <@{applicant_discord_id}>:", embed=public_embed)
-                            print(f"[JobAppNotify-{application.id}] Sent PUBLIC response to channel {public_channel.name}.")
-                else:
-                     print(f"[JobAppNotify-{application.id}] DISCORD_JOB_RESPONSES_CHANNEL_ID not set. Skipping public notification.")
-            except ValueError:
-                 print(f"[JobAppNotify-{application.id}] Invalid DISCORD_JOB_RESPONSES_CHANNEL_ID: {public_channel_id_setting}")
-            except Exception as e:
-                print(f"[JobAppNotify-{application.id}] Error sending to PUBLIC responses channel: {e}")
-
-            # --- DM the user --- #
-            if not applicant_discord_id:
-                print(f"[JobAppNotify-{application.id}] Applicant {applicant_username} has no Discord ID.")
-                return
-            
-            print(f"[JobAppNotify-{application.id}] Applicant Discord ID found: {applicant_discord_id}") 
-            try:
-                guild_id = int(settings.DISCORD_GUILD_ID)
-                guild = bot.get_guild(guild_id)
-                if not guild:
-                    print(f"[JobAppNotify-{application.id}] Guild not found: {guild_id}")
-                    return 
-                else:
-                    print(f"[JobAppNotify-{application.id}] Found guild: {guild.name}") 
-
-                print(f"[JobAppNotify-{application.id}] Attempting to fetch member: {applicant_discord_id}") 
-                member = await guild.fetch_member(int(applicant_discord_id))
-                if not member:
-                    print(f"[JobAppNotify-{application.id}] Member not found in guild {guild.name}: {applicant_discord_id}")
-                    return
-                print(f"[JobAppNotify-{application.id}] Found member: {member.name}") 
-                
                 dm_embed = discord.Embed(
                     title=f"Update on your {application.get_job_type_display()} Application",
                     color=status_color
                 )
 
-                if application.status == 'HIRED':
+                if application.status == 'FIRED':
+                    dm_embed.description = f"You have been removed from the **{application.get_job_type_display()}** team."
+                    dm_embed.add_field(
+                        name="What This Means",
+                        value="Your job role has been removed from Discord. You may reapply for this position after a cooldown period.",
+                        inline=False
+                    )
+                    if final_feedback:
+                        dm_embed.add_field(
+                            name="Reason",
+                            value=final_feedback,
+                            inline=False
+                        )
+                    # Add job-specific image for fired status
+                    if application.job_type == 'SASP':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
+                    elif application.job_type == 'EMS':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
+                    elif application.job_type == 'MECHANIC':
+                        dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
+                elif application.status == 'HIRED':
                     dm_embed.description = f"**Congratulations! You have been HIRED for the {application.get_job_type_display()} position at Vibe City RP!**"
                     dm_embed.add_field(name="Next Steps", value="Please contact the relevant department lead or HR in Discord for onboarding instructions.", inline=False)
                     if final_feedback:
@@ -639,26 +537,18 @@ def send_job_application_result(application):
                 await member.send(embed=dm_embed)
                 print(f"[JobAppNotify-{application.id}] Sent DM for status {status_text}")
 
-            except ValueError:
-                 print(f"[JobAppNotify-{application.id}] Invalid DISCORD_GUILD_ID ({settings.DISCORD_GUILD_ID}) or applicant discord_id ({applicant_discord_id})")
-            except discord.Forbidden:
-                 print(f"[JobAppNotify-{application.id}] Cannot send DM to {applicant_username} ({applicant_discord_id}). DMs disabled or bot lacks permissions.")
-            except discord.NotFound:
-                print(f"[JobAppNotify-{application.id}] Member/User not found when trying to fetch/DM: {applicant_discord_id}")
             except Exception as e:
-                print(f"[JobAppNotify-{application.id}] Error fetching member/user or sending DM to {applicant_discord_id}: {e}")
-                import traceback
-                traceback.print_exc()
+                print(f"[JobAppNotify-{application.id}] Error sending DM: {e}")
 
         except Exception as e:
-            print(f"[JobAppNotify-{application.id}] General error in send_job_application_result: {e}")
+            print(f"[JobAppNotify-{application.id}] General error: {e}")
             import traceback
             traceback.print_exc()
 
     # Schedule the async function to run in the bot's event loop
     print(f"[JobAppNotify-{application.id}] Scheduling send() coroutine.") 
     asyncio.run_coroutine_threadsafe(send(), bot.loop)
-    print(f"[JobAppNotify-{application.id}] Coroutine scheduled.") 
+    print(f"[JobAppNotify-{application.id}] Coroutine scheduled.")
 
 # --- New Job Application Submitted Notification --- #
 
@@ -859,3 +749,131 @@ def send_ticket_notification(ticket, action_type, message=None):
             print(f"Error sending ticket notification: {e}")
     
     asyncio.run_coroutine_threadsafe(send(), bot.loop)
+
+def fire_employee(user, job_type, feedback=None):
+    """Removes job role from a user when they are fired and updates their application status."""
+    print(f"[FireEmployee-{user.id}] Received request to fire employee.") # DEBUG
+    if not bot_ready.is_set():
+        print(f"[FireEmployee-{user.id}] Bot not ready, waiting...")
+        bot_ready.wait(timeout=15)
+        if not bot_ready.is_set():
+            print(f"[FireEmployee-{user.id}] Bot did not become ready after wait.")
+            return
+        print(f"[FireEmployee-{user.id}] Bot became ready after wait.")
+
+    if not bot:
+        print(f"[FireEmployee-{user.id}] Bot object is None.")
+        return
+    
+    if not bot.loop.is_running():
+        print(f"[FireEmployee-{user.id}] Bot event loop is not running.")
+        return
+
+    async def send():
+        print(f"[FireEmployee-{user.id}] Entering async send() coroutine.")
+        try:
+            user_discord_id = await sync_to_async(lambda: user.discord_id)()
+            if not user_discord_id:
+                print(f"[FireEmployee-{user.id}] User has no Discord ID.")
+                return
+
+            # Get the guild and member
+            guild_id = int(settings.DISCORD_GUILD_ID)
+            guild = bot.get_guild(guild_id)
+            if not guild:
+                print(f"[FireEmployee-{user.id}] Guild not found: {guild_id}")
+                return
+            
+            member = await guild.fetch_member(int(user_discord_id))
+            if not member:
+                print(f"[FireEmployee-{user.id}] Member not found: {user_discord_id}")
+                return
+
+            # Remove all job-related roles
+            all_job_roles = [
+                int(settings.DISCORD_SASP_INTERVIEW_ROLE_ID),
+                int(settings.DISCORD_SASP_HIRED_ROLE_ID),
+                int(settings.DISCORD_EMS_INTERVIEW_ROLE_ID),
+                int(settings.DISCORD_EMS_HIRED_ROLE_ID),
+                int(settings.DISCORD_MECHANIC_INTERVIEW_ROLE_ID),
+                int(settings.DISCORD_MECHANIC_HIRED_ROLE_ID)
+            ]
+
+            for role_id in all_job_roles:
+                try:
+                    role = guild.get_role(role_id)
+                    if role and role in member.roles:
+                        await member.remove_roles(role)
+                        print(f"[FireEmployee-{user.id}] Removed role {role_id} from {member.name}")
+                except Exception as e:
+                    print(f"[FireEmployee-{user.id}] Error removing role {role_id}: {e}")
+
+            # Update user's employment status
+            if job_type == 'SASP':
+                user.is_sasp_employee = False
+            elif job_type == 'EMS':
+                user.is_ems_employee = False
+            elif job_type == 'MECHANIC':
+                user.is_mechanic_employee = False
+            
+            await sync_to_async(user.save)()
+            print(f"[FireEmployee-{user.id}] Updated user employment status")
+
+            # Update job application status
+            from jobs.models import JobApplication
+            from django.utils import timezone
+            
+            job_app = await sync_to_async(lambda: JobApplication.objects.filter(
+                applicant=user,
+                job_type=job_type,
+                status='HIRED'
+            ).first())()
+            
+            if job_app:
+                print(f"[FireEmployee-{user.id}] Found job application {job_app.id} to update")
+                job_app.status = 'FIRED'
+                job_app.interview_feedback = feedback if feedback else "No reason provided"
+                job_app.interview_reviewed_at = timezone.now()
+                await sync_to_async(job_app.save)()
+                print(f"[FireEmployee-{user.id}] Updated job application status to FIRED")
+
+                # Send notification about the status change
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    await sync_to_async(send_notification_func)(job_app)
+                    print(f"[FireEmployee-{user.id}] Sent job application result notification")
+                except Exception as e:
+                    print(f"[FireEmployee-{user.id}] Error sending job application notification: {e}")
+
+            # Send DM to user
+            try:
+                dm_embed = discord.Embed(
+                    title="Employment Status Update",
+                    description=f"You have been removed from the {job_type} team.",
+                    color=discord.Color.red()
+                )
+                dm_embed.add_field(
+                    name="What This Means",
+                    value="Your job role has been removed from Discord. You may reapply for this position after a cooldown period.",
+                    inline=False
+                )
+                if feedback:
+                    dm_embed.add_field(
+                        name="Reason",
+                        value=feedback,
+                        inline=False
+                    )
+                await member.send(embed=dm_embed)
+                print(f"[FireEmployee-{user.id}] Sent firing notification DM to {member.name}")
+            except Exception as e:
+                print(f"[FireEmployee-{user.id}] Error sending DM to user: {e}")
+
+        except Exception as e:
+            print(f"[FireEmployee-{user.id}] General error in fire_employee: {e}")
+            import traceback
+            traceback.print_exc()
+
+    # Schedule the async function to run in the bot's event loop
+    print(f"[FireEmployee-{user.id}] Scheduling send() coroutine.")
+    asyncio.run_coroutine_threadsafe(send(), bot.loop)
+    print(f"[FireEmployee-{user.id}] Coroutine scheduled.")

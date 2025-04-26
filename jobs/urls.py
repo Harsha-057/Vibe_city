@@ -15,4 +15,6 @@ urlpatterns = [
     path('review/', views.JobApplicationReviewListView.as_view(), name='job_application_list'),
     path('review/<int:pk>/', views.JobApplicationReviewDetailView.as_view(), name='job_application_detail'),
     path('review/<int:pk>/update_status/', views.update_job_application_status, name='update_job_application_status'),
+
+    path('fire/<int:user_id>/', views.fire_employee_view, name='fire_employee'),
 ] 

@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from .models import LogEntry
 from jobs.models import JobApplication
 from jobs.views import can_access_review_list
+from django.db import models
 
 def staff_required(view_func):
     """Decorator to check if user is staff"""
@@ -51,6 +52,13 @@ def dashboard_view(request):
     # If whitelist apps also need permission checks, apply similar logic here
     recent_whitelist_applications = WhitelistApplication.objects.select_related('user').order_by('-created_at')[:5]
     
+    # Get current employees (users with any job role)
+    current_employees = User.objects.filter(
+        models.Q(is_sasp_employee=True) |
+        models.Q(is_ems_employee=True) |
+        models.Q(is_mechanic_employee=True)
+    ).order_by('username')
+    
     context = {
         'pending_whitelist_count': pending_whitelist_count,
         'approved_whitelist_count': approved_whitelist_count,
@@ -59,7 +67,8 @@ def dashboard_view(request):
         'pending_job_apps_count': pending_job_apps_count,
         'user_can_review_jobs': user_can_review_jobs,
         'recent_job_applications': recent_job_applications,
-        'recent_whitelist_applications': recent_whitelist_applications, # Pass recent whitelist apps
+        'recent_whitelist_applications': recent_whitelist_applications,
+        'current_employees': current_employees, # Add current employees to context
     }
     
     return render(request, 'dashboard/index.html', context)

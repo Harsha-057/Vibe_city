@@ -166,20 +166,84 @@
                                 </td>
                                 <td class="py-3">{{ app.get_job_type_display }}</td>
                                 <td class="py-3">
-                                    <span class="px-2 py-1 rounded-full text-xs {% if app.status == 'PENDING' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif app.status == 'APPROVED' %}bg-green-900/30 text-green-400 border border-green-800{% elif app.status == 'REJECTED' %}bg-red-900/30 text-red-400 border border-red-800{% endif %}">
+                                    <span class="px-2 py-1 rounded-full text-xs {% if app.status == 'PENDING' %}bg-yellow-900/30 text-yellow-400 border border-yellow-800{% elif app.status == 'APPROVED' %}bg-green-900/30 text-green-400 border border-green-800{% elif app.status == 'REJECTED' %}bg-red-900/30 text-red-400 border border-red-800{% elif app.status == 'FIRED' %}bg-gray-900/30 text-gray-400 border border-gray-800{% endif %}">
                                         {{ app.get_status_display }}
-                                        </span>
+                                    </span>
                                 </td>
                                 <td class="py-3 text-slate-400">{{ app.submitted_at|date:"M d, Y H:i" }}</td>
                                 <td class="py-3">
-                                    <a href="{% url 'job_application_detail' app.pk %}" class="text-highlight hover:underline">
-                                        <i class="fas fa-eye mr-1"></i> View
-                                    </a>
+                                    <div class="flex items-center space-x-2">
+                                        <a href="{% url 'job_application_detail' app.pk %}" class="text-highlight hover:underline">
+                                            <i class="fas fa-eye mr-1"></i> View
+                                        </a>
+                                        {% if app.status == 'APPROVED' %}
+                                        <a href="{% url 'fire_employee' app.applicant.id %}" class="text-red-400 hover:text-red-300">
+                                            <i class="fas fa-user-minus mr-1"></i> Fire
+                                        </a>
+                                        {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         {% empty %}
                             <tr>
                                 <td colspan="5" class="py-4 text-center text-slate-400">No recent job applications found for you to review.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if user.is_staff %}
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">Staff Actions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="{% url 'job_application_list' %}" class="card p-4 hover:bg-primary-100/30 transition">
+                    <h3 class="text-lg font-semibold mb-2">Review Applications</h3>
+                    <p class="text-textMuted">View and process job applications</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">Current Employees</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left border-b border-slate-700">
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Employee</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Department</th>
+                            <th class="pb-3 font-medium text-textSecondary uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for employee in current_employees %}
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <img src="{{ employee.avatar_url }}" alt="{{ employee.username }}" class="w-8 h-8 rounded-full mr-3">
+                                        <span>{{ employee.discord_tag|default:employee.username }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    {% if employee.is_sasp_employee %}
+                                        SASP
+                                    {% elif employee.is_ems_employee %}
+                                        EMS
+                                    {% elif employee.is_mechanic_employee %}
+                                        Mechanic
+                                    {% endif %}
+                                </td>
+                                <td class="py-3">
+                                    <a href="{% url 'fire_employee' employee.id %}" class="text-red-400 hover:text-red-300">
+                                        <i class="fas fa-user-minus mr-1"></i> Fire
+                                    </a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="py-4 text-center text-slate-400">No current employees found.</td>
                             </tr>
                         {% endfor %}
                     </tbody>
