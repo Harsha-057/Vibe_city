@@ -384,11 +384,11 @@ def send_application_result(application):
     asyncio.run_coroutine_threadsafe(send(), bot.loop)
 
 def send_job_application_result(application):
-    """Sends notification about job application results to channel and DM."""
+    """Sends notification about job application results to channel and DM, and manages Discord roles."""
     print(f"[JobAppNotify-{application.id}] Received request to notify.") # DEBUG
     if not bot_ready.is_set():
         print(f"[JobAppNotify-{application.id}] Bot not ready, waiting...")
-        bot_ready.wait(timeout=15) # Increased timeout
+        bot_ready.wait(timeout=15)
         if not bot_ready.is_set():
             print(f"[JobAppNotify-{application.id}] Bot did not become ready after wait.")
             return
@@ -426,6 +426,58 @@ def send_job_application_result(application):
             if not member:
                 print(f"[JobAppNotify-{application.id}] Member not found: {applicant_discord_id}")
                 return
+
+            # --- Role Management Logic --- #
+            try:
+                interview_roles = [
+                    int(settings.DISCORD_SASP_INTERVIEW_ROLE_ID),
+                    int(settings.DISCORD_EMS_INTERVIEW_ROLE_ID),
+                    int(settings.DISCORD_MECHANIC_INTERVIEW_ROLE_ID)
+                ]
+                hired_roles = [
+                    int(settings.DISCORD_SASP_HIRED_ROLE_ID),
+                    int(settings.DISCORD_EMS_HIRED_ROLE_ID),
+                    int(settings.DISCORD_MECHANIC_HIRED_ROLE_ID)
+                ]
+                # Remove all interview and hired roles first
+                for role_id in interview_roles + hired_roles:
+                    try:
+                        role = guild.get_role(role_id)
+                        if role and role in member.roles:
+                            await member.remove_roles(role)
+                            print(f"[JobAppNotify-{application.id}] Removed role {role_id} from {member.name}")
+                    except Exception as e:
+                        print(f"[JobAppNotify-{application.id}] Error removing role {role_id}: {e}")
+                # Add the appropriate role
+                if application.status == 'INTERVIEW_PENDING':
+                    if application.job_type == 'SASP':
+                        role_id = int(settings.DISCORD_SASP_INTERVIEW_ROLE_ID)
+                    elif application.job_type == 'EMS':
+                        role_id = int(settings.DISCORD_EMS_INTERVIEW_ROLE_ID)
+                    else:
+                        role_id = int(settings.DISCORD_MECHANIC_INTERVIEW_ROLE_ID)
+                    role = guild.get_role(role_id)
+                    if role:
+                        await member.add_roles(role)
+                        print(f"[JobAppNotify-{application.id}] Added interview role {role_id} to {member.name}")
+                elif application.status == 'HIRED':
+                    if application.job_type == 'SASP':
+                        role_id = int(settings.DISCORD_SASP_HIRED_ROLE_ID)
+                    elif application.job_type == 'EMS':
+                        role_id = int(settings.DISCORD_EMS_HIRED_ROLE_ID)
+                    else:
+                        role_id = int(settings.DISCORD_MECHANIC_HIRED_ROLE_ID)
+                    role = guild.get_role(role_id)
+                    if role:
+                        await member.add_roles(role)
+                        print(f"[JobAppNotify-{application.id}] Added hired role {role_id} to {member.name}")
+                # For FIRED and REJECTED, only removal is needed (already done above)
+            except Exception as e:
+                print(f"[JobAppNotify-{application.id}] Error in role management: {e}")
+
+            # --- Notification Logic (existing code) --- #
+            # ... existing notification code here ...
+            # (Keep the rest of the function as previously refactored)
 
             # Determine status color and text for embeds
             status_color = discord.Color.default()
@@ -465,7 +517,6 @@ def send_job_application_result(application):
                         elif application.job_type == 'MECHANIC':
                             channel_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
 
-                    # Mention user in content
                     await channel.send(content=f"Job application update for <@{applicant_discord_id}>:", embed=channel_embed)
                     print(f"[JobAppNotify-{application.id}] Sent channel message for status {status_text}")
             except Exception as e:
@@ -503,8 +554,6 @@ def send_job_application_result(application):
                     dm_embed.add_field(name="Next Steps", value="Please contact the relevant department lead or HR in Discord for onboarding instructions.", inline=False)
                     if final_feedback:
                         dm_embed.add_field(name="Additional Comments from Hiring Manager", value=final_feedback, inline=False)
-                    
-                    # Add job-specific image for approved applications
                     if application.job_type == 'SASP':
                         dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
                     elif application.job_type == 'EMS':
@@ -512,40 +561,125 @@ def send_job_application_result(application):
                     elif application.job_type == 'MECHANIC':
                         dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
                 elif application.status == 'INTERVIEW_PENDING':
-                     dm_embed.description = f"Good news! Your initial application for **{application.get_job_type_display()}** has passed review."
-                     dm_embed.add_field(name="Next Step: Interview", value="You will be contacted shortly by a department representative to schedule an interview. Please be prepared.", inline=False)
-                     if final_feedback:
+                    dm_embed.description = f"Good news! Your initial application for **{application.get_job_type_display()}** has passed review."
+                    dm_embed.add_field(name="Next Step: Interview", value="You will be contacted shortly by a department representative to schedule an interview. Please be prepared.", inline=False)
+                    if final_feedback:
                         dm_embed.add_field(name="Reviewer Comments", value=final_feedback, inline=False)
                 elif 'REJECTED' in application.status:
                     stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
                     dm_embed.description = f"We regret to inform you that your application for the **{application.get_job_type_display()}** position was not successful at the **{stage}**."
                     dm_embed.add_field(name="Reason/Feedback", value=final_feedback or "No specific feedback provided.", inline=False)
                     dm_embed.add_field(name="What Next?", value="You may be able to reapply after a cooldown period. Check department guidelines or contact HR.", inline=False)
-                    
-                    # Add job-specific image for rejected applications
                     if application.job_type == 'SASP':
                         dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
                     elif application.job_type == 'EMS':
                         dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
                     elif application.job_type == 'MECHANIC':
                         dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
-                # No DM needed for PENDING status usually
-                else:
-                     print(f"[JobAppNotify-{application.id}] No DM configured for status {application.status}")
-                     return # Don't send DM for unhandled statuses
 
                 await member.send(embed=dm_embed)
                 print(f"[JobAppNotify-{application.id}] Sent DM for status {status_text}")
-
             except Exception as e:
                 print(f"[JobAppNotify-{application.id}] Error sending DM: {e}")
+
+            # --- Send to Public Job Responses Channel --- #
+            try:
+                public_channel_id_setting = getattr(settings, 'DISCORD_JOB_RESPONSES_CHANNEL_ID', None)
+                print(f"[JobAppNotify-{application.id}] DISCORD_JOB_RESPONSES_CHANNEL_ID: {public_channel_id_setting}")
+                print(f"[JobAppNotify-{application.id}] Bot can see these channels:")
+                for ch in bot.get_all_channels():
+                    print(f"  - {ch.id}: {ch.name} (type: {type(ch)})")
+                if public_channel_id_setting:
+                    public_channel_id = int(public_channel_id_setting)
+                    public_channel = bot.get_channel(public_channel_id)
+                    if not public_channel:
+                        print(f"[JobAppNotify-{application.id}] Public responses channel not found: {public_channel_id}")
+                    else:
+                        print(f"[JobAppNotify-{application.id}] Sending to public channel: {public_channel.name} (ID: {public_channel.id})")
+                        public_embed = discord.Embed(
+                            title=f"Job Application Update: {application.get_job_type_display()}",
+                            color=status_color
+                        )
+                        mention = f"<@{applicant_discord_id}>"
+                        # Tailor message based on status
+                        if application.status == 'HIRED':
+                            public_embed.description = f"🎉 **Congratulations!**"
+                            public_embed.add_field(
+                                name="New Team Member",
+                                value=f"{mention} has been **HIRED** for the **{application.get_job_type_display()}** team!",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Achievement",
+                                value="Successfully completed the application and interview process.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                        elif application.status == 'INTERVIEW_PENDING':
+                            public_embed.description = f"📋 **Application Update**"
+                            public_embed.add_field(
+                                name="Status Update",
+                                value=f"{mention}'s application for **{application.get_job_type_display()}** has passed the initial review.",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Next Stage",
+                                value="Moving forward to the interview stage.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                        elif application.status == 'FIRED':
+                            public_embed.description = f"🚫 **Employment Update**"
+                            public_embed.add_field(
+                                name="Status Update",
+                                value=f"{mention} has been **FIRED** from the **{application.get_job_type_display()}** team.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                        elif application.status == 'REJECTED' or application.status == 'REJECTED_INTERVIEW':
+                            stage = "Form Stage" if application.status == 'REJECTED' else "Interview Stage"
+                            public_embed.description = f"📝 **Application Update**"
+                            public_embed.add_field(
+                                name="Status Update",
+                                value=f"Regarding {mention}'s application for **{application.get_job_type_display()}**:",
+                                inline=False
+                            )
+                            public_embed.add_field(
+                                name="Decision",
+                                value=f"The application was not successful at the **{stage}**.",
+                                inline=False
+                            )
+                            public_embed.set_footer(text="Vibe City RP | Department Recruitment")
+                        else:
+                            public_embed = None
+                        # Add appropriate image based on status
+                        if public_embed:
+                            if application.status == 'HIRED':
+                                if application.job_type == 'SASP':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/2_menxjj.jpg")
+                                elif application.job_type == 'EMS':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
+                                elif application.job_type == 'MECHANIC':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
+                            elif application.status == 'FIRED' or 'REJECTED' in application.status:
+                                if application.job_type == 'SASP':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
+                                elif application.job_type == 'EMS':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/2_n3ynli.jpg")
+                                elif application.job_type == 'MECHANIC':
+                                    public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/1_klkkrk.jpg")
+                            await public_channel.send(content=f"Application update for <@{applicant_discord_id}>:", embed=public_embed)
+                            print(f"[JobAppNotify-{application.id}] Sent PUBLIC response to channel {public_channel.name}.")
+                else:
+                    print(f"[JobAppNotify-{application.id}] DISCORD_JOB_RESPONSES_CHANNEL_ID not set. Skipping public notification.")
+            except Exception as e:
+                print(f"[JobAppNotify-{application.id}] Error sending to PUBLIC responses channel: {e}")
 
         except Exception as e:
             print(f"[JobAppNotify-{application.id}] General error: {e}")
             import traceback
             traceback.print_exc()
 
-    # Schedule the async function to run in the bot's event loop
     print(f"[JobAppNotify-{application.id}] Scheduling send() coroutine.") 
     asyncio.run_coroutine_threadsafe(send(), bot.loop)
     print(f"[JobAppNotify-{application.id}] Coroutine scheduled.")
