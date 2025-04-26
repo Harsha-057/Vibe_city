@@ -15,6 +15,7 @@ class JobApplication(models.Model):
         ('HIRED', 'Hired'),
         ('REJECTED', 'Rejected (Form Stage)'),
         ('REJECTED_INTERVIEW', 'Rejected (Interview Stage)'),
+        ('FIRED', 'Fired'),
     ]
 
     applicant = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

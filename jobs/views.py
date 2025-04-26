@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.models import Group
 from django.utils.module_loading import import_string
+from django.contrib.auth import get_user_model
 
 from .models import JobApplication
 from .forms import SASPApplicationForm, EMSApplicationForm, MechanicApplicationForm
@@ -352,3 +353,82 @@ def update_job_application_status(request, pk):
     else:
         # GET request, just redirect back
         return redirect('job_application_detail', pk=pk)
+
+@login_required
+def fire_employee_view(request, user_id):
+    """View to handle firing an employee."""
+    if not request.user.is_staff:
+        messages.error(request, "You do not have permission to fire employees.")
+        return redirect('dashboard')
+    
+    employee = get_object_or_404(get_user_model(), id=user_id)
+    
+    # Determine which job the employee has
+    job_type = None
+    if employee.is_sasp_employee:
+        job_type = 'SASP'
+    elif employee.is_ems_employee:
+        job_type = 'EMS'
+    elif employee.is_mechanic_employee:
+        job_type = 'MECHANIC'
+    
+    if not job_type:
+        messages.error(request, "This user is not currently employed in any department.")
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        try:
+            # Get feedback from form
+            feedback = request.POST.get('feedback', '').strip()
+            
+            # Update user's employment status first
+            if job_type == 'SASP':
+                employee.is_sasp_employee = False
+            elif job_type == 'EMS':
+                employee.is_ems_employee = False
+            elif job_type == 'MECHANIC':
+                employee.is_mechanic_employee = False
+            employee.save()
+
+            # Find and update the job application
+            job_app = JobApplication.objects.filter(
+                applicant=employee,
+                job_type=job_type,
+                status='HIRED'
+            ).first()
+
+            if job_app:
+                job_app.status = 'FIRED'
+                job_app.interview_feedback = feedback if feedback else "No reason provided"
+                job_app.interview_reviewed_at = timezone.now()
+                job_app.save()
+
+                # Send notification about the status change
+                try:
+                    send_notification_func = import_string('discord_bot.bot.send_job_application_result')
+                    send_notification_func(job_app)
+                except Exception as e:
+                    print(f"Error sending job application notification for {employee.id}: {e}")
+                    messages.warning(request, "Status updated but notification failed to send.")
+
+            # Call the Discord bot function to remove roles
+            try:
+                fire_func = import_string('discord_bot.bot.fire_employee')
+                fire_func(employee, job_type, feedback)
+            except Exception as e:
+                print(f"Error removing Discord roles for {employee.id}: {e}")
+                messages.warning(request, "Status updated but Discord roles could not be removed.")
+            
+            messages.success(request, f"{employee.username} has been fired from {job_type}.")
+        except Exception as e:
+            messages.error(request, f"Error firing employee: {e}")
+            print(f"Error firing employee {employee.id}: {e}")
+            import traceback
+            traceback.print_exc()
+        
+        return redirect('dashboard')
+    
+    return render(request, 'jobs/fire_employee.html', {
+        'employee': employee,
+        'job_type': job_type
+    })

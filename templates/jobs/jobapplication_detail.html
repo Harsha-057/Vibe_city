@@ -94,7 +94,7 @@
             <div>
                 <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">Status & Review History</h2>
                 <p class="text-sm mb-2"><strong>Current Status:</strong> 
-                     <span class="font-semibold px-2 py-0.5 rounded text-xs {% if application.status == 'HIRED' %}bg-green-500/50 text-green-300{% elif application.status == 'INTERVIEW_PENDING' %}bg-blue-500/50 text-blue-300 {% elif application.status == 'PENDING' %}bg-yellow-500/50 text-yellow-300{% elif 'REJECTED' in application.status %}bg-red-500/50 text-red-300{% else %}bg-slate-500/50{% endif %}">
+                     <span class="font-semibold px-2 py-0.5 rounded text-xs {% if application.status == 'HIRED' %}bg-green-500/50 text-green-300{% elif application.status == 'INTERVIEW_PENDING' %}bg-blue-500/50 text-blue-300 {% elif application.status == 'PENDING' %}bg-yellow-500/50 text-yellow-300{% elif 'REJECTED' in application.status %}bg-red-500/50 text-red-300{% elif application.status == 'FIRED' %}bg-gray-500/50 text-gray-300{% else %}bg-slate-500/50{% endif %}">
                         {{ application.get_status_display }}
                     </span>
                 </p>
@@ -157,6 +157,23 @@
                     </button>
                      <button type="submit" name="action" value="REJECT_INTERVIEW" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
                         <i class="fas fa-times mr-1"></i> Reject (Interview Stage)
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+
+            {# --- Fire Employee Option --- #}
+            {% if application.status == 'HIRED' and user_can_hire %}
+            <form method="post" action="{% url 'fire_employee' application.applicant.id %}" class="mt-4 border-t border-slate-700 pt-6">
+                {% csrf_token %}
+                <h3 class="text-lg font-semibold mb-3">Employee Management</h3>
+                <div class="mb-4">
+                    <label for="fire_feedback" class="block text-textSecondary text-sm font-bold mb-2">Reason for Firing (Optional):</label>
+                    <textarea name="feedback" id="fire_feedback" rows="3" class="input"></textarea>
+                </div>
+                <div class="flex space-x-4 justify-end">
+                    <button type="submit" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
+                        <i class="fas fa-user-minus mr-1"></i> Fire Employee
                     </button>
                 </div>
             </form>
