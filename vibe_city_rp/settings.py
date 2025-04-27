@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'whitelist',
     'dashboard',
     'jobs',
+    'guidebook',
 ]
 
 MIDDLEWARE = [

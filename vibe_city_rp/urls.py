@@ -14,6 +14,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('jobs/', include('jobs.urls')),
+    path('guidebook/', include('guidebook.urls')),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('server-info/', views.server_info, name='server_info'),
