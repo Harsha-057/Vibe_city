@@ -12,6 +12,7 @@ from io import BytesIO
 import aiohttp
 import ssl
 import certifi
+from discord import ui, app_commands
 
 
 original_init = aiohttp.ClientSession.__init__
@@ -106,110 +107,44 @@ class VibeCity(commands.Bot):
         intents.members = True
         
         super().__init__(command_prefix='!', intents=intents)
-        
-        # Register slash commands
-        self.tree.command(name="testwelcome", description="Test the welcome message")(self.testwelcome)
     
     async def setup_hook(self):
-        # Sync slash commands
+        self.tree.add_command(self.whiteliststeps)
         await self.tree.sync()
     
-    async def testwelcome(self, interaction: discord.Interaction):
-        """Test command to simulate the welcome message"""
-        try:
-            member = interaction.user
-            
-            # Generate welcome banner
-            welcome_banner = await create_welcome_banner(member)
-            if not welcome_banner:
-                await interaction.response.send_message("Error generating welcome image", ephemeral=True)
-                return
-            
-            # Create embed
-            embed = discord.Embed(
-                title="Vibe City 2.0",
-                description=f"Welcome {member.mention} to Vibe City 2.0",
-                color=discord.Color.blue()
-            )
-            
-            # Add the bullet points
-            embed.add_field(
-                name="",
-                value="🔹 Make sure to read Server Rules.\n🔹 Explore the <#1318598674690867250> and <#1315379733806059590> channels.",
-                inline=False
-            )
-            
-            # Set the footer
-            embed.set_footer(text="#VibeCity2.0")
-            
-            # Send the welcome banner and embed
-            file = discord.File(welcome_banner, filename="welcome.png")
-            embed.set_image(url="attachment://welcome.png")
-            
-            await interaction.response.send_message(content=f"{member.mention}", file=file, embed=embed)
-            
-        except Exception as e:
-            print(f"Error sending test welcome message: {e}")
-            await interaction.response.send_message("Error generating welcome message", ephemeral=True)
-    
+    def get_whitelist_embed_and_view(self):
+        class WhitelistApplyView(ui.View):
+            def __init__(self):
+                super().__init__()
+                self.add_item(ui.Button(label="Apply for Whitelist", url="http://vibecityrp.in/", style=discord.ButtonStyle.link))
+        embed = discord.Embed(
+            title="How to Apply for Whitelist",
+            description="Follow these steps to apply for the Vibe City RP whitelist:",
+            color=discord.Color.green()
+        )
+        embed.add_field(name="Step 1", value="Go to the application website.", inline=False)
+        embed.add_field(name="Step 2", value="Log in with your Discord account.", inline=False)
+        embed.add_field(name="Step 3", value="Fill out the whitelist application form with accurate information.", inline=False)
+        embed.add_field(name="Step 4", value="Submit your application and wait for staff review.", inline=False)
+        embed.add_field(name="Processing Times", value="Most applications are cleared within 1 day. If it takes longer, please be patient!", inline=False)
+        embed.set_footer(text="Vibe City RP | Whitelist Application")
+        return embed, WhitelistApplyView()
+
+    @app_commands.command(name="whiteliststeps", description="Show steps to apply for whitelist")
+    async def whiteliststeps(self, interaction: discord.Interaction):
+        embed, view = self.get_whitelist_embed_and_view()
+        await interaction.response.send_message(embed=embed, view=view)
+
     async def on_ready(self):
         print(f'Logged in as {self.user.name} ({self.user.id})')
         bot_ready.set()
 
-    async def on_member_join(self, member):
-        try:
-            # Get the welcome channel
-            welcome_channel = self.get_channel(int(settings.DISCORD_WELCOME_CHANNEL_ID))
-            if not welcome_channel:
-                print(f"Welcome channel not found")
-                return
-            
-            # Generate welcome banner
-            welcome_banner = await create_welcome_banner(member)
-            if not welcome_banner:
-                return
-            
-            # Create embed
-            embed = discord.Embed(
-                title="Vibe City 2.0",
-                description=f"Welcome {member.mention} to Vibe City 2.0",
-                color=discord.Color.blue()
-            )
-            
-            # Add the bullet points
-            embed.add_field(
-                name="",
-                value="🔹 Make sure to read Server Rules.\n🔹 Explore the <#1318598674690867250> and <#1315379733806059590> channels.",
-                inline=False
-            )
-            
-            # Set the footer
-            embed.set_footer(text="#LifeinVibeCity2.0")
-            
-            # Send the welcome banner and embed
-            file = discord.File(welcome_banner, filename="welcome.png")
-            embed.set_image(url="attachment://welcome.png")
-            
-            await welcome_channel.send(content=f"{member.mention}", file=file, embed=embed)
-            
-        except Exception as e:
-            print(f"Error sending welcome message: {e}")
-
     async def on_message(self, message):
-        # Prevent the bot from replying to itself
         if message.author == self.user:
             return
-        
-        # Check for keywords in the message
-        keywords = ['form', 'apply', 'whitelist']
-        if any(keyword in message.content.lower() for keyword in keywords):
-            response = (
-                "To apply, please visit: [Vibe City RP Website](http://104.234.180.225/)\n\n"
-                "⌛Processing Times:\n"
-                "Regular applications: ``Cleared within 1 day``\n\n"
-                "If your application is taking longer, we're working hard through the workload and will get it out ASAP. Thanks for your patience!"
-            )
-            await message.reply(response)
+        if 'whitelist' in message.content.lower():
+            embed, view = self.get_whitelist_embed_and_view()
+            await message.reply(embed=embed, view=view)
 
 def run_bot():
     global bot
