@@ -28,10 +28,69 @@
 </style>
 <div class="container mx-auto px-4 py-12">
     <h1 class="text-4xl font-bold mb-8 text-center text-white">{{ job_title }} Job Application</h1>
+    {{ form.errors }}
     <form method="post" class="bg-slate-900/75 backdrop-blur-md border border-white/20 text-white shadow-lg rounded-lg px-10 pt-8 pb-10 mb-4 max-w-xl mx-auto">
         {% csrf_token %}
         <div class="space-y-6">
-            {{ form|crispy }}
+            <!-- Always show basic info fields -->
+            <div>
+              {{ form.irl_name|as_crispy_field }}
+          </div>
+          <div>
+              {{ form.irl_age|as_crispy_field }}
+          </div>
+          <div>
+              {{ form.discord_name|as_crispy_field }}
+          </div>
+            <div>
+                {{ form.character_name|as_crispy_field }}
+            </div>
+            <div>
+                {{ form.date_of_birth|as_crispy_field }}
+            </div>
+            <!-- Always show experience_level -->
+            <div>
+                {{ form.experience_level|as_crispy_field }}
+            </div>
+            <div>
+                {{ form.reason|as_crispy_field }}
+            </div>
+            <!-- Show only for non-experienced -->
+            <div class="sasp-recruit">
+                {{ form.recruit_reason|as_crispy_field }}
+            </div>
+            <!-- Show only for experienced -->
+            
+            <div class="sasp-detailed">
+                {{ form.character_backstory|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.past_experience|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_vehicle_pursuit|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_use_of_force|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_traffic_stops|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_evidence|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_miranda|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_radio|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_officer_down|as_crispy_field }}
+            </div>
+            <div class="sasp-detailed">
+                {{ form.pd_rules_scene_management|as_crispy_field }}
+            </div>
         </div>
         <div class="flex items-center justify-center mt-10">
             <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-150 ease-in-out" type="submit">
@@ -44,4 +103,21 @@
          <a href="{% url 'available_jobs' %}" class="text-sm text-white hover:text-gray-300 transition">&larr; Back to Available Jobs</a>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function toggleSaspFields() {
+        var exp = document.querySelector('input[name="experience_level"]:checked');
+        var isExperienced = exp && exp.value === 'experienced';
+        document.querySelectorAll('.sasp-detailed').forEach(function(el) {
+            el.style.display = isExperienced ? '' : 'none';
+        });
+        var recruit = document.querySelector('.sasp-recruit');
+        if (recruit) recruit.style.display = isExperienced ? 'none' : '';
+    }
+    toggleSaspFields();
+    document.querySelectorAll('input[name="experience_level"]').forEach(function(radio) {
+        radio.addEventListener('change', toggleSaspFields);
+    });
+});
+</script>
 {% endblock %} 

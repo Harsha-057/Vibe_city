@@ -56,116 +56,120 @@
 
             {# --- Display Job Specific Fields --- #}
             {% with job_type=application.job_type %}
-                {% if job_type == 'SASP' or job_type == 'EMS' or job_type == 'MECHANIC' %}
+                {% if job_type == 'SASP' %}
                 <div>
                     <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">{{ job_type }} Specific Answers</h2>
-                    {% if job_type == 'SASP' %}
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Full Legal Name:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.irl_name|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Age:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.irl_age|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Discord Username & Tag:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.discord_name|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Character Name:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.character_name|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Date of Birth:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.date_of_birth|date:"Y-m-d"|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Reason for Applying:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.reason|linebreaksbr|default:"N/A" }}</p>
+                    </div>
+                    {% if application.experience_level == 'non_experienced' %}
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">IRL Name:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.irl_name|default:"N/A" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Why do you want to join SASP?</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.recruit_reason|linebreaksbr|default:"N/A" }}</p>
                         </div>
-                        <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">IRL Age:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.irl_age|default:"N/A" }}</p>
-                        </div>
-                        <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Discord Name:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.discord_name|default:"N/A" }}</p>
-                        </div>
+                    {% elif application.experience_level == 'experienced' %}
                         <div class="mb-4">
                             <h3 class="font-semibold text-textSecondary">Character Backstory:</h3>
                             <p class="ml-4 text-textPrimary mt-1">{{ application.character_backstory|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Past Experience:</h3>
+                            <h3 class="font-semibold text-textSecondary">Relevant Experience:</h3>
                             <p class="ml-4 text-textPrimary mt-1">{{ application.past_experience|linebreaksbr|default:"N/A" }}</p>
                         </div>
-                        <div>
-                            <h3 class="font-semibold text-textSecondary">Basic PD Rules Understanding:</h3>
-                            {% if application.pd_rules_vehicle_pursuit %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Vehicle Pursuit Protocols:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_vehicle_pursuit|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_use_of_force %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Use of Force Continuum:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_use_of_force|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_traffic_stops %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Traffic Stop Procedures:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_traffic_stops|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_evidence %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Evidence Handling:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_evidence|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_miranda %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Miranda Rights:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_miranda|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_radio %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Radio Communication:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_radio|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_officer_down %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Officer Down Procedures:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_officer_down|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                            {% if application.pd_rules_scene_management %}
-                            <div class="ml-4 mb-2">
-                                <h4 class="text-sm font-medium text-textSecondary">Scene Management:</h4>
-                                <p class="text-textPrimary mt-1">{{ application.pd_rules_scene_management|linebreaksbr }}</p>
-                            </div>
-                            {% endif %}
-                        </div>
-                    {% elif job_type == 'EMS' %}
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Why Do You Want to Join EMS?</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_interest|linebreaksbr|default:"None provided" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Vehicle Pursuit Protocols:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_vehicle_pursuit|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Qualities of a Good EMS Worker:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_qualities|linebreaksbr|default:"None provided" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Use of Force Continuum:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_use_of_force|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Helping in a Stressful Situation:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_helped_someone|linebreaksbr|default:"None provided" }}</p>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-textSecondary">Handling High-Pressure Situations:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_pressure_handling|linebreaksbr|default:"N/A" }}</p>
-                        </div>
-                    {% elif job_type == 'MECHANIC' %}
-                        <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Mechanical Skills and Experience:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_skills|linebreaksbr|default:"N/A" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Traffic Stop Procedures:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_traffic_stops|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Familiarity with Specialized Tools:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_tool_knowledge|linebreaksbr|default:"N/A" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Evidence Handling and Chain of Custody:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_evidence|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Problem-Solving Example:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_problem_solving|linebreaksbr|default:"N/A" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Miranda Rights and Arrest Procedures:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_miranda|linebreaksbr|default:"N/A" }}</p>
                         </div>
-                        <div>
-                            <h3 class="font-semibold text-textSecondary">Interest in Working as a Mechanic:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_interest|linebreaksbr|default:"N/A" }}</p>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Radio Communication Protocols:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_radio|linebreaksbr|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Officer Down Procedures:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_officer_down|linebreaksbr|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Scene Management and Perimeter Control:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.pd_rules_scene_management|linebreaksbr|default:"N/A" }}</p>
                         </div>
                     {% endif %}
+                </div>
+                {% elif job_type == 'EMS' %}
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">{{ job_type }} Specific Answers</h2>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Why Do You Want to Join EMS?</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.ems_interest|linebreaksbr|default:"None provided" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Qualities of a Good EMS Worker:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.ems_qualities|linebreaksbr|default:"None provided" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Helping in a Stressful Situation:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.ems_helped_someone|linebreaksbr|default:"None provided" }}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-textSecondary">Handling High-Pressure Situations:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.ems_pressure_handling|linebreaksbr|default:"N/A" }}</p>
+                    </div>
+                </div>
+                {% elif job_type == 'MECHANIC' %}
+                <div>
+                    <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">{{ job_type }} Specific Answers</h2>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Mechanical Skills and Experience:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_skills|linebreaksbr|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Familiarity with Specialized Tools:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_tool_knowledge|linebreaksbr|default:"N/A" }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-textSecondary">Problem-Solving Example:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_problem_solving|linebreaksbr|default:"N/A" }}</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-textSecondary">Interest in Working as a Mechanic:</h3>
+                        <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_interest|linebreaksbr|default:"N/A" }}</p>
+                    </div>
                 </div>
                 {% endif %}
             {% endwith %}

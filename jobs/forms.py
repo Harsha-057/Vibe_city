@@ -18,72 +18,69 @@ class BaseJobApplicationForm(forms.ModelForm):
         }
 
 class SASPApplicationForm(BaseJobApplicationForm):
-    irl_name = forms.CharField(max_length=255, required=True, help_text="Please provide your full legal name")
-    irl_age = forms.IntegerField(required=True, help_text="Please provide your current age")
-    discord_name = forms.CharField(max_length=255, required=True, help_text="Please provide your Discord username and tag (e.g., username#1234)")
-    character_backstory = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4}), 
-        required=True, 
-        help_text="Please provide a detailed backstory for your character, including their background, motivations, and any relevant life experiences"
+    EXPERIENCE_CHOICES = [
+        ("experienced", "Experienced"),
+        ("non_experienced", "Non-Experienced"),
+    ]
+    experience_level = forms.ChoiceField(
+        label="Do you have prior law enforcement experience?",
+        choices=EXPERIENCE_CHOICES,
+        widget=forms.RadioSelect,
+        required=True,
+        help_text="Select whether you have previous law enforcement or RP experience."
     )
-    past_experience = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4}), 
-        required=True, 
-        help_text="Please describe your relevant experience in law enforcement, roleplay, or similar fields"
-    )
-    
-    # PD Rules Questions
-    pd_rules_vehicle_pursuit = forms.CharField(
-        label="Vehicle Pursuit Protocols",
+
+    # Recruit question (for non-experienced)
+    recruit_reason = forms.CharField(
+        label="Why do you want to join SASP?",
         widget=forms.Textarea(attrs={'rows': 3}),
         required=False,
-        help_text="Please explain the proper protocols for initiating, conducting, and terminating vehicle pursuits."
+        help_text="Briefly explain your motivation for joining SASP."
     )
-    pd_rules_use_of_force = forms.CharField(
-        label="Use of Force Continuum",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please describe your understanding of the Use of Force Continuum and when each level of force is appropriate."
-    )
-    pd_rules_traffic_stops = forms.CharField(
-        label="Traffic Stop Procedures",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please describe the proper procedures for conducting traffic stops and maintaining officer safety."
-    )
-    pd_rules_evidence = forms.CharField(
-        label="Evidence Handling and Chain of Custody",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please explain the correct procedures for handling, collecting, and maintaining the chain of custody for evidence."
-    )
-    pd_rules_miranda = forms.CharField(
-        label="Miranda Rights and Arrest Procedures",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please describe when and how Miranda rights should be given and the proper procedures for making an arrest."
-    )
-    pd_rules_radio = forms.CharField(
-        label="Radio Communication Protocols",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please explain the proper protocols for radio communication during police operations."
-    )
-    pd_rules_officer_down = forms.CharField(
-        label="Officer Down Procedures",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please describe the appropriate response and procedures when an officer is down."
-    )
-    pd_rules_scene_management = forms.CharField(
-        label="Scene Management and Perimeter Control",
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        help_text="Please explain the steps for managing a crime or incident scene and establishing a secure perimeter."
-    )
+
+    # All other SASP fields (now optional)
+    irl_name = forms.CharField(label="Full Legal Name", max_length=255, required=False, help_text="Please provide your full legal name.")
+    irl_age = forms.IntegerField(label="Your Age", required=False, help_text="Please provide your current age.")
+    discord_name = forms.CharField(label="Discord Username & Tag", max_length=255, required=False, help_text="e.g., username#1234")
+    character_backstory = forms.CharField(label="Character Backstory", widget=forms.Textarea(attrs={'rows': 4}), required=False, help_text="Provide a detailed backstory for your character.")
+    past_experience = forms.CharField(label="Relevant Experience", widget=forms.Textarea(attrs={'rows': 4}), required=False, help_text="Describe your relevant experience in law enforcement, RP, or similar fields.")
+    pd_rules_vehicle_pursuit = forms.CharField(label="Vehicle Pursuit Protocols", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Explain the proper protocols for vehicle pursuits.")
+    pd_rules_use_of_force = forms.CharField(label="Use of Force Continuum", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Describe your understanding of the Use of Force Continuum.")
+    pd_rules_traffic_stops = forms.CharField(label="Traffic Stop Procedures", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Describe the proper procedures for traffic stops.")
+    pd_rules_evidence = forms.CharField(label="Evidence Handling and Chain of Custody", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Explain the correct procedures for handling evidence.")
+    pd_rules_miranda = forms.CharField(label="Miranda Rights and Arrest Procedures", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Explain Miranda rights and arrest procedures.")
+    pd_rules_radio = forms.CharField(label="Radio Communication Protocols", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Explain the proper radio communication protocols.")
+    pd_rules_officer_down = forms.CharField(label="Officer Down Procedures", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Describe the appropriate response when an officer is down.")
+    pd_rules_scene_management = forms.CharField(label="Scene Management and Perimeter Control", widget=forms.Textarea(attrs={'rows': 3}), required=False, help_text="Explain the steps for managing a scene and establishing a secure perimeter.")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        experience_level = cleaned_data.get('experience_level')
+        if experience_level == 'non_experienced':
+            if not cleaned_data.get('recruit_reason'):
+                self.add_error('recruit_reason', 'This field is required for non-experienced applicants.')
+            # Only clear detailed fields, NOT irl_name, irl_age, discord_name
+            detailed_fields = [
+                'character_backstory', 'past_experience',
+                'pd_rules_vehicle_pursuit', 'pd_rules_use_of_force',
+                'pd_rules_traffic_stops', 'pd_rules_evidence', 'pd_rules_miranda',
+                'pd_rules_radio', 'pd_rules_officer_down', 'pd_rules_scene_management'
+            ]
+            for field in detailed_fields:
+                cleaned_data[field] = ''
+        elif experience_level == 'experienced':
+            # Require key fields for experienced applicants
+            required_fields = [
+                'irl_name', 'irl_age', 'discord_name', 'character_backstory', 'past_experience'
+            ]
+            for field in required_fields:
+                if not cleaned_data.get(field):
+                    self.add_error(field, 'This field is required for experienced applicants.')
+        return cleaned_data
 
     class Meta(BaseJobApplicationForm.Meta):
         fields = BaseJobApplicationForm.Meta.fields + [
+            'experience_level', 'recruit_reason',
             'irl_name', 'irl_age', 'discord_name', 'character_backstory', 'past_experience',
             'pd_rules_vehicle_pursuit', 'pd_rules_use_of_force', 'pd_rules_traffic_stops',
             'pd_rules_evidence', 'pd_rules_miranda', 'pd_rules_radio',
