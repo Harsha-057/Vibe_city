@@ -331,10 +331,13 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{% url 'home' %}" class="text-textPrimary hover:text-accent transition-colors">Home</a>
                     <a href="{% url 'rules' %}" class="text-textPrimary hover:text-accent transition-colors">Rules</a>
-                    <a href="{% url 'guidebook:list' %}" class="text-textPrimary hover:text-accent transition-colors">Guidebook</a>
-                    <a href="{% url 'keybinds:list' %}" class="text-textPrimary hover:text-accent transition-colors">Keybinds</a>
+                   
                     <a href="{% url 'available_jobs' %}" class="text-textPrimary hover:text-accent transition-colors">Jobs</a>
                     <a href="{% url 'whitelist_apply' %}" class="text-textPrimary hover:text-accent transition-colors">Whitelist</a>
+                    {% if user.is_staff and user.is_whitelisted%}
+                    <a href="{% url 'guidebook:list' %}" class="text-textPrimary hover:text-accent transition-colors">Guidebook</a>
+                    <a href="{% url 'keybinds:list' %}" class="text-textPrimary hover:text-accent transition-colors">Keybinds</a>
+                    {% endif %}
                     {% if user.is_authenticated and user.is_staff %}
                         <a href="{% url 'job_application_list' %}" class="text-textPrimary hover:text-accent transition-colors">Review Apps</a>
                         <a href="{% url 'admin:index' %}" class="text-textPrimary hover:text-accent transition-colors">Admin</a>
