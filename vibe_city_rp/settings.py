@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = ['vibecityrp.in', 'www.vibecityrp.in', '204.13.120.100', 'localhost', '127.0.0.1']
 
