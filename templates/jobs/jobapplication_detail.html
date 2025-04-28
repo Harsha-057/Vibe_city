@@ -320,7 +320,7 @@
         </div>
 
         <div class="text-center mt-6">
-            <a href="{% url 'job_application_list' %}{% if request.GET.status %}?status={{ request.GET.status }}{% elif application.status %}/?status={{ application.status }}{% else %}/?status=PENDING{% endif %}" class="text-sm text-textMuted hover:text-accent transition">&larr; Back to Review List</a>
+            <a href="{% url 'job_application_list' %}{% if request.GET.status %}?status={{ request.GET.status }}{% elif application.status %}?status={{ application.status }}{% else %}?status=PENDING{% endif %}" class="text-sm text-textMuted hover:text-accent transition">&larr; Back to Review List</a>
         </div>
 
     </div>

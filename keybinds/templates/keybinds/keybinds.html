@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Keybinds - Vibe City RP{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-textPrimary mb-2">Keybinds</h1>
+        <p class="text-textSecondary">View and search for all available keybinds in Vibe City RP.</p>
+    </div>
+
+    <!-- Search and Filter Form -->
+    <div class="bg-primary-50 rounded-lg shadow-md p-6 mb-8 border border-gray-800">
+        <form method="get" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="search" class="block text-sm font-medium text-textSecondary mb-1">Search</label>
+                    <input type="text" name="search" id="search" value="{{ search_query }}" 
+                           class="w-full px-4 py-2 bg-primary-100 border border-gray-800 rounded-md focus:ring-accent focus:border-accent text-textPrimary"
+                           placeholder="Search by name, key, or command...">
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-textSecondary mb-1">Category</label>
+                    <select name="category" id="category" 
+                            class="w-full px-4 py-2 bg-primary-100 border border-gray-800 rounded-md focus:ring-accent focus:border-accent text-textPrimary">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                            <option value="{{ category }}" {% if category == category_filter %}selected{% endif %}>
+                                {{ category }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-accent text-white rounded-md hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-primary-50 transition-colors">
+                    Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Keybinds Display -->
+    {% if keybinds_by_category %}
+        {% for category, keybinds in keybinds_by_category.items %}
+            <div class="bg-primary-50 rounded-lg shadow-md p-6 mb-6 border border-gray-800">
+                <h2 class="text-2xl font-bold text-textPrimary mb-4">{{ category }}</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-800">
+                        <thead class="bg-primary-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Key</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Command</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-textSecondary uppercase tracking-wider">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-primary-50 divide-y divide-gray-800">
+                            {% for keybind in keybinds %}
+                                <tr class="hover:bg-primary-100 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-textPrimary">{{ keybind.name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <span class="px-2 py-1 bg-accent/10 text-accent rounded-md border border-accent/20">{{ keybind.key }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-textSecondary">{{ keybind.command }}</td>
+                                    <td class="px-6 py-4 text-sm text-textSecondary">{{ keybind.description }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="bg-primary-50 rounded-lg shadow-md p-6 text-center border border-gray-800">
+            <p class="text-textSecondary">No keybinds found matching your criteria.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 
