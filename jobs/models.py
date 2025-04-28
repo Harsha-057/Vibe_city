@@ -52,13 +52,42 @@ class JobApplication(models.Model):
     sasp_scenario_response = models.TextField(null=True, blank=True, help_text="Describe how you would handle a specific scenario (e.g., a high-speed pursuit ending in a crash).")
     sasp_leadership_experience = models.TextField(null=True, blank=True, help_text="Describe any relevant leadership experience (Optional).")
 
+    # SASP specific fields
+    irl_name = models.CharField(max_length=255, null=True, blank=True)
+    irl_age = models.IntegerField(null=True, blank=True)
+    discord_name = models.CharField(max_length=255, null=True, blank=True)
+    character_backstory = models.TextField(null=True, blank=True)
+    past_experience = models.TextField(null=True, blank=True)
+    
+    # PD Rules Fields
+    pd_rules_vehicle_pursuit = models.TextField(null=True, blank=True)
+    pd_rules_use_of_force = models.TextField(null=True, blank=True)
+    pd_rules_traffic_stops = models.TextField(null=True, blank=True)
+    pd_rules_evidence = models.TextField(null=True, blank=True)
+    pd_rules_miranda = models.TextField(null=True, blank=True)
+    pd_rules_radio = models.TextField(null=True, blank=True)
+    pd_rules_officer_down = models.TextField(null=True, blank=True)
+    pd_rules_scene_management = models.TextField(null=True, blank=True)
+
     # EMS
-    ems_medical_certification = models.CharField(max_length=255, null=True, blank=True, help_text="Do you hold any relevant medical certifications? (e.g., EMT, Paramedic) (Optional)")
-    ems_pressure_handling = models.TextField(null=True, blank=True, help_text="Describe how you handle high-pressure situations.")
+    ems_interest = models.TextField(null=True, blank=True)
+    ems_qualities = models.TextField(null=True, blank=True)
+    ems_helped_someone = models.TextField(null=True, blank=True)
+    ems_pressure_handling = models.TextField(null=True, blank=True)
 
     # Mechanic
-    mechanic_skills = models.TextField(null=True, blank=True, help_text="List your relevant mechanical skills and experience (e.g., engine repair, tuning, bodywork).")
-    mechanic_tool_knowledge = models.BooleanField(null=True, blank=True, help_text="Do you own or have extensive knowledge of specialized mechanic tools? (Optional)")
+    mechanic_skills = models.TextField(null=True, blank=True)
+    mechanic_tool_knowledge = models.TextField(null=True, blank=True)
+    mechanic_problem_solving = models.TextField(null=True, blank=True)
+    mechanic_interest = models.TextField(null=True, blank=True)
+
+    # EMS specific fields
+    ems_medical_certification = models.CharField(max_length=255, null=True, blank=True)
+    ems_pressure_handling = models.TextField(null=True, blank=True)
+
+    # Mechanic specific fields
+    mechanic_skills = models.TextField(null=True, blank=True)
+    mechanic_tool_knowledge = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.applicant.username} - {self.get_job_type_display()} ({self.get_status_display()})"

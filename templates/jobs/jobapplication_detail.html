@@ -61,30 +61,109 @@
                     <h2 class="text-xl font-semibold mb-3 border-b border-slate-700 pb-2">{{ job_type }} Specific Answers</h2>
                     {% if job_type == 'SASP' %}
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Scenario Response:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.sasp_scenario_response|linebreaksbr|default:"N/A" }}</p>
+                            <h3 class="font-semibold text-textSecondary">IRL Name:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.irl_name|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">IRL Age:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.irl_age|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Discord Name:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.discord_name|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Character Backstory:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.character_backstory|linebreaksbr|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Past Experience:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.past_experience|linebreaksbr|default:"N/A" }}</p>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-textSecondary">Leadership Experience:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.sasp_leadership_experience|linebreaksbr|default:"None provided" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Basic PD Rules Understanding:</h3>
+                            {% if application.pd_rules_vehicle_pursuit %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Vehicle Pursuit Protocols:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_vehicle_pursuit|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_use_of_force %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Use of Force Continuum:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_use_of_force|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_traffic_stops %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Traffic Stop Procedures:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_traffic_stops|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_evidence %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Evidence Handling:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_evidence|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_miranda %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Miranda Rights:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_miranda|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_radio %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Radio Communication:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_radio|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_officer_down %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Officer Down Procedures:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_officer_down|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
+                            {% if application.pd_rules_scene_management %}
+                            <div class="ml-4 mb-2">
+                                <h4 class="text-sm font-medium text-textSecondary">Scene Management:</h4>
+                                <p class="text-textPrimary mt-1">{{ application.pd_rules_scene_management|linebreaksbr }}</p>
+                            </div>
+                            {% endif %}
                         </div>
                     {% elif job_type == 'EMS' %}
                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Medical Certification:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_medical_certification|default:"None provided" }}</p>
+                            <h3 class="font-semibold text-textSecondary">Why Do You Want to Join EMS?</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_interest|linebreaksbr|default:"None provided" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Qualities of a Good EMS Worker:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_qualities|linebreaksbr|default:"None provided" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Helping in a Stressful Situation:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.ems_helped_someone|linebreaksbr|default:"None provided" }}</p>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-textSecondary">Pressure Handling:</h3>
+                            <h3 class="font-semibold text-textSecondary">Handling High-Pressure Situations:</h3>
                             <p class="ml-4 text-textPrimary mt-1">{{ application.ems_pressure_handling|linebreaksbr|default:"N/A" }}</p>
                         </div>
                     {% elif job_type == 'MECHANIC' %}
-                         <div class="mb-4">
-                            <h3 class="font-semibold text-textSecondary">Skills:</h3>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Mechanical Skills and Experience:</h3>
                             <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_skills|linebreaksbr|default:"N/A" }}</p>
                         </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Familiarity with Specialized Tools:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_tool_knowledge|linebreaksbr|default:"N/A" }}</p>
+                        </div>
+                        <div class="mb-4">
+                            <h3 class="font-semibold text-textSecondary">Problem-Solving Example:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_problem_solving|linebreaksbr|default:"N/A" }}</p>
+                        </div>
                         <div>
-                            <h3 class="font-semibold text-textSecondary">Tool Knowledge:</h3>
-                            <p class="ml-4 text-textPrimary mt-1">{% if application.mechanic_tool_knowledge %}Yes{% else %}No/Not specified{% endif %}</p>
+                            <h3 class="font-semibold text-textSecondary">Interest in Working as a Mechanic:</h3>
+                            <p class="ml-4 text-textPrimary mt-1">{{ application.mechanic_interest|linebreaksbr|default:"N/A" }}</p>
                         </div>
                     {% endif %}
                 </div>
@@ -127,15 +206,45 @@
             <form method="post" action="{% url 'update_job_application_status' pk=application.pk %}" class="mt-4 border-t border-slate-700 pt-6">
                 {% csrf_token %}
                 <h3 class="text-lg font-semibold mb-3">Form Review Actions</h3>
+                
+                {% if application.job_type == 'SASP' %}
                 <div class="mb-4">
-                    <label for="form_feedback" class="block text-textSecondary text-sm font-bold mb-2">Form Feedback (Optional for approval, recommended for rejection):</label>
-                    <textarea name="feedback" id="form_feedback" rows="3" class="input"></textarea>
+                    <h4 class="text-sm font-semibold text-textSecondary mb-2">Review Criteria:</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start">
+                            <input type="checkbox" name="criteria_met[]" value="irl_info" class="mt-1 mr-2">
+                            <label>IRL Information Complete (Name, Age, Discord)</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="criteria_met[]" value="character_backstory" class="mt-1 mr-2">
+                            <label>Character Backstory is Detailed and Realistic</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="criteria_met[]" value="past_experience" class="mt-1 mr-2">
+                            <label>Past Experience is Relevant and Well-Explained</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="criteria_met[]" value="pd_rules" class="mt-1 mr-2">
+                            <label>Use of Force Continuum Understanding is Adequate</label>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label for="form_feedback" class="block text-textSecondary text-sm font-bold mb-2">Form Feedback:</label>
+                    <div class="space-y-2 mb-2">
+                        <button type="button" class="text-xs text-textMuted hover:text-accent" onclick="insertFeedbackTemplate('form_feedback', 'strengths')">Insert Strengths Template</button>
+                        <button type="button" class="text-xs text-textMuted hover:text-accent ml-2" onclick="insertFeedbackTemplate('form_feedback', 'improvements')">Insert Areas for Improvement Template</button>
+                    </div>
+                    <textarea name="feedback" id="form_feedback" rows="4" class="input" placeholder="Provide detailed feedback about the application..."></textarea>
+                </div>
+
                 <div class="flex space-x-4 justify-end">
-                     <button type="submit" name="action" value="APPROVE_FORM" class="btn-secondary hover:bg-blue-500/30 hover:border-blue-500 hover:text-blue-400 text-sm py-2 px-5">
+                    <button type="submit" name="action" value="APPROVE_FORM" class="btn-secondary hover:bg-blue-500/30 hover:border-blue-500 hover:text-blue-400 text-sm py-2 px-5">
                         <i class="fas fa-check mr-1"></i> Pass to Interview
                     </button>
-                     <button type="submit" name="action" value="REJECT_FORM" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
+                    <button type="submit" name="action" value="REJECT_FORM" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
                         <i class="fas fa-times mr-1"></i> Reject (Form Stage)
                     </button>
                 </div>
@@ -144,18 +253,48 @@
             
             {# --- Actions for Pending Interview --- #}
             {% if application.status == 'INTERVIEW_PENDING' and user_can_hire %}
-             <form method="post" action="{% url 'update_job_application_status' pk=application.pk %}" class="mt-4 border-t border-slate-700 pt-6">
+            <form method="post" action="{% url 'update_job_application_status' pk=application.pk %}" class="mt-4 border-t border-slate-700 pt-6">
                 {% csrf_token %}
                 <h3 class="text-lg font-semibold mb-3">Interview/Hiring Actions</h3>
+
+                {% if application.job_type == 'SASP' %}
                 <div class="mb-4">
-                    <label for="interview_feedback" class="block text-textSecondary text-sm font-bold mb-2">Interview Feedback (Optional for hire, recommended for rejection):</label>
-                    <textarea name="feedback" id="interview_feedback" rows="3" class="input"></textarea>
+                    <h4 class="text-sm font-semibold text-textSecondary mb-2">Interview Assessment:</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start">
+                            <input type="checkbox" name="interview_criteria[]" value="communication" class="mt-1 mr-2">
+                            <label>Communication Skills</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="interview_criteria[]" value="knowledge" class="mt-1 mr-2">
+                            <label>Knowledge of PD Procedures</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="interview_criteria[]" value="attitude" class="mt-1 mr-2">
+                            <label>Professional Attitude</label>
+                        </div>
+                        <div class="flex items-start">
+                            <input type="checkbox" name="interview_criteria[]" value="roleplay" class="mt-1 mr-2">
+                            <label>Roleplay Ability</label>
+                        </div>
+                    </div>
                 </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label for="interview_feedback" class="block text-textSecondary text-sm font-bold mb-2">Interview Feedback:</label>
+                    <div class="space-y-2 mb-2">
+                        <button type="button" class="text-xs text-textMuted hover:text-accent" onclick="insertFeedbackTemplate('interview_feedback', 'interview_strengths')">Insert Strengths Template</button>
+                        <button type="button" class="text-xs text-textMuted hover:text-accent ml-2" onclick="insertFeedbackTemplate('interview_feedback', 'interview_improvements')">Insert Areas for Improvement Template</button>
+                    </div>
+                    <textarea name="feedback" id="interview_feedback" rows="4" class="input" placeholder="Provide detailed feedback about the interview..."></textarea>
+                </div>
+
                 <div class="flex space-x-4 justify-end">
-                     <button type="submit" name="action" value="HIRE" class="btn-secondary hover:bg-green-500/30 hover:border-green-500 hover:text-green-400 text-sm py-2 px-5">
+                    <button type="submit" name="action" value="HIRE" class="btn-secondary hover:bg-green-500/30 hover:border-green-500 hover:text-green-400 text-sm py-2 px-5">
                         <i class="fas fa-check mr-1"></i> Hire Applicant
                     </button>
-                     <button type="submit" name="action" value="REJECT_INTERVIEW" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
+                    <button type="submit" name="action" value="REJECT_INTERVIEW" class="btn-secondary hover:bg-red-500/30 hover:border-red-500 hover:text-red-400 text-sm py-2 px-5">
                         <i class="fas fa-times mr-1"></i> Reject (Interview Stage)
                     </button>
                 </div>
@@ -186,4 +325,30 @@
 
     </div>
 </div>
+
+<script>
+    function insertFeedbackTemplate(textareaId, templateType) {
+        const textarea = document.getElementById(textareaId);
+        let template = '';
+        
+        if (templateType === 'strengths') {
+            template = 'Strengths:\n• \n• \n• ';
+        } else if (templateType === 'improvements') {
+            template = 'Areas for Improvement:\n• \n• \n• ';
+        } else if (templateType === 'interview_strengths') {
+            template = 'Interview Strengths:\n• Communication: \n• Knowledge: \n• Attitude: \n• Roleplay: ';
+        } else if (templateType === 'interview_improvements') {
+            template = 'Interview Areas for Improvement:\n• Communication: \n• Knowledge: \n• Attitude: \n• Roleplay: ';
+        }
+        
+        const startPos = textarea.selectionStart;
+        const endPos = textarea.selectionEnd;
+        const text = textarea.value;
+        
+        textarea.value = text.substring(0, startPos) + template + text.substring(endPos);
+        textarea.focus();
+        textarea.selectionStart = startPos + template.length;
+        textarea.selectionEnd = startPos + template.length;
+    }
+</script>
 {% endblock %} 

@@ -20,9 +20,9 @@ class JobApplicationAdmin(admin.ModelAdmin):
         ('Job Specific Answers', {
             'classes': ('collapse',),
             'fields': (
-                'sasp_scenario_response', 'sasp_leadership_experience',
-                'ems_medical_certification', 'ems_pressure_handling',
-                'mechanic_skills', 'mechanic_tool_knowledge'
+                'irl_name', 'irl_age', 'discord_name', 'character_backstory', 'past_experience', 'pd_rules_vehicle_pursuit', 'pd_rules_use_of_force', 'pd_rules_traffic_stops', 'pd_rules_evidence', 'pd_rules_miranda', 'pd_rules_radio', 'pd_rules_officer_down', 'pd_rules_scene_management',
+                'ems_interest', 'ems_qualities', 'ems_helped_someone', 'ems_pressure_handling',
+                'mechanic_skills', 'mechanic_tool_knowledge', 'mechanic_problem_solving', 'mechanic_interest'
             )
         }),
         ('Form Review', {
