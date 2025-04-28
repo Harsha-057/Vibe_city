@@ -13,7 +13,12 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-key-for-development')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['vibecityrp.in', 'www.vibecityrp.in', '204.13.120.100', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['vibecityrp.in', 'www.vibecityrp.in', '204.13.120.100', 'localhost', '127.0.0.1', 'https://vibecityrp.in']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://vibecityrp.in',
+    'https://www.vibecityrp.in',
+]
 
 # Application definition
 INSTALLED_APPS = [
