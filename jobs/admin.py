@@ -20,7 +20,7 @@ class JobApplicationAdmin(admin.ModelAdmin):
         ('Job Specific Answers', {
             'classes': ('collapse',),
             'fields': (
-                'irl_name', 'irl_age', 'discord_name', 'experience_level', 'recruit_reason',
+                'irl_name', 'irl_age', 'discord_name',
                 'character_backstory', 'past_experience', 'pd_rules_vehicle_pursuit', 'pd_rules_use_of_force',
                 'pd_rules_traffic_stops', 'pd_rules_evidence', 'pd_rules_miranda', 'pd_rules_radio',
                 'pd_rules_officer_down', 'pd_rules_scene_management',
