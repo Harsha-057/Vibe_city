@@ -130,9 +130,28 @@ class VibeCity(commands.Bot):
         embed.set_footer(text="Vibe City RP | Whitelist Application")
         return embed, WhitelistApplyView()
 
+    def get_rules_embed_and_view(self):
+        class RulesView(ui.View):
+            def __init__(self):
+                super().__init__()
+                self.add_item(ui.Button(label="View Rules", url="http://vibecityrp.in/rules/", style=discord.ButtonStyle.link))
+        embed = discord.Embed(
+            title="Vibe City RP Rules",
+            description="Please read and follow our server rules to ensure a great experience for everyone.",
+            color=discord.Color.blue()
+        )
+        embed.add_field(name="Rules Link", value="Click the button below to view our complete rules and guidelines.", inline=False)
+        embed.set_footer(text="Vibe City RP | Server Rules")
+        return embed, RulesView()
+
     @app_commands.command(name="whiteliststeps", description="Show steps to apply for whitelist")
     async def whiteliststeps(self, interaction: discord.Interaction):
         embed, view = self.get_whitelist_embed_and_view()
+        await interaction.response.send_message(embed=embed, view=view)
+
+    @app_commands.command(name="rules", description="Show link to server rules")
+    async def rules(self, interaction: discord.Interaction):
+        embed, view = self.get_rules_embed_and_view()
         await interaction.response.send_message(embed=embed, view=view)
 
     async def on_ready(self):
@@ -144,6 +163,9 @@ class VibeCity(commands.Bot):
             return
         if 'whitelist' in message.content.lower():
             embed, view = self.get_whitelist_embed_and_view()
+            await message.reply(embed=embed, view=view)
+        elif any(word in message.content.lower() for word in ['rules', 'rule', 'rtc']):
+            embed, view = self.get_rules_embed_and_view()
             await message.reply(embed=embed, view=view)
 
 def run_bot():

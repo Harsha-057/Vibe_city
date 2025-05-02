@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://vibecityrp.in',
     'https://www.vibecityrp.in',
-    '204.10.193.192',
+    'http://204.10.193.192',
     'http://localhost:8000',
 ]
 
