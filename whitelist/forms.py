@@ -57,7 +57,7 @@ class WhitelistApplicationForm(forms.ModelForm):
         help_texts = {
             'discord_name': 'Enter your Discord name and tag (e.g., JohnDoe#1234)',
             'steam_name': 'Enter your Steam display name',
-            'steam_hex_id': 'Enter your Steam Hex ID',
+            'steam_hex_id': 'Enter your Steam Hex ID (<a href="https://steamid.pro/" target="_blank">steamid.pro</a> or <a href="https://www.steamidfinder.com/" target="_blank">steamidfinder.com</a>)',
             'age': 'You must be at least 16 years old',
             'fivem_experience': 'Describe your experience with FiveM',
             'character_name': 'Enter your character\'s full name',
