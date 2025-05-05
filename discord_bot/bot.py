@@ -109,14 +109,19 @@ class VibeCity(commands.Bot):
         super().__init__(command_prefix='!', intents=intents)
     
     async def setup_hook(self):
-        self.tree.add_command(self.whiteliststeps)
-        await self.tree.sync()
+        try:
+            self.tree.add_command(self.whiteliststeps)
+            self.tree.add_command(self.rules)
+            await self.tree.sync()
+            print("Successfully synced commands with Discord")
+        except Exception as e:
+            print(f"Error syncing commands: {e}")
     
     def get_whitelist_embed_and_view(self):
         class WhitelistApplyView(ui.View):
             def __init__(self):
                 super().__init__()
-                self.add_item(ui.Button(label="Apply for Whitelist", url="http://vibecityrp.in/", style=discord.ButtonStyle.link))
+                self.add_item(ui.Button(label="Apply for Whitelist", url="https://vibecityrp.com/", style=discord.ButtonStyle.link))
         embed = discord.Embed(
             title="How to Apply for Whitelist",
             description="Follow these steps to apply for the Vibe City RP whitelist:",
@@ -134,7 +139,7 @@ class VibeCity(commands.Bot):
         class RulesView(ui.View):
             def __init__(self):
                 super().__init__()
-                self.add_item(ui.Button(label="View Rules", url="http://vibecityrp.in/rules/", style=discord.ButtonStyle.link))
+                self.add_item(ui.Button(label="View Rules", url="https://vibecityrp.com/rules/", style=discord.ButtonStyle.link))
         embed = discord.Embed(
             title="Vibe City RP Rules",
             description="Please read and follow our server rules to ensure a great experience for everyone.",
@@ -146,11 +151,13 @@ class VibeCity(commands.Bot):
 
     @app_commands.command(name="whiteliststeps", description="Show steps to apply for whitelist")
     async def whiteliststeps(self, interaction: discord.Interaction):
+        """Show steps to apply for whitelist"""
         embed, view = self.get_whitelist_embed_and_view()
         await interaction.response.send_message(embed=embed, view=view)
 
     @app_commands.command(name="rules", description="Show link to server rules")
     async def rules(self, interaction: discord.Interaction):
+        """Show link to server rules"""
         embed, view = self.get_rules_embed_and_view()
         await interaction.response.send_message(embed=embed, view=view)
 
@@ -161,6 +168,11 @@ class VibeCity(commands.Bot):
     async def on_message(self, message):
         if message.author == self.user:
             return
+        
+        # Process commands first
+        await self.process_commands(message)
+        
+        # Then handle other message content
         if 'whitelist' in message.content.lower():
             embed, view = self.get_whitelist_embed_and_view()
             await message.reply(embed=embed, view=view)
