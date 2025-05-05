@@ -129,7 +129,7 @@ class VibeCity(commands.Bot):
         class WhitelistApplyView(ui.View):
             def __init__(self):
                 super().__init__()
-                self.add_item(ui.Button(label="Apply for Whitelist", url="https://vibecityrp.com/", style=discord.ButtonStyle.link))
+                self.add_item(ui.Button(label="Apply for Whitelist", url="https://vibecityrp.com/whitelist/", style=discord.ButtonStyle.link))
         embed = discord.Embed(
             title="How to Apply for Whitelist",
             description="Follow these steps to apply for the Vibe City RP whitelist:",
