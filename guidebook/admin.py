@@ -1,10 +1,7 @@
 from django.contrib import admin
 from .models import GuidebookEntry
-from django_summernote.admin import SummernoteModelAdmin
 
-@admin.register(GuidebookEntry)
-class GuidebookEntryAdmin(SummernoteModelAdmin):
-    summernote_fields = ('description',)
+class GuidebookEntryAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'is_active', 'order', 'created_at', 'updated_at')
     list_filter = ('category', 'is_active')
     search_fields = ('title', 'description')
@@ -21,3 +18,5 @@ class GuidebookEntryAdmin(SummernoteModelAdmin):
             'fields': ('is_active', 'order')
         }),
     )
+
+admin.site.register(GuidebookEntry, GuidebookEntryAdmin)
