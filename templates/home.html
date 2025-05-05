@@ -21,9 +21,9 @@
 <style>
     /* Modern Black Theme */
     :root {
-        --primary: #8B5CF6;
-        --primary-dark: #7C3AED;
-        --secondary: #EC4899;
+        --primary: #FF7300;
+        --primary-dark: #CC5C00;
+        --secondary: #FFA040;
         --dark: #0F172A;
         --darker: #020617;
         --light: #F8FAFC;
@@ -96,18 +96,18 @@
     .feature-card {
         background: rgba(15, 23, 42, 0.7);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(255, 115, 0, 0.1);
         transition: all 0.3s ease;
     }
     
     .feature-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(139, 92, 246, 0.3);
-        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1);
+        border-color: rgba(255, 115, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(255, 115, 0, 0.1);
     }
     
     .feature-icon {
-        background: rgba(139, 92, 246, 0.1);
+        background: rgba(255, 115, 0, 0.1);
         border-radius: 12px;
         padding: 15px;
     }
@@ -126,42 +126,42 @@
     
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 5px 15px rgba(255, 115, 0, 0.3);
     }
     
     .glass-card {
         background: rgba(15, 23, 42, 0.7);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(255, 115, 0, 0.1);
     }
     
     .timeline-dot {
         background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 0 20px rgba(255, 115, 0, 0.3);
     }
     
     .stats-card {
         background: rgba(15, 23, 42, 0.7);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(255, 115, 0, 0.1);
         transition: all 0.3s ease;
     }
     
     .stats-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(139, 92, 246, 0.3);
+        border-color: rgba(255, 115, 0, 0.3);
     }
     
     .media-card {
         background: rgba(15, 23, 42, 0.7);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(255, 115, 0, 0.1);
         transition: all 0.3s ease;
     }
     
     .media-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(139, 92, 246, 0.3);
+        border-color: rgba(255, 115, 0, 0.3);
     }
     
     .cta-section {
@@ -218,59 +218,49 @@
 
     
     <!-- Content -->
-    <div class="hero-content">
-        <div class="animate__animated animate__fadeInDown">
-            <h1 class="hero-title">
-                VIBE CITY
-            </h1>
-            <div class="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto mb-8"></div>
-        </div>
-        
-        <p class="hero-subtitle animate__animated animate__fadeIn animate__delay-1s">
-            Experience the ultimate roleplay adventure in our immersive FiveM server
+    <div class="hero-content relative z-20 text-center flex flex-col items-center justify-center min-h-[70vh]">
+        <h1 class="hero-title text-6xl font-extrabold text-white drop-shadow-lg mb-4 animate__animated animate__fadeInDown">
+            VIBE CITY
+        </h1>
+        <p class="hero-subtitle text-2xl text-orange-200 mb-8 animate__animated animate__fadeIn animate__delay-1s">
+            Live Your Story. Shape the City.
         </p>
-        
-        <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-1s">
-            <a href="#" class="px-8 py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium flex items-center justify-center text-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg">
+        <div class="w-32 h-1 bg-gradient-to-r from-[#FF7300] to-[#FFA040] mx-auto mb-8 rounded-full animate__animated animate__fadeInLeft"></div>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center animate__animated animate__fadeInUp animate__delay-2s">
+            <a href="#" class="px-10 py-4 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold text-lg shadow-lg hover:scale-105 transition-transform duration-300">
                 Join Now <i class="fas fa-chevron-right ml-3"></i>
             </a>
-            {% if not user.is_whitelisted %}
-            <a href="{% url 'whitelist_apply' %}" class="px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-medium hover:bg-white/20 transition-colors flex items-center justify-center text-lg shadow-lg">
+            <a href="{% url 'whitelist_apply' %}" class="px-10 py-4 rounded-full glass-card text-white font-bold text-lg border border-orange-400 hover:bg-orange-400/10 transition">
                 Apply for Whitelist <i class="fas fa-file-alt ml-3"></i>
             </a>
-            {% endif %}
         </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-            <a href="#features" class="text-white hover:text-white transition-colors">
-                <i class="fas fa-chevron-down text-2xl animate-bounce"></i>
-            </a>
+        <div class="mt-8 animate__animated animate__fadeIn animate__delay-3s">
+            <span class="inline-block px-4 py-2 rounded-full bg-black/40 text-orange-200 font-medium shadow-neon backdrop-blur-md">Premium FiveM Roleplay Experience</span>
         </div>
     </div>
 </div>
 
 <!-- Server Stats Bar -->
-<div class="bg-dark border-y border-purple-900/30" >
+<div class="bg-dark border-y border-[#FF7300]/30" >
     <div class="container mx-auto py-6 px-4" >
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="stats-card p-6 rounded-xl text-center">
-                <div class="text-purple-400 mb-1"><i class="fas fa-users text-2xl"></i></div>
+                <div class="text-[#FF7300] mb-1"><i class="fas fa-users text-2xl"></i></div>
                 <div class="text-3xl font-bold text-white">250+</div>
                 <div class="text-slate-400">Active Players</div>
             </div>
             <div class="stats-card p-6 rounded-xl text-center">
-                <div class="text-purple-400 mb-1"><i class="fas fa-building text-2xl"></i></div>
+                <div class="text-[#FF7300] mb-1"><i class="fas fa-building text-2xl"></i></div>
                 <div class="text-3xl font-bold text-white">30+</div>
                 <div class="text-slate-400">Custom Locations</div>
             </div>
             <div class="stats-card p-6 rounded-xl text-center">
-                <div class="text-purple-400 mb-1"><i class="fas fa-briefcase text-2xl"></i></div>
+                <div class="text-[#FF7300] mb-1"><i class="fas fa-briefcase text-2xl"></i></div>
                 <div class="text-3xl font-bold text-white">20+</div>
                 <div class="text-slate-400">Unique Jobs</div>
             </div>
             <div class="stats-card p-6 rounded-xl text-center">
-                <div class="text-purple-400 mb-1"><i class="fas fa-car text-2xl"></i></div>
+                <div class="text-[#FF7300] mb-1"><i class="fas fa-car text-2xl"></i></div>
                 <div class="text-3xl font-bold text-white">100+</div>
                 <div class="text-slate-400">Custom Vehicles</div>
             </div>
@@ -285,13 +275,12 @@
             <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Server Features</h2>
             <p class="text-slate-400 text-lg">Discover what makes Vibe City the premier FiveM roleplay experience with our unique features and custom content.</p>
         </div>
-        
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="feature-card p-8 rounded-2xl">
-                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
-                    <i class="fas fa-users text-4xl"></i>
+            <div class="glass-card p-8 rounded-2xl shadow-lg border border-orange-400/20 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="feature-icon bg-orange-400/10 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-users text-4xl text-orange-300"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-4">Active Community</h3>
+                <h3 class="text-2xl font-bold mb-4 text-white">Active Community</h3>
                 <p class="text-slate-400">Join our thriving community of roleplayers and make new friends in Vibe City. Our server is home to hundreds of dedicated players.</p>
                 <ul class="mt-4 space-y-2 text-slate-400">
                     <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Regular community events</li>
@@ -299,12 +288,11 @@
                     <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Friendly environment</li>
                 </ul>
             </div>
-            
-            <div class="feature-card p-8 rounded-2xl">
-                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
-                    <i class="fas fa-gamepad text-4xl"></i>
+            <div class="glass-card p-8 rounded-2xl shadow-lg border border-orange-400/20 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="feature-icon bg-orange-400/10 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-gamepad text-4xl text-orange-300"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-4">Custom Scripts</h3>
+                <h3 class="text-2xl font-bold mb-4 text-white">Custom Scripts</h3>
                 <p class="text-slate-400">Experience unique gameplay with our custom-built scripts and mechanics that you won't find on any other server.</p>
                 <ul class="mt-4 space-y-2 text-slate-400">
                     <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Advanced economy system</li>
@@ -312,12 +300,11 @@
                     <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Custom vehicle modifications</li>
                 </ul>
             </div>
-            
-            <div class="feature-card p-8 rounded-2xl">
-                <div class="feature-icon text-purple-500 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
-                    <i class="fas fa-shield-alt text-4xl"></i>
+            <div class="glass-card p-8 rounded-2xl shadow-lg border border-orange-400/20 hover:scale-105 hover:shadow-2xl transition-transform duration-300">
+                <div class="feature-icon bg-orange-400/10 mb-6 flex items-center justify-center w-16 h-16 rounded-xl">
+                    <i class="fas fa-shield-alt text-4xl text-orange-300"></i>
                 </div>
-                <h3 class="text-2xl font-bold mb-4">Dedicated Staff</h3>
+                <h3 class="text-2xl font-bold mb-4 text-white">Dedicated Staff</h3>
                 <p class="text-slate-400">Our professional staff team ensures a fair and enjoyable experience for everyone with 24/7 moderation.</p>
                 <ul class="mt-4 space-y-2 text-slate-400">
                     <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 24/7 staff presence</li>
@@ -330,145 +317,361 @@
 </div>
 
 <!-- Available Jobs Section -->
-<section id="jobs" class="py-20 bg-darker">
-    <div class="container mx-auto px-4">
-        <center>
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">Join the Team</h2></center>
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- SASP -->
-            <div class="card p-6 text-center border-highlight/30 hover:border-highlight">
-                 <i class="fas fa-shield-alt text-highlight text-4xl mb-4"></i>
-                <h3 class="text-2xl font-semibold mb-4 text-highlight">San Andreas State Police</h3>
-                <p class="text-textSecondary mb-6 h-24">
-                    Uphold the law, protect the citizens, and patrol the streets of San Andreas. 
-                    Requires dedication, professionalism, and courage.
-                </p>
-                <a href="{% url 'sasp_apply' %}" class="btn-secondary hover:bg-highlight/20 hover:border-highlight hover:text-highlight inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for SASP</a>
+<section id="jobs" class="py-24 bg-darker relative overflow-hidden">
+    <!-- Background Decoration -->
+    <div class="absolute inset-0 bg-[url('{% static 'img/grid.png' %}')] opacity-5"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#FF7300]/5 to-transparent"></div>
+
+    <div class="container mx-auto px-4 relative">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Join Our Elite Teams</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-[#FF7300] to-[#FFA040] mx-auto mb-6"></div>
+            <p class="text-slate-400 text-lg">Choose your path and make your mark in Vibe City with one of our prestigious departments.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <!-- SASP Card -->
+            <div class="group">
+                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                    <!-- Header Image -->
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866563/police.jpg" alt="SASP" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 relative">
+                        <!-- Icon -->
+                        <div class="absolute -top-8 left-6 w-16 h-16 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg transform -translate-y-2 group-hover:translate-y-0 transition-transform">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+
+                        <!-- Title & Description -->
+                        <div class="ml-20 mb-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">San Andreas State Police</h3>
+                            <p class="text-slate-400">Protect & Serve</p>
+                        </div>
+
+                        <!-- Stats -->
+                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">24/7</div>
+                                <div class="text-slate-400 text-sm">Active Duty</div>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">15+</div>
+                                <div class="text-slate-400 text-sm">Divisions</div>
+                            </div>
+                        </div> -->
+
+                        <!-- Requirements -->
+                        <div class="mb-6">
+                            <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>18+ Years Old</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Clean Criminal Record</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Excellent Communication</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <a href="{% url 'sasp_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                            Apply for SASP
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <!-- EMS -->
-            <div class="card p-6 text-center border-accent/30 hover:border-accent">
-                 <i class="fas fa-briefcase-medical text-accent text-4xl mb-4"></i>
-                <h3 class="text-2xl font-semibold mb-4 text-accent">Emergency Medical Services</h3>
-                <p class="text-textSecondary mb-6 h-24">
-                    Provide critical medical care, respond to emergencies, and save lives. 
-                    Requires quick thinking, compassion, and medical knowledge.
-                </p>
-                <a href="{% url 'ems_apply' %}" class="btn-secondary hover:bg-accent/20 hover:border-accent hover:text-accent inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for EMS</a>
+            <!-- EMS Card -->
+            <div class="group">
+                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                    <!-- Header Image -->
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866566/ems.jpg" alt="EMS" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 relative">
+                        <!-- Icon -->
+                        <div class="absolute -top-8 left-6 w-16 h-16 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg transform -translate-y-2 group-hover:translate-y-0 transition-transform">
+                            <i class="fas fa-briefcase-medical text-white text-2xl"></i>
+                        </div>
+
+                        <!-- Title & Description -->
+                        <div class="ml-20 mb-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Emergency Medical Services</h3>
+                            <p class="text-slate-400">Save Lives</p>
+                        </div>
+
+                        <!-- Stats -->
+                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">4</div>
+                                <div class="text-slate-400 text-sm">Stations</div>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">10+</div>
+                                <div class="text-slate-400 text-sm">Vehicles</div>
+                            </div>
+                        </div> -->
+
+                        <!-- Requirements -->
+                        <div class="mb-6">
+                            <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Medical Knowledge</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Quick Decision Making</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Team Player</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <a href="{% url 'ems_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                            Apply for EMS
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <!-- Mechanic -->
-            <div class="card p-6 text-center border-yellow-400/30 hover:border-yellow-400">
-                <i class="fas fa-wrench text-yellow-400 text-4xl mb-4"></i>
-                <h3 class="text-2xl font-semibold mb-4 text-yellow-400">Mechanic</h3>
-                <p class="text-textSecondary mb-6 h-24">
-                    Keep the city moving by repairing, maintaining, and customizing vehicles. 
-                    Requires technical skill, problem-solving, and a passion for cars.
-                </p>
-                <a href="{% url 'mechanic_apply' %}" class="btn-secondary hover:bg-yellow-400/20 hover:border-yellow-400 hover:text-yellow-400 inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for Mechanic</a>
+            <!-- Mechanic Card -->
+            <div class="group">
+                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                    <!-- Header Image -->
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866567/mechanic.jpg" alt="Mechanic" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6 relative">
+                        <!-- Icon -->
+                        <div class="absolute -top-8 left-6 w-16 h-16 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg transform -translate-y-2 group-hover:translate-y-0 transition-transform">
+                            <i class="fas fa-wrench text-white text-2xl"></i>
+                        </div>
+
+                        <!-- Title & Description -->
+                        <div class="ml-20 mb-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">Big Tuna Mechanic Service</h3>
+                            <p class="text-slate-400">Keep the City Moving</p>
+                        </div>
+
+                        <!-- Stats -->
+                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">100+</div>
+                                <div class="text-slate-400 text-sm">Custom Parts</div>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
+                                <div class="text-[#FF7300] text-xl font-bold">3</div>
+                                <div class="text-slate-400 text-sm">Locations</div>
+                            </div>
+                        </div> -->
+
+                        <!-- Requirements -->
+                        <div class="mb-6">
+                            <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Technical Knowledge</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Problem Solving</span>
+                                </li>
+                                <li class="flex items-center text-slate-300">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span>Customer Service</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <a href="{% url 'mechanic_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                            Apply for Mechanic
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Media Section -->
+<!-- Server Showcase Section -->
 <div class="py-24 bg-dark relative overflow-hidden" id="gallery">
     <div class="container mx-auto px-4 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-16">
             <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Server Showcase</h2>
-            <p class="text-slate-400 text-lg">Take a look at what awaits you in Vibe City with our gallery of screenshots and videos.</p>
+            <p class="text-slate-400 text-lg mb-8">Experience the stunning visuals and features that await you in Vibe City.</p>
+            
+            <!-- Category Filters -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="px-6 py-2 rounded-full bg-[#FF7300]/10 text-[#FF7300] border border-[#FF7300]/20 hover:bg-[#FF7300]/20 transition-all duration-300 active" data-filter="all">All</button>
+                <button class="px-6 py-2 rounded-full bg-black/30 text-slate-300 border border-orange-400/20 hover:bg-[#FF7300]/20 hover:text-[#FF7300] transition-all duration-300" data-filter="locations">Locations</button>
+                <button class="px-6 py-2 rounded-full bg-black/30 text-slate-300 border border-orange-400/20 hover:bg-[#FF7300]/20 hover:text-[#FF7300] transition-all duration-300" data-filter="vehicles">Vehicles</button>
+                <button class="px-6 py-2 rounded-full bg-black/30 text-slate-300 border border-orange-400/20 hover:bg-[#FF7300]/20 hover:text-[#FF7300] transition-all duration-300" data-filter="events">Events</button>
+            </div>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="media-card rounded-xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1605806616949-59450419c3a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <h3 class="font-bold text-lg mb-2">Downtown Vibe City</h3>
-                    <p class="text-slate-400">The bustling heart of our city with custom buildings and NPCs.</p>
+
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Downtown District -->
+            <div class="showcase-card group" data-category="locations">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866560/downtown.jpg" alt="Downtown District" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Downtown District</h3>
+                        <p class="text-slate-300 text-sm">Explore our meticulously crafted downtown area with custom buildings, ambient NPCs, and dynamic weather.</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="media-card rounded-xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1567449303078-57ad995bd17a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <h3 class="font-bold text-lg mb-2">Custom Vehicles</h3>
-                    <p class="text-slate-400">Our server features over 100 custom vehicles with unique handling.</p>
+
+            <!-- Luxury Cars -->
+            <div class="showcase-card group" data-category="vehicles">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866561/cars.jpg" alt="Luxury Vehicles" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Premium Vehicles</h3>
+                        <p class="text-slate-300 text-sm">Choose from our collection of 100+ custom vehicles with realistic handling and detailed interiors.</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="media-card rounded-xl overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1517994112540-009c47ea476b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80" alt="Vibe City" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <h3 class="font-bold text-lg mb-2">Nightlife</h3>
-                    <p class="text-slate-400">Experience the vibrant nightlife with custom clubs and events.</p>
+
+            <!-- Night Events -->
+            <div class="showcase-card group" data-category="events">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866562/nightlife.jpg" alt="Night Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Vibrant Nightlife</h3>
+                        <p class="text-slate-300 text-sm">Experience exclusive clubs, events, and parties with custom animations and music.</p>
+                    </div>
                 </div>
             </div>
+
+            <!-- Police HQ -->
+            <div class="showcase-card group" data-category="locations">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866563/police.jpg" alt="Police HQ" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">SASP Headquarters</h3>
+                        <p class="text-slate-300 text-sm">State-of-the-art police facilities with custom interiors and advanced equipment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Racing Events -->
+            <div class="showcase-card group" data-category="events">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866564/racing.jpg" alt="Racing Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Racing Scene</h3>
+                        <p class="text-slate-300 text-sm">Join underground racing events with custom tracks and progression system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Interiors -->
+            <div class="showcase-card group" data-category="locations">
+                <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866565/interior.jpg" alt="Custom Interiors" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Luxury Properties</h3>
+                        <p class="text-slate-300 text-sm">Explore custom-designed interiors with interactive furniture and decorations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View More Button -->
+        <div class="text-center mt-12">
+            <a href="#" class="inline-flex items-center px-8 py-3 rounded-full bg-[#FF7300]/10 text-[#FF7300] border border-[#FF7300]/20 hover:bg-[#FF7300]/20 transition-all duration-300">
+                <span>View Full Gallery</span>
+                <i class="fas fa-arrow-right ml-2"></i>
+            </a>
         </div>
     </div>
 </div>
 
-<!-- How to Join Section -->
+<!-- How to Join Section (Timeline) -->
 <div class="py-24 bg-darker">
     <div class="container mx-auto px-4">
         <div class="text-center max-w-3xl mx-auto mb-16">
             <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">How to Join</h2>
             <p class="text-slate-400 text-lg">Follow these simple steps to become part of our thriving community.</p>
         </div>
-        
-        <div class="max-w-4xl mx-auto">
-            <div class="relative">
-                <div class="absolute left-8 md:left-12 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-600 to-pink-600 rounded-full"></div>
-                
-                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
-                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
-                        01
-                    </div>
-                    <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Create an Account</h3>
-                        <p class="text-slate-300 mb-4">Sign up using your Discord account for seamless integration with our community.</p>
-                        <a href="{% url 'login' %}" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
-                            Create Account <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
+        <div class="max-w-4xl mx-auto flex flex-col gap-12">
+            <!-- Step 1 -->
+            <div class="flex items-center gap-6 group">
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-[#FF7300] text-white flex items-center justify-center font-bold text-xl shadow-lg">01</div>
+                    <div class="w-1 h-full bg-gradient-to-b from-[#FF7300] to-[#FFA040]"></div>
                 </div>
-                
-                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
-                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
-                        02
-                    </div>
-                    <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Submit Whitelist Application</h3>
-                        <p class="text-slate-300 mb-4">Fill out our whitelist application to tell us about yourself and your roleplay experience.</p>
-                        <a href="{% url 'whitelist_apply' %}" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
-                            Apply Now <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
+                <div class="glass-card p-8 rounded-2xl flex-1 hover:shadow-xl transition group-hover:border-orange-400 border border-transparent">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2 text-white">Create an Account</h3>
+                    <p class="text-slate-300 mb-2">Sign up using your Discord account for seamless integration with our community.</p>
+                    <a href="{% url 'login' %}" class="text-[#FF7300] font-semibold hover:underline">Create Account &rarr;</a>
                 </div>
-                
-                <div class="timeline-item relative pl-20 md:pl-28 pb-16 group">
-                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
-                        03
-                    </div>
-                    <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Await Approval</h3>
-                        <p class="text-slate-300 mb-4">Our staff will review your application. You'll receive a notification on Discord when approved.</p>
-                        <a href="#" class="text-purple-400 hover:text-purple-300 inline-flex items-center">
-                            Join Discord <i class="fab fa-discord ml-2"></i>
-                        </a>
-                    </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="flex items-center gap-6 group">
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-[#FF7300] text-white flex items-center justify-center font-bold text-xl shadow-lg">02</div>
+                    <div class="w-1 h-full bg-gradient-to-b from-[#FF7300] to-[#FFA040]"></div>
                 </div>
-                
-                <div class="timeline-item relative pl-20 md:pl-28 group">
-                    <div class="timeline-dot absolute left-0 top-0 flex items-center justify-center w-16 h-16 rounded-full text-white font-bold text-xl">
-                        04
-                    </div>
-                    <div class="glass-card p-8 rounded-2xl">
-                        <h3 class="text-2xl md:text-3xl font-bold mb-4">Join the Server</h3>
-                        <p class="text-slate-300 mb-4">Once approved, connect to our server using the FiveM client and start your new life in Vibe City!</p>
-                        <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700 mt-4">
-                            <p class="text-slate-300 font-medium">Server Connection Info:</p>
-                            <code class="text-purple-300 block mt-2">cfx.re/join/va3mzq</code>
-                        </div>
+                <div class="glass-card p-8 rounded-2xl flex-1 hover:shadow-xl transition group-hover:border-orange-400 border border-transparent">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2 text-white">Submit Whitelist Application</h3>
+                    <p class="text-slate-300 mb-2">Fill out our whitelist application to tell us about yourself and your roleplay experience.</p>
+                    <a href="{% url 'whitelist_apply' %}" class="text-[#FF7300] font-semibold hover:underline">Apply Now &rarr;</a>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="flex items-center gap-6 group">
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-[#FF7300] text-white flex items-center justify-center font-bold text-xl shadow-lg">03</div>
+                    <div class="w-1 h-full bg-gradient-to-b from-[#FF7300] to-[#FFA040]"></div>
+                </div>
+                <div class="glass-card p-8 rounded-2xl flex-1 hover:shadow-xl transition group-hover:border-orange-400 border border-transparent">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2 text-white">Await Approval</h3>
+                    <p class="text-slate-300 mb-2">Our staff will review your application. You'll receive a notification on Discord when approved.</p>
+                    <a href="#" class="text-[#FF7300] font-semibold hover:underline">Join Discord <i class="fab fa-discord ml-1"></i></a>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="flex items-center gap-6 group">
+                <div class="flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-[#FF7300] text-white flex items-center justify-center font-bold text-xl shadow-lg">04</div>
+                </div>
+                <div class="glass-card p-8 rounded-2xl flex-1 hover:shadow-xl transition group-hover:border-orange-400 border border-transparent">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-2 text-white">Join the Server</h3>
+                    <p class="text-slate-300 mb-2">Once approved, connect to our server using the FiveM client and start your new life in Vibe City!</p>
+                    <div class="bg-slate-900/50 p-4 rounded-lg border border-slate-700 mt-4">
+                        <p class="text-slate-300 font-medium">Server Connection Info:</p>
+                        <code class="text-[#FFA040] block mt-2">cfx.re/join/va3mzq</code>
                     </div>
                 </div>
             </div>
@@ -513,7 +716,7 @@
                     }
                 },
                 color: {
-                    value: "#8B5CF6"
+                    value: "#FF7300"
                 },
                 shape: {
                     type: "circle"
@@ -529,7 +732,7 @@
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: "#8B5CF6",
+                    color: "#FF7300",
                     opacity: 0.2,
                     width: 1
                 },
@@ -609,6 +812,38 @@
         // Run on scroll
         window.addEventListener('scroll', animateOnScroll);
     });
+</script>
+
+<!-- Add this JavaScript for the filter functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const showcaseCards = document.querySelectorAll('.showcase-card');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-[#FF7300]/10', 'text-[#FF7300]');
+                btn.classList.add('bg-black/30', 'text-slate-300');
+            });
+
+            // Add active class to clicked button
+            button.classList.remove('bg-black/30', 'text-slate-300');
+            button.classList.add('active', 'bg-[#FF7300]/10', 'text-[#FF7300]');
+
+            const filter = button.getAttribute('data-filter');
+
+            showcaseCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
 </script>
 
 {% endblock %}

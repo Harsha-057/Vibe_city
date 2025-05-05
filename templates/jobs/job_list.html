@@ -1,14 +1,319 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Available Job Applications{% endblock %}
+{% block title %}Available Job Applications - Vibe City RP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .job-tab {
+        @apply px-6 py-3 rounded-lg text-slate-300 transition-all duration-300;
+    }
+    .job-tab.active {
+        @apply bg-[#FF7300] text-white;
+    }
+    .job-tab:hover:not(.active) {
+        @apply bg-slate-800 text-white;
+    }
+    .job-card {
+        @apply bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300;
+    }
+    .job-card:hover {
+        @apply border-[#FF7300]/30 shadow-[0_0_30px_rgba(255,115,0,0.15)] -translate-y-1;
+    }
+    .rule-item {
+        @apply flex items-start gap-3 p-4 rounded-lg bg-slate-800/50 border border-white/5;
+    }
+    .rule-item:hover {
+        @apply border-[#FF7300]/30;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Available Job Applications</h1>
-    <ul class="list-disc pl-5 space-y-2">
-        <li><a href="{% url 'sasp_apply' %}" class="text-blue-600 hover:underline">San Andreas State Police (SASP) Application</a></li>
-        <li><a href="{% url 'ems_apply' %}" class="text-blue-600 hover:underline">Emergency Medical Services (EMS) Application</a></li>
-        <li><a href="{% url 'mechanic_apply' %}" class="text-blue-600 hover:underline">Mechanic Application</a></li>
-    </ul>
+<!-- Hero Section -->
+<div class="relative py-20 bg-darker overflow-hidden">
+    <div class="absolute inset-0 bg-[url('{% static 'img/grid.png' %}')] opacity-5"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#FF7300]/5 to-transparent"></div>
+    
+    <div class="container mx-auto px-4 relative">
+        <div class="text-center max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white">Join Our Elite Teams</h1>
+            <div class="w-24 h-1 bg-gradient-to-r from-[#FF7300] to-[#FFA040] mx-auto mb-6"></div>
+            <p class="text-slate-400 text-lg">Choose your path and make your mark in Vibe City with one of our prestigious departments.</p>
+        </div>
+    </div>
 </div>
+
+<!-- Main Content -->
+<div class="py-16 bg-dark">
+    <div class="container mx-auto px-4">
+        <!-- Job Categories Tabs -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button class="job-tab active" data-category="all">All Jobs</button>
+            <button class="job-tab" data-category="law">Law Enforcement</button>
+            <button class="job-tab" data-category="medical">Medical Services</button>
+            <button class="job-tab" data-category="civilian">Civilian Jobs</button>
+        </div>
+
+        <!-- Job Listings -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- SASP -->
+            <div class="job-card group" data-category="law">
+                <div class="h-48 relative overflow-hidden">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866563/police.jpg" alt="SASP" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">San Andreas State Police</h3>
+                            <p class="text-slate-400">Protect & Serve</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>18+ Years Old</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Clean Criminal Record</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Excellent Communication</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Key Rules</h4>
+                        <div class="space-y-3">
+                            <div class="rule-item">
+                                <i class="fas fa-gavel text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Professional Conduct</h5>
+                                    <p class="text-slate-400 text-sm">Maintain professional behavior at all times, both in-game and in communications.</p>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-clock text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Activity Requirements</h5>
+                                    <p class="text-slate-400 text-sm">Minimum 20 hours per week of active duty required.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'sasp_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                        Apply for SASP
+                    </a>
+                </div>
+            </div>
+
+            <!-- EMS -->
+            <div class="job-card group" data-category="medical">
+                <div class="h-48 relative overflow-hidden">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866566/ems.jpg" alt="EMS" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg">
+                            <i class="fas fa-briefcase-medical text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Emergency Medical Services</h3>
+                            <p class="text-slate-400">Save Lives</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Medical Knowledge</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Quick Decision Making</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Team Player</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Key Rules</h4>
+                        <div class="space-y-3">
+                            <div class="rule-item">
+                                <i class="fas fa-ambulance text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Response Time</h5>
+                                    <p class="text-slate-400 text-sm">Maintain quick response times to emergency calls.</p>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-user-md text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Medical Protocol</h5>
+                                    <p class="text-slate-400 text-sm">Follow proper medical procedures and protocols.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'ems_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                        Apply for EMS
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mechanic -->
+            <div class="job-card group" data-category="civilian">
+                <div class="h-48 relative overflow-hidden">
+                    <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866567/mechanic.jpg" alt="Mechanic" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-[#FF7300] flex items-center justify-center shadow-lg">
+                            <i class="fas fa-wrench text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Big Tuna Mechanic Service</h3>
+                            <p class="text-slate-400">Keep the City Moving</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Requirements</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Technical Knowledge</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Problem Solving</span>
+                            </li>
+                            <li class="flex items-center text-slate-300">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Customer Service</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-white font-semibold mb-3">Key Rules</h4>
+                        <div class="space-y-3">
+                            <div class="rule-item">
+                                <i class="fas fa-tools text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Quality Service</h5>
+                                    <p class="text-slate-400 text-sm">Provide high-quality repairs and maintenance services.</p>
+                                </div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-handshake text-[#FF7300] mt-1"></i>
+                                <div>
+                                    <h5 class="text-white font-medium">Customer Relations</h5>
+                                    <p class="text-slate-400 text-sm">Maintain professional customer interactions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'mechanic_apply' %}" class="block w-full py-3 px-6 text-center rounded-xl bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-semibold hover:shadow-[0_0_20px_rgba(255,115,0,0.3)] transition-all duration-300">
+                        Apply for Mechanic
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General Job Rules Section -->
+<div class="py-16 bg-darker">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">General Job Rules</h2>
+            
+            <div class="space-y-6">
+                <div class="rule-item">
+                    <i class="fas fa-user-clock text-[#FF7300] mt-1"></i>
+                    <div>
+                        <h5 class="text-white font-medium">Activity Requirements</h5>
+                        <p class="text-slate-400">All job positions require regular activity. Inactive members may be subject to removal.</p>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <i class="fas fa-comments text-[#FF7300] mt-1"></i>
+                    <div>
+                        <h5 class="text-white font-medium">Communication</h5>
+                        <p class="text-slate-400">Maintain active communication with your department and respond to messages promptly.</p>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <i class="fas fa-users text-[#FF7300] mt-1"></i>
+                    <div>
+                        <h5 class="text-white font-medium">Teamwork</h5>
+                        <p class="text-slate-400">Work collaboratively with your team members and maintain a positive attitude.</p>
+                    </div>
+                </div>
+
+                <div class="rule-item">
+                    <i class="fas fa-book text-[#FF7300] mt-1"></i>
+                    <div>
+                        <h5 class="text-white font-medium">Roleplay Standards</h5>
+                        <p class="text-slate-400">Maintain high-quality roleplay standards and follow department-specific protocols.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.job-tab');
+    const jobCards = document.querySelectorAll('.job-card');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active', 'bg-[#FF7300]', 'text-white'));
+            tabs.forEach(t => t.classList.add('text-slate-300'));
+            
+            // Add active class to clicked tab
+            tab.classList.remove('text-slate-300');
+            tab.classList.add('active', 'bg-[#FF7300]', 'text-white');
+
+            const category = tab.getAttribute('data-category');
+
+            jobCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %} 

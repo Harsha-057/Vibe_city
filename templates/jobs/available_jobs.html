@@ -1,45 +1,184 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Available Jobs{% endblock %}
+{% block title %}Available Jobs - Vibe City RP{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-10 text-center neon-text">Join the Team</h1>
+<!-- Sticky Navigation -->
+<nav class="sticky top-0 z-30 bg-black/80 backdrop-blur border-b border-orange-400/10 py-2 px-4 flex flex-wrap gap-2 justify-center shadow-sm">
+    <a href="#sasp" class="text-orange-200 hover:text-[#FF7300] font-semibold px-3 py-1 rounded transition focus:outline-none focus:ring-2 focus:ring-[#FF7300]">SASP</a>
+    <a href="#ems" class="text-orange-200 hover:text-[#FF7300] font-semibold px-3 py-1 rounded transition focus:outline-none focus:ring-2 focus:ring-[#FF7300]">EMS</a>
+    <a href="#mechanic" class="text-orange-200 hover:text-[#FF7300] font-semibold px-3 py-1 rounded transition focus:outline-none focus:ring-2 focus:ring-[#FF7300]">Mechanic</a>
+</nav>
 
-    <div class="grid md:grid-cols-3 gap-8">
+<!-- Hero Section -->
+<div class="relative h-[340px] flex items-center justify-center bg-black overflow-hidden">
+    <img src="{% static 'img/bg.jpg' %}" alt="Jobs Hero" class="absolute inset-0 w-full h-full object-cover opacity-60" />
+    <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-[#FF7300]/10 to-black/90"></div>
+    <div class="relative z-10 text-center w-full">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg mb-4 animate__animated animate__fadeInDown">Available Jobs</h1>
+        <p class="text-xl md:text-2xl text-orange-200 mb-8 animate__animated animate__fadeIn animate__delay-1s">Shape your story. Join a department. Make your mark in Vibe City.</p>
+        <a href="#jobs-list" class="inline-block px-8 py-4 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold text-lg shadow-lg hover:scale-105 transition-transform duration-300 animate__animated animate__fadeInUp animate__delay-2s">View Openings <i class="fas fa-arrow-down ml-2"></i></a>
+    </div>
+</div>
+
+<!-- Section Divider -->
+<div class="w-full h-2 bg-gradient-to-r from-[#FF7300]/30 via-[#FFA040]/10 to-transparent my-8"></div>
+
+<!-- Jobs List -->
+<div id="jobs-list" class="container mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
         <!-- SASP -->
-        <div class="card p-6 text-center border-highlight/30 hover:border-highlight">
-             <i class="fas fa-shield-alt text-highlight text-4xl mb-4"></i>
-            <h2 class="text-2xl font-semibold mb-4 text-highlight">San Andreas State Police</h2>
-            <p class="text-textSecondary mb-6 h-24"> {# Fixed height for alignment #}
-                Uphold the law, protect the citizens, and patrol the streets of San Andreas. 
-                Requires dedication, professionalism, and courage.
-            </p>
-            <a href="{% url 'sasp_apply' %}" class="btn-secondary hover:bg-highlight/20 hover:border-highlight hover:text-highlight inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for SASP</a>
+        <div id="sasp" tabindex="0" aria-label="San Andreas State Police" class="relative flex flex-col bg-slate-900/80 rounded-2xl shadow-xl border border-orange-400/20 overflow-hidden group backdrop-blur-md hover:shadow-2xl hover:border-[#FF7300] transition-all duration-300 focus-within:ring-2 focus-within:ring-[#FF7300] cursor-pointer pb-20 md:pb-0" onclick="openModal('sasp')" onkeypress="if(event.key==='Enter'){openModal('sasp')}">
+            <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866563/police.jpg" alt="SASP" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-700" />
+            <span class="absolute top-5 left-5 bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold px-4 py-1 rounded-full text-xs shadow">Law Enforcement</span>
+            <div class="p-7 pt-3 flex-1 flex flex-col">
+                <span class="-mt-10 mb-4 inline-flex items-center justify-center w-16 h-16 rounded-xl bg-[#FF7300] shadow-lg group-hover:animate-bounce"><i class="fas fa-shield-alt text-white text-2xl"></i></span>
+                <div class="text-2xl font-bold text-white mb-1">San Andreas State Police</div>
+                <div class="text-orange-200 text-base mb-3">Uphold the law, protect citizens, and patrol the streets. Requires dedication, professionalism, and courage.</div>
+                <div class="flex gap-3 mb-3 flex-wrap">
+                    <span class="bg-[#FF7300]/10 text-[#FF7300] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-users"></i> 24/7 Duty</span>
+                    <span class="bg-[#FFA040]/10 text-[#FFA040] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-user-shield"></i> 15+ Divisions</span>
+                </div>
+                <div class="mb-4">
+                    <div class="text-white font-semibold mb-1">Why Join?</div>
+                    <ul class="list-none space-y-1">
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Elite training and career progression</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Dynamic law enforcement scenarios</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Strong team camaraderie</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
+                    <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about SASP">Learn More</button>
+                    <a href="{% url 'sasp_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                </div>
+            </div>
         </div>
-
         <!-- EMS -->
-        <div class="card p-6 text-center border-accent/30 hover:border-accent">
-             <i class="fas fa-briefcase-medical text-accent text-4xl mb-4"></i>
-            <h2 class="text-2xl font-semibold mb-4 text-accent">Emergency Medical Services</h2>
-            <p class="text-textSecondary mb-6 h-24">
-                Provide critical medical care, respond to emergencies, and save lives. 
-                Requires quick thinking, compassion, and medical knowledge.
-            </p>
-            <a href="{% url 'ems_apply' %}" class="btn-secondary hover:bg-accent/20 hover:border-accent hover:text-accent inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for EMS</a>
+        <div id="ems" tabindex="0" aria-label="Emergency Medical Services" class="relative flex flex-col bg-slate-900/80 rounded-2xl shadow-xl border border-orange-400/20 overflow-hidden group backdrop-blur-md hover:shadow-2xl hover:border-[#FF7300] transition-all duration-300 focus-within:ring-2 focus-within:ring-[#FF7300] cursor-pointer pb-20 md:pb-0" onclick="openModal('ems')" onkeypress="if(event.key==='Enter'){openModal('ems')}">
+            <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866566/ems.jpg" alt="EMS" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-700" />
+            <span class="absolute top-5 left-5 bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold px-4 py-1 rounded-full text-xs shadow">Medical Services</span>
+            <div class="p-7 pt-3 flex-1 flex flex-col">
+                <span class="-mt-10 mb-4 inline-flex items-center justify-center w-16 h-16 rounded-xl bg-[#FF7300] shadow-lg group-hover:animate-bounce"><i class="fas fa-briefcase-medical text-white text-2xl"></i></span>
+                <div class="text-2xl font-bold text-white mb-1">Emergency Medical Services</div>
+                <div class="text-orange-200 text-base mb-3">Provide critical care, respond to emergencies, and save lives. Requires quick thinking, compassion, and medical knowledge.</div>
+                <div class="flex gap-3 mb-3 flex-wrap">
+                    <span class="bg-[#FF7300]/10 text-[#FF7300] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-hospital"></i> 4 Stations</span>
+                    <span class="bg-[#FFA040]/10 text-[#FFA040] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-ambulance"></i> 10+ Vehicles</span>
+                </div>
+                <div class="mb-4">
+                    <div class="text-white font-semibold mb-1">Why Join?</div>
+                    <ul class="list-none space-y-1">
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Make a real difference in the city</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Work with advanced medical equipment</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Be part of a supportive, skilled team</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
+                    <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about EMS">Learn More</button>
+                    <a href="{% url 'ems_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                </div>
+            </div>
         </div>
-
         <!-- Mechanic -->
-        <div class="card p-6 text-center border-yellow-400/30 hover:border-yellow-400">
-            <i class="fas fa-wrench text-yellow-400 text-4xl mb-4"></i>
-            <h2 class="text-2xl font-semibold mb-4 text-yellow-400">Mechanic</h2>
-            <p class="text-textSecondary mb-6 h-24">
-                Keep the city moving by repairing, maintaining, and customizing vehicles. 
-                Requires technical skill, problem-solving, and a passion for cars.
-            </p>
-            <a href="{% url 'mechanic_apply' %}" class="btn-secondary hover:bg-yellow-400/20 hover:border-yellow-400 hover:text-yellow-400 inline-block py-2 px-5 rounded-md text-sm font-medium transition duration-300">Apply for Mechanic</a>
+        <div id="mechanic" tabindex="0" aria-label="Big Tuna Mechanic Service" class="relative flex flex-col bg-slate-900/80 rounded-2xl shadow-xl border border-orange-400/20 overflow-hidden group backdrop-blur-md hover:shadow-2xl hover:border-[#FF7300] transition-all duration-300 focus-within:ring-2 focus-within:ring-[#FF7300] cursor-pointer pb-20 md:pb-0" onclick="openModal('mechanic')" onkeypress="if(event.key==='Enter'){openModal('mechanic')}">
+            <img src="https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866567/mechanic.jpg" alt="Mechanic" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-700" />
+            <span class="absolute top-5 left-5 bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold px-4 py-1 rounded-full text-xs shadow">Civilian Job</span>
+            <div class="p-7 pt-3 flex-1 flex flex-col">
+                <span class="-mt-10 mb-4 inline-flex items-center justify-center w-16 h-16 rounded-xl bg-[#FF7300] shadow-lg group-hover:animate-bounce"><i class="fas fa-wrench text-white text-2xl"></i></span>
+                <div class="text-2xl font-bold text-white mb-1">Big Tuna Mechanic Service</div>
+                <div class="text-orange-200 text-base mb-3">Keep the city moving by repairing, maintaining, and customizing vehicles. Requires technical skill, problem-solving, and a passion for cars.</div>
+                <div class="flex gap-3 mb-3 flex-wrap">
+                    <span class="bg-[#FF7300]/10 text-[#FF7300] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-cogs"></i> 100+ Parts</span>
+                    <span class="bg-[#FFA040]/10 text-[#FFA040] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1"><i class="fas fa-map-marker-alt"></i> 3 Locations</span>
+                </div>
+                <div class="mb-4">
+                    <div class="text-white font-semibold mb-1">Why Join?</div>
+                    <ul class="list-none space-y-1">
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Hands-on technical experience</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Opportunities for business growth</li>
+                        <li class="flex items-center text-orange-200"><i class="fas fa-check-circle text-[#FF7300] mr-2"></i> Be the hero behind the scenes</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
+                    <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about Mechanic">Learn More</button>
+                    <a href="{% url 'mechanic_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
+
+<!-- Modal (hidden by default) -->
+<div id="job-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 hidden" role="dialog" aria-modal="true">
+    <div class="bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 relative animate__animated animate__fadeInUp">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-[#FF7300] text-2xl focus:outline-none" aria-label="Close modal"><i class="fas fa-times"></i></button>
+        <div id="modal-content"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Modal logic
+const jobDetails = {
+    sasp: {
+        title: 'San Andreas State Police',
+        img: 'https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866563/police.jpg',
+        badge: 'Law Enforcement',
+        desc: 'Uphold the law, protect citizens, and patrol the streets. Requires dedication, professionalism, and courage.',
+        stats: ['24/7 Duty', '15+ Divisions'],
+        why: ['Elite training and career progression', 'Dynamic law enforcement scenarios', 'Strong team camaraderie'],
+        apply: '{% url "sasp_apply" %}'
+    },
+    ems: {
+        title: 'Emergency Medical Services',
+        img: 'https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866566/ems.jpg',
+        badge: 'Medical Services',
+        desc: 'Provide critical care, respond to emergencies, and save lives. Requires quick thinking, compassion, and medical knowledge.',
+        stats: ['4 Stations', '10+ Vehicles'],
+        why: ['Make a real difference in the city', 'Work with advanced medical equipment', 'Be part of a supportive, skilled team'],
+        apply: '{% url "ems_apply" %}'
+    },
+    mechanic: {
+        title: 'Big Tuna Mechanic Service',
+        img: 'https://cdn.discordapp.com/attachments/1223694170724499649/1223694171068866567/mechanic.jpg',
+        badge: 'Civilian Job',
+        desc: 'Keep the city moving by repairing, maintaining, and customizing vehicles. Requires technical skill, problem-solving, and a passion for cars.',
+        stats: ['100+ Parts', '3 Locations'],
+        why: ['Hands-on technical experience', 'Opportunities for business growth', 'Be the hero behind the scenes'],
+        apply: '{% url "mechanic_apply" %}'
+    }
+};
+function openModal(job) {
+    const d = jobDetails[job];
+    if (!d) return;
+    document.getElementById('modal-content').innerHTML = `
+        <img src="${d.img}" alt="${d.title}" class="w-full h-40 object-cover rounded-xl mb-4" />
+        <span class="inline-block bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold px-4 py-1 rounded-full text-xs shadow mb-3">${d.badge}</span>
+        <h2 class="text-2xl font-bold text-white mb-2">${d.title}</h2>
+        <p class="text-orange-200 mb-4">${d.desc}</p>
+        <div class="flex gap-3 mb-4 flex-wrap">
+            ${d.stats.map(s => `<span class='bg-[#FF7300]/10 text-[#FF7300] rounded-lg px-3 py-1 text-xs font-semibold flex items-center gap-1'><i class='fas fa-info-circle mr-1'></i> ${s}</span>`).join('')}
+        </div>
+        <div class="mb-4">
+            <div class="text-white font-semibold mb-1">Why Join?</div>
+            <ul class="list-none space-y-1">
+                ${d.why.map(w => `<li class='flex items-center text-orange-200'><i class='fas fa-check-circle text-[#FF7300] mr-2'></i> ${w}</li>`).join('')}
+            </ul>
+        </div>
+        <a href="${d.apply}" class="block w-full py-4 mt-4 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold text-lg shadow-lg hover:scale-105 transition-transform duration-300 text-center">Apply Now</a>
+    `;
+    document.getElementById('job-modal').classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+function closeModal() {
+    document.getElementById('job-modal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+// Close modal on ESC
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
 {% endblock %} 

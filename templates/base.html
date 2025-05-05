@@ -62,9 +62,9 @@
                             100: '#111111',
                         },
                         accent: {
-                            DEFAULT: '#FF2E63', // Neon pink/red
-                            light: '#FF5983',
-                            dark: '#D91F4F',
+                            DEFAULT: '#FF7300', // Orange
+                            light: '#FFA040',
+                            dark: '#CC5C00',
                         },
                         highlight: {
                             DEFAULT: '#08D9D6', // Cyan
@@ -81,13 +81,13 @@
                         heading: ['Outfit', 'sans-serif'],
                     },
                     boxShadow: {
-                        'neon': '0 0 5px rgba(255, 46, 99, 0.5), 0 0 20px rgba(255, 46, 99, 0.2)',
+                        'neon': '0 0 5px rgba(255, 115, 0, 0.5), 0 0 20px rgba(255, 115, 0, 0.2)',
                         'neon-cyan': '0 0 5px rgba(8, 217, 214, 0.5), 0 0 20px rgba(8, 217, 214, 0.2)',
                         'inner-light': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.05)',
                     },
                     backgroundImage: {
                         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'gradient-accent': 'linear-gradient(45deg, #FF2E63, #FF5983)',
+                        'gradient-accent': 'linear-gradient(45deg, #FF7300, #FFA040)',
                         'gradient-highlight': 'linear-gradient(45deg, #08D9D6, #3EECEA)',
                     }
                 }
@@ -123,13 +123,13 @@
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: #FF2E63;
+            background: #FF7300;
         }
         
         /* Neon text effect */
         .neon-text {
-            color: #FF2E63;
-            text-shadow: 0 0 5px rgba(255, 46, 99, 0.7), 0 0 10px rgba(255, 46, 99, 0.5);
+            color: #FF7300;
+            text-shadow: 0 0 5px rgba(255, 115, 0, 0.7), 0 0 10px rgba(255, 115, 0, 0.5);
         }
         
         .neon-text-cyan {
@@ -139,8 +139,8 @@
         
         /* Neon border effect */
         .neon-border {
-            border: 1px solid #FF2E63;
-            box-shadow: 0 0 5px rgba(255, 46, 99, 0.5), 0 0 10px rgba(255, 46, 99, 0.2);
+            border: 1px solid #FF7300;
+            box-shadow: 0 0 5px rgba(255, 115, 0, 0.5), 0 0 10px rgba(255, 115, 0, 0.2);
         }
         
         .neon-border-cyan {
@@ -166,7 +166,7 @@
             font-size: 0.875rem;
             line-height: 1.25rem;
             font-weight: 500;
-            background: linear-gradient(45deg, theme('colors.accent.DEFAULT'), theme('colors.accent.light'));
+            background: linear-gradient(45deg, #FF7300, #FFA040);
             color: white;
             transition: all 0.3s ease;
             position: relative;
@@ -190,7 +190,7 @@
             left: 100%;
         }
         .btn-primary:hover {
-             box-shadow: theme('boxShadow.neon');
+            box-shadow: 0 0 5px rgba(255, 115, 0, 0.5), 0 0 20px rgba(255, 115, 0, 0.2);
         }
         
         .btn-secondary {
@@ -251,7 +251,7 @@
             outline: 2px solid transparent;
             outline-offset: 2px;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-            border-color: #FF2E63;
+            border-color: #FF7300;
         }
 
         /* Textarea styles (inherit from input) */
@@ -277,7 +277,7 @@
             outline: 2px solid transparent;
             outline-offset: 2px;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-            border-color: #FF2E63;
+            border-color: #FF7300;
         }
         
         /* Animations */
