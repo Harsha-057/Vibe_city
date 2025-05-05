@@ -110,12 +110,20 @@ class VibeCity(commands.Bot):
     
     async def setup_hook(self):
         try:
+            # Clear existing commands
+            self.tree.clear_commands(guild=None)
+            
+            # Add commands
             self.tree.add_command(self.whiteliststeps)
             self.tree.add_command(self.rules)
-            await self.tree.sync()
+            
+            # Force sync with Discord
+            await self.tree.sync(guild=None)
             print("Successfully synced commands with Discord")
         except Exception as e:
             print(f"Error syncing commands: {e}")
+            import traceback
+            traceback.print_exc()
     
     def get_whitelist_embed_and_view(self):
         class WhitelistApplyView(ui.View):
@@ -149,13 +157,19 @@ class VibeCity(commands.Bot):
         embed.set_footer(text="Vibe City RP | Server Rules")
         return embed, RulesView()
 
-    @app_commands.command(name="whiteliststeps", description="Show steps to apply for whitelist")
+    @app_commands.command(
+        name="whiteliststeps",
+        description="Show steps to apply for whitelist"
+    )
     async def whiteliststeps(self, interaction: discord.Interaction):
         """Show steps to apply for whitelist"""
         embed, view = self.get_whitelist_embed_and_view()
         await interaction.response.send_message(embed=embed, view=view)
 
-    @app_commands.command(name="rules", description="Show link to server rules")
+    @app_commands.command(
+        name="rules",
+        description="Show link to server rules"
+    )
     async def rules(self, interaction: discord.Interaction):
         """Show link to server rules"""
         embed, view = self.get_rules_embed_and_view()
@@ -211,6 +225,7 @@ def send_application_notification(application):
     
     async def send():
         try:
+            # Send to applications channel
             channel = bot.get_channel(int(settings.DISCORD_APPLICATIONS_CHANNEL_ID))
             if not channel:
                 print(f"Channel not found: {settings.DISCORD_APPLICATIONS_CHANNEL_ID}")
@@ -229,11 +244,54 @@ def send_application_notification(application):
             embed.add_field(name="Application ID", value=application.id, inline=True)
             
             embed.set_thumbnail(url=application.user.avatar_url)
-            # TODO: Replace with your desired image URL for new applications
-            # embed.set_image(url="YOUR_SERVER_BANNER_OR_LOGO_URL") 
             embed.set_footer(text="Review this application in the staff dashboard")
             
             await channel.send(embed=embed)
+
+            # Send DM to the user
+            try:
+                guild = bot.get_guild(int(settings.DISCORD_GUILD_ID))
+                if not guild:
+                    print(f"Guild not found: {settings.DISCORD_GUILD_ID}")
+                    return
+                
+                member = await guild.fetch_member(int(application.user.discord_id))
+                if not member:
+                    print(f"Member not found: {application.user.discord_id}")
+                    return
+                
+                dm_embed = discord.Embed(
+                    title="Whitelist Application Received",
+                    description="Thank you for submitting your whitelist application to Vibe City RP!",
+                    color=discord.Color.green()
+                )
+                dm_embed.add_field(
+                    name="Status",
+                    value="Your application is now pending review by our staff team.",
+                    inline=False
+                )
+                dm_embed.add_field(
+                    name="Processing Time",
+                    value="Most applications are reviewed within 24 hours. You will receive a DM when your application has been reviewed.",
+                    inline=False
+                )
+                dm_embed.add_field(
+                    name="Application ID",
+                    value=application.id,
+                    inline=True
+                )
+                dm_embed.add_field(
+                    name="Submitted At",
+                    value=application.created_at.astimezone(pytz.timezone('Asia/Kolkata')).strftime("%Y-%m-%d %H:%M IST"),
+                    inline=True
+                )
+                dm_embed.set_footer(text="Vibe City RP | Whitelist Application")
+                
+                await member.send(embed=dm_embed)
+                print(f"Sent confirmation DM to {member.name}")
+            except Exception as e:
+                print(f"Error sending DM to user: {e}")
+        
         except Exception as e:
             print(f"Error sending application notification: {e}")
     
