@@ -17,13 +17,13 @@ class WhitelistApplicationAdmin(admin.ModelAdmin):
             'fields': ('discord_name', 'steam_name', 'steam_hex_id', 'age')
         }),
         ('Server Information', {
-            'fields': ('how_found', 'fivem_experience')
+            'fields': ['fivem_experience']
         }),
         ('Character Information', {
-            'fields': ('character_name', 'character_age', 'character_backstory')
+            'fields': ('character_name', 'character_age')
         }),
         ('Roleplay Knowledge', {
-            'fields': ('fear_rp_explanation', 'fail_rp_explanation', 'robbery_response', 'rule_breaking_response')
+            'fields': ['rule_breaking_response']
         }),
         ('Rules & Status', {
             'fields': ('rules_acknowledged', 'status', 'feedback', 'reviewed_by', 'reviewed_at')

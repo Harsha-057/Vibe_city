@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django_summernote import urls as summernote_urls
 from . import views
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('server-info/', views.server_info, name='server_info'),
+    path('summernote/', include(summernote_urls)),
 ]
 
 if settings.DEBUG:

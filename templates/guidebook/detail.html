@@ -71,8 +71,8 @@
                     {% endif %}
                     
                     <div class="prose prose-invert max-w-none">
-                        <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-6 border border-gray-600/50">
-                            {{ entry.description|linebreaks }}
+                        <div class="bg-gray-700/50 backdrop-blur-sm rounded-lg p-6 border border-gray-600/50 summernote-content">
+                            {{ entry.description|safe }}
                         </div>
                     </div>
                     
@@ -96,4 +96,91 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Summernote content styling */
+    .summernote-content {
+        color: #e5e7eb;
+    }
+
+    .summernote-content p {
+        margin-bottom: 1rem;
+    }
+
+    .summernote-content h1, 
+    .summernote-content h2, 
+    .summernote-content h3, 
+    .summernote-content h4, 
+    .summernote-content h5, 
+    .summernote-content h6 {
+        color: #f3f4f6;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .summernote-content a {
+        color: #818cf8;
+        text-decoration: underline;
+    }
+
+    .summernote-content a:hover {
+        color: #6366f1;
+    }
+
+    .summernote-content ul, 
+    .summernote-content ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .summernote-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    .summernote-content blockquote {
+        border-left: 4px solid #4f46e5;
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        color: #9ca3af;
+    }
+
+    .summernote-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+    }
+
+    .summernote-content th,
+    .summernote-content td {
+        border: 1px solid #4b5563;
+        padding: 0.5rem;
+    }
+
+    .summernote-content th {
+        background-color: #374151;
+    }
+
+    .summernote-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .summernote-content pre {
+        background-color: #1f2937;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+    }
+
+    .summernote-content code {
+        background-color: #1f2937;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+    }
+</style>
 {% endblock %} 

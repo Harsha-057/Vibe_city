@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'crispy_tailwind',
     'social_django',
     'tailwind',
+    'django_summernote',
     
     # Local apps
     'accounts',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'jobs',
     'guidebook',
     'keybinds',
+    'questions',
 ]
 
 MIDDLEWARE = [
@@ -204,3 +206,20 @@ DISCORD_EMS_INTERVIEW_ROLE_ID = '1365759489231552572'   # Replace with actual EM
 DISCORD_EMS_HIRED_ROLE_ID = '1365759756005937273'       # Replace with actual EMS Hired role ID
 DISCORD_MECHANIC_INTERVIEW_ROLE_ID = '1365759489231552572'  # Replace with actual Mechanic Interview role ID
 DISCORD_MECHANIC_HIRED_ROLE_ID = '1356161401449746573'      # Replace with actual Mechanic Hired role ID
+
+# Summernote configuration
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'width': '100%',
+        'height': '400px',
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview', 'help']],
+        ],
+    }
+}

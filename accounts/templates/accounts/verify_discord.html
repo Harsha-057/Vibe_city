@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Link Your Discord Account</h2>
+                    <div class="mb-4">
+                        <i class="fab fa-discord fa-5x text-primary"></i>
+                    </div>
+                    <p class="lead mb-4">
+                        To access all features of Vibe City RP, you need to link your Discord account.
+                        This helps us maintain a strong community and ensures better communication.
+                    </p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        After linking your Discord account, please refresh this page to continue.
+                    </div>
+                    <a href="{% url 'social:begin' 'discord' %}" class="btn btn-primary btn-lg mt-3">
+                        <i class="fab fa-discord me-2"></i>Link Discord Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
