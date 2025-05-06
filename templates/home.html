@@ -200,6 +200,25 @@
     ::-webkit-scrollbar-thumb:hover {
         background: var(--primary-dark);
     }
+
+    .job-card {
+        display: flex;
+        flex-direction: column;
+        height: 540px; /* Fixed height for all cards */
+        min-height: 540px;
+        max-height: 540px;
+    }
+    .job-card .p-6 {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .job-card .mb-6:last-child {
+        margin-bottom: 0;
+    }
+    .job-card .block.w-full {
+        margin-top: auto;
+    }
 </style>
 {% endblock %}
 
@@ -332,7 +351,7 @@
         <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <!-- SASP Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
                         <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557731/image8_sumezx.png" alt="SASP" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
@@ -351,18 +370,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">San Andreas State Police</h3>
                             <p class="text-slate-400">Protect & Serve</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">24/7</div>
-                                <div class="text-slate-400 text-sm">Active Duty</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">15+</div>
-                                <div class="text-slate-400 text-sm">Divisions</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
@@ -393,7 +400,7 @@
 
             <!-- EMS Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
                         <img src="https://i.redd.it/looking-for-a-medical-doctors-ems-serious-rp-averaging-25-v0-mupl8ezz8qjb1.png?width=1680&format=png&auto=webp&s=26928ea23083dbb54027a6be2c4f8c7eb9567265" alt="EMS" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
@@ -412,18 +419,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">Emergency Medical Services</h3>
                             <p class="text-slate-400">Save Lives</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">4</div>
-                                <div class="text-slate-400 text-sm">Stations</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">10+</div>
-                                <div class="text-slate-400 text-sm">Vehicles</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
@@ -454,7 +449,7 @@
 
             <!-- Mechanic Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
                         <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746558271/image23_mpvcfj.png" alt="Mechanic" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
@@ -473,18 +468,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">Big Tuna Mechanic Service</h3>
                             <p class="text-slate-400">Keep the City Moving</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">100+</div>
-                                <div class="text-slate-400 text-sm">Custom Parts</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">3</div>
-                                <div class="text-slate-400 text-sm">Locations</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
