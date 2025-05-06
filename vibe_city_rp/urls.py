@@ -20,6 +20,7 @@ urlpatterns = [
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('server-info/', views.server_info, name='server_info'),
     path('discord/', views.discord_redirect, name='discord'),
+    path('gallery/', include('gallery.urls'), name='gallery'),
 ]
 
 if settings.DEBUG:

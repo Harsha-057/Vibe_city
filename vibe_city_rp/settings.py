@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'jobs',
     'guidebook',
     'keybinds',
+    'gallery',
 ]
 
 MIDDLEWARE = [
