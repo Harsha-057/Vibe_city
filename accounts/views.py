@@ -34,7 +34,6 @@ def profile_view(request):
 
         # Only check Discord membership if bot is ready
         if not bot_ready.is_set():
-            messages.error(request, "Discord bot is not ready. Please try again later.")
             return render(request, 'accounts/profile.html', context={})
 
         async def check_discord_membership():
@@ -54,11 +53,13 @@ def profile_view(request):
             ).result(timeout=5)  # Reduce timeout for faster feedback
         except Exception as e:
             print(f"Error running Discord membership check: {e}")
-            messages.error(request, "Error checking Discord membership. Please try again later.")
-            return render(request, 'accounts/profile.html', context={})
+            is_in_server = False
 
-        if not is_in_server:
-            return render(request, 'accounts/join_discord.html')
+        context = {
+            'is_in_discord': is_in_server,
+            'discord_invite_link': "https://discord.gg/7t6wRdnukV"
+        }
+        return render(request, 'accounts/profile.html', context=context)
 
     except UserSocialAuth.DoesNotExist:
         return render(request, 'accounts/verify_discord.html')
