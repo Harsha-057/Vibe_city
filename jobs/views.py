@@ -266,7 +266,12 @@ def update_job_application_status(request, pk):
         action = request.POST.get('action') # Use 'action' instead of 'status' for clarity
         feedback_text = request.POST.get('feedback', '').strip()
 
+        # Check if form stage has already been reviewed
         if current_status == 'PENDING' and user_can_review_form:
+            if application.form_reviewer:
+                messages.error(request, "This application has already been reviewed at the form stage.")
+                return redirect('job_application_detail', pk=pk)
+
             if action == 'APPROVE_FORM':
                 application.status = 'INTERVIEW_PENDING'
                 application.form_reviewer = request.user
@@ -298,7 +303,12 @@ def update_job_application_status(request, pk):
             else:
                 messages.error(request, "Invalid action for current status.")
         
+        # Check if interview stage has already been reviewed
         elif current_status == 'INTERVIEW_PENDING' and user_can_hire:
+            if application.interview_reviewer:
+                messages.error(request, "This application has already been reviewed at the interview stage.")
+                return redirect('job_application_detail', pk=pk)
+
             if action == 'HIRE':
                 application.status = 'HIRED'
                 application.interview_reviewer = request.user
@@ -345,9 +355,9 @@ def update_job_application_status(request, pk):
         else:
             # Handle cases where user doesn't have permission or status isn't actionable
             if not user_can_review_form and not user_can_hire:
-                 messages.error(request, "You do not have permission to update this application's status.")
+                messages.error(request, "You do not have permission to update this application's status.")
             else:
-                 messages.warning(request, f"No action taken. Application status is currently '{application.get_status_display()}' or you lack permission for this stage.")
+                messages.warning(request, f"No action taken. Application status is currently '{application.get_status_display()}' or you lack permission for this stage.")
         
         return redirect('job_application_detail', pk=pk)
     else:
