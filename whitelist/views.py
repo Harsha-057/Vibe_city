@@ -88,12 +88,11 @@ def apply_view(request):
         is_in_server = asyncio.run_coroutine_threadsafe(check_discord_membership(), bot.loop).result(timeout=10)
     except Exception as e:
         print(f"Error running Discord membership check: {e}")
-        messages.error(request, "Error checking Discord membership. Please try again later.")
-        return redirect('profile')
+        is_in_server = False
     
     if not is_in_server:
-        messages.error(request, "You must be a member of our Discord server to apply for whitelist.")
-        return redirect('https://discord.gg/7t6wRdnukV')
+        discord_invite_link = "https://discord.gg/7t6wRdnukV"
+        return render(request, 'whitelist/join_discord.html', {'discord_invite_link': discord_invite_link})
     
     if request.method == 'POST':
         form = WhitelistApplicationForm(request.POST)

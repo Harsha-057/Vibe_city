@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(120deg, #23272a 0%, #ffab04cd 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    .discord-hero {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+    }
+    .glass-card {
+        background: rgba(44, 47, 51, 0.85);
+        border-radius: 32px;
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.35);
+        padding: 3rem 2.5rem 2.5rem 2.5rem;
+        color: #fff;
+        text-align: center;
+        backdrop-filter: blur(8px);
+        border: 1.5px solid rgba(88,101,242,0.15);
+        max-width: 420px;
+        margin: 0 auto;
+    }
+    .discord-mascot {
+        width: 120px;
+        margin-bottom: 1.5rem;
+        animation: mascot-float 2.5s ease-in-out infinite;
+        
+    }
+    @keyframes mascot-float {
+        0%, 100% { transform: translateY(0);}
+        50% { transform: translateY(-18px);}
+    }
+    .discord-title {
+        font-size: 2.3rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .discord-tagline {
+        font-size: 1.1rem;
+        color: #b9bbbe;
+        margin-bottom: 2rem;
+    }
+    .discord-btn {
+        background: linear-gradient(90deg, #ff7700 0%, #ffab04cd 100%);
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        padding: 1rem 2.5rem;
+        font-size: 1.3rem;
+        font-weight: 700;
+        box-shadow: 0 4px 16px 0 rgba(88,101,242,0.25);
+        transition: background 0.2s, transform 0.2s;
+        margin-top: 1.5rem;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+    }
+    .discord-btn:hover {
+        background: linear-gradient(90deg, #ffa85c 0%, #ffab04cd 100%);
+        transform: scale(1.07);
+        color: #fff;
+        text-decoration: none;
+    }
+    .discord-steps {
+        margin-top: 2rem;
+        color: #b9bbbe;
+        font-size: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+    .discord-steps span {
+        background: rgba(88,101,242,0.15);
+        border-radius: 8px;
+        padding: 0.4rem 1rem;
+        font-weight: 500;
+    }
+</style>
+<div class="discord-hero">
+    <div class="glass-card">
+        <center>
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f47e.svg" alt="Discord Mascot" class="discord-mascot " />
+        </center>
+        <div class="discord-title">Join Our Discord</div>
+        <div class="discord-tagline">Be part of the Vibe City RP community.<br>Unlock all features, events, and support!</div>
+        <a href="https://discord.gg/7t6wRdnukV" class="discord-btn" target="_blank">
+            <i class="fab fa-discord me-2"></i>Join Discord Server
+        </a>
+        <div class="discord-steps mt-4">
+            <span>1. Click the button above</span>
+            <span>2. Accept the invite</span>
+            <span>3. Refresh this page</span>
+            <span>4. Enjoy the city!</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
