@@ -7,6 +7,7 @@ from whitelist.forms import WhitelistApplicationForm
 from discord_bot.bot import send_application_notification, bot, bot_ready
 from django.conf import settings
 import asyncio
+import discord
 
 
 
@@ -44,14 +45,42 @@ def apply_view(request):
     # Check if user is in the Discord server
     async def check_discord_membership():
         try:
-            guild = bot.get_guild(int(settings.DISCORD_GUILD_ID))
+            if not bot:
+                print("Bot is not initialized")
+                return False
+                
+            guild_id = int(settings.DISCORD_GUILD_ID)
+            if not guild_id:
+                print("DISCORD_GUILD_ID is not set")
+                return False
+                
+            guild = bot.get_guild(guild_id)
             if not guild:
+                print(f"Guild not found with ID: {guild_id}")
                 return False
             
-            member = await guild.fetch_member(int(request.user.discord_id))
-            return member is not None
+            user_discord_id = int(request.user.discord_id)
+            if not user_discord_id:
+                print("User's Discord ID is not set")
+                return False
+                
+            member = await guild.fetch_member(user_discord_id)
+            if not member:
+                print(f"Member not found in guild with ID: {user_discord_id}")
+                return False
+                
+            return True
+        except ValueError as e:
+            print(f"Invalid ID format: {e}")
+            return False
+        except discord.Forbidden as e:
+            print(f"Bot lacks permissions to fetch guild members: {e}")
+            return False
+        except discord.HTTPException as e:
+            print(f"Discord API error: {e}")
+            return False
         except Exception as e:
-            print(f"Error checking Discord membership: {e}")
+            print(f"Unexpected error checking Discord membership: {e}")
             return False
     
     # Run the async check in the bot's event loop

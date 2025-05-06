@@ -196,19 +196,38 @@ class VibeCity(commands.Bot):
 
 def run_bot():
     global bot
-    bot = VibeCity()
-    
-    @bot.command(name='ping')
-    async def ping(ctx):
-        await ctx.send('Pong!')
-    
-    bot.run(settings.DISCORD_BOT_TOKEN)
+    try:
+        bot = VibeCity()
+        
+        @bot.command(name='ping')
+        async def ping(ctx):
+            await ctx.send('Pong!')
+        
+        bot.run(settings.DISCORD_BOT_TOKEN)
+    except Exception as e:
+        print(f"Error starting Discord bot: {e}")
+        import traceback
+        traceback.print_exc()
 
 # Start the bot in a separate thread
 def start_bot():
-    bot_thread = threading.Thread(target=run_bot)
-    bot_thread.daemon = True
-    bot_thread.start()
+    try:
+        if not settings.DISCORD_BOT_TOKEN:
+            print("DISCORD_BOT_TOKEN is not set")
+            return
+            
+        if not settings.DISCORD_GUILD_ID:
+            print("DISCORD_GUILD_ID is not set")
+            return
+            
+        bot_thread = threading.Thread(target=run_bot)
+        bot_thread.daemon = True
+        bot_thread.start()
+        print("Discord bot thread started")
+    except Exception as e:
+        print(f"Error creating bot thread: {e}")
+        import traceback
+        traceback.print_exc()
 
 # Initialize the bot when Django starts
 start_bot()
