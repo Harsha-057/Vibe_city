@@ -1,10 +1,12 @@
 from django.urls import path
+from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
     # Public job pages
     path('', views.AvailableJobsView.as_view(), name='available_jobs'),
     path('apply/', views.JobListView.as_view(), name='job_list'),
+    path('coming-soon/', TemplateView.as_view(template_name='jobs/coming_soon.html'), name='jobs_coming_soon'),
 
     # Specific application forms
     path('sasp/apply/', views.sasp_apply_view, name='sasp_apply'),

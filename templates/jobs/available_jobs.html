@@ -50,7 +50,7 @@
                 </div>
                 <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
                     <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about SASP">Learn More</button>
-                    <a href="{% url 'sasp_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                    <a href="{% url 'jobs_coming_soon' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
                     <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about EMS">Learn More</button>
-                    <a href="{% url 'ems_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                    <a href="{% url 'jobs_coming_soon' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="flex flex-col gap-2 md:flex-row md:gap-4 mt-auto">
                     <button class="text-[#FF7300] font-semibold underline hover:text-[#FFA040] focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto" aria-label="Learn more about Mechanic">Learn More</button>
-                    <a href="{% url 'mechanic_apply' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
+                    <a href="{% url 'jobs_coming_soon' %}" class="px-7 py-3 rounded-full bg-gradient-to-r from-[#FF7300] to-[#FFA040] text-white font-bold shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-[#FF7300] w-full md:w-auto text-center">Apply Now</a>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@ const jobDetails = {
         desc: 'Uphold the law, protect citizens, and patrol the streets. Requires dedication, professionalism, and courage.',
         stats: ['24/7 Duty', '15+ Divisions'],
         why: ['Elite training and career progression', 'Dynamic law enforcement scenarios', 'Strong team camaraderie'],
-        apply: '{% url "sasp_apply" %}'
+        apply: '{% url "jobs_coming_soon" %}'
     },
     ems: {
         title: 'Emergency Medical Services',
@@ -138,7 +138,7 @@ const jobDetails = {
         desc: 'Provide critical care, respond to emergencies, and save lives. Requires quick thinking, compassion, and medical knowledge.',
         stats: ['4 Stations', '10+ Vehicles'],
         why: ['Make a real difference in the city', 'Work with advanced medical equipment', 'Be part of a supportive, skilled team'],
-        apply: '{% url "ems_apply" %}'
+        apply: '{% url "jobs_coming_soon" %}'
     },
     mechanic: {
         title: 'Big Tuna Mechanic Service',
@@ -147,7 +147,7 @@ const jobDetails = {
         desc: 'Keep the city moving by repairing, maintaining, and customizing vehicles. Requires technical skill, problem-solving, and a passion for cars.',
         stats: ['100+ Parts', '3 Locations'],
         why: ['Hands-on technical experience', 'Opportunities for business growth', 'Be the hero behind the scenes'],
-        apply: '{% url "mechanic_apply" %}'
+        apply: '{% url "jobs_coming_soon" %}'
     }
 };
 function openModal(job) {
