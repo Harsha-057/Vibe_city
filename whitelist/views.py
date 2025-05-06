@@ -39,8 +39,8 @@ def apply_view(request):
     if not bot_ready.is_set():
         bot_ready.wait(timeout=10)
         if not bot_ready.is_set():
-            messages.error(request, "Discord bot is not ready. Please try again later.")
-            return redirect('profile')
+            discord_invite_link = "https://discord.gg/7t6wRdnukV"
+            return render(request, 'whitelist/join_discord.html', {'discord_invite_link': discord_invite_link})
     
     # Check if user is in the Discord server
     async def check_discord_membership():
