@@ -99,6 +99,11 @@ def application_detail_view(request, application_id):
         action = request.POST.get('action')
         feedback = request.POST.get('feedback', '')
         
+        # Check if application is already reviewed
+        if application.status != 'pending':
+            messages.error(request, f"This application has already been {application.status}. You cannot change its status.")
+            return redirect('application_detail', application_id=application_id)
+        
         if action in ['approve', 'reject']:
             application.status = 'approved' if action == 'approve' else 'rejected'
             application.feedback = feedback
