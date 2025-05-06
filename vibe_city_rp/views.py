@@ -23,4 +23,8 @@ def privacy_policy(request):
 
 def server_info(request):
     """Render the server information page."""
-    return render(request, 'server_info.html') 
+    return render(request, 'server_info.html')
+
+def discord_redirect(request):
+    """Redirect to the Discord invite link."""
+    return HttpResponseRedirect('https://discord.gg/7t6wRdnukV')  # Replace with your actual Discord invite link 
