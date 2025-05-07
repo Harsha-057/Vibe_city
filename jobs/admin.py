@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import JobApplication
-from django.utils import timezone # Import timezone if needed for actions
+from django.utils import timezone
 
 @admin.register(JobApplication)
 class JobApplicationAdmin(admin.ModelAdmin):
@@ -36,15 +36,50 @@ class JobApplicationAdmin(admin.ModelAdmin):
         }),
     )
 
-    # Optional: Add actions like bulk approve/reject later
-    # actions = ['approve_applications', 'reject_applications']
+    actions = ['approve_form_review', 'reject_form_review', 'schedule_interview', 'hire_applicant', 'reject_interview', 'fire_applicant']
 
-    # def approve_applications(self, request, queryset):
-    #     queryset.update(status='APPROVED', reviewer=request.user, reviewed_at=timezone.now())
-    #     self.message_user(request, f'{queryset.count()} applications approved.')
-    # approve_applications.short_description = "Mark selected applications as Approved"
+    def approve_form_review(self, request, queryset):
+        queryset.update(
+            status='INTERVIEW_PENDING',
+            form_reviewer=request.user,
+            form_reviewed_at=timezone.now()
+        )
+        self.message_user(request, f'{queryset.count()} applications moved to interview stage.')
+    approve_form_review.short_description = "Approve form review and move to interview"
 
-    # def reject_applications(self, request, queryset):
-    #     queryset.update(status='REJECTED', reviewer=request.user, reviewed_at=timezone.now())
-    #     self.message_user(request, f'{queryset.count()} applications rejected.')
-    # reject_applications.short_description = "Mark selected applications as Rejected"
+    def reject_form_review(self, request, queryset):
+        queryset.update(
+            status='REJECTED',
+            form_reviewer=request.user,
+            form_reviewed_at=timezone.now()
+        )
+        self.message_user(request, f'{queryset.count()} applications rejected at form stage.')
+    reject_form_review.short_description = "Reject at form review stage"
+
+    def schedule_interview(self, request, queryset):
+        queryset.update(status='INTERVIEW_PENDING')
+        self.message_user(request, f'{queryset.count()} applications scheduled for interview.')
+    schedule_interview.short_description = "Schedule for interview"
+
+    def hire_applicant(self, request, queryset):
+        queryset.update(
+            status='HIRED',
+            interview_reviewer=request.user,
+            interview_reviewed_at=timezone.now()
+        )
+        self.message_user(request, f'{queryset.count()} applicants hired.')
+    hire_applicant.short_description = "Hire selected applicants"
+
+    def reject_interview(self, request, queryset):
+        queryset.update(
+            status='REJECTED_INTERVIEW',
+            interview_reviewer=request.user,
+            interview_reviewed_at=timezone.now()
+        )
+        self.message_user(request, f'{queryset.count()} applications rejected at interview stage.')
+    reject_interview.short_description = "Reject at interview stage"
+
+    def fire_applicant(self, request, queryset):
+        queryset.update(status='FIRED')
+        self.message_user(request, f'{queryset.count()} employees fired.')
+    fire_applicant.short_description = "Fire selected employees"

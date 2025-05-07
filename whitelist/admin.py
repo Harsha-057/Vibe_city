@@ -6,15 +6,18 @@ from django.contrib import messages
 
 @admin.register(WhitelistApplication)
 class WhitelistApplicationAdmin(admin.ModelAdmin):
-    list_display = ('discord_name', 'character_name', 'status', 'created_at', 'reviewed_at', 'action_buttons')
-    list_filter = ('status', 'created_at', 'reviewed_at')
-    search_fields = ('discord_name', 'steam_name', 'steam_hex_id', 'character_name')
+    list_display = ('discord_name', 'character_name', 'age', 'status', 'created_at', 'reviewed_at', 'action_buttons')
+    list_filter = ('status', 'created_at', 'reviewed_at', 'age', 'character_age')
+    search_fields = ('discord_name', 'steam_name', 'steam_hex_id', 'character_name', 'feedback')
     readonly_fields = ('created_at', 'updated_at')
     actions = ['approve_applications', 'reject_applications', 'delete_selected']
     
     fieldsets = (
         ('Discord & Steam Information', {
-            'fields': ('discord_name', 'steam_name', 'steam_hex_id', 'age')
+            'fields': ('discord_name', 'steam_name', 'steam_hex_id')
+        }),
+        ('Personal Information', {
+            'fields': ('age',)
         }),
         ('Server Information', {
             'fields': ['fivem_experience']

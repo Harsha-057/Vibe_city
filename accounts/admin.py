@@ -7,9 +7,14 @@ class CustomUserAdmin(UserAdmin):
     list_display = (
         'username', 'email', 'discord_tag', 'is_whitelisted', 'is_staff_member',
         'is_staff', 'is_active', 
-        'can_review_sasp', 'can_review_ems', 'can_review_mechanic'
+        'can_review_sasp', 'can_review_ems', 'can_review_mechanic',
+        'is_sasp_employee', 'is_ems_employee', 'is_mechanic_employee'
     )
-    list_filter = ('is_whitelisted', 'is_staff', 'is_active', 'can_review_sasp', 'can_review_ems', 'can_review_mechanic')
+    list_filter = (
+        'is_whitelisted', 'is_staff', 'is_active', 
+        'can_review_sasp', 'can_review_ems', 'can_review_mechanic',
+        'is_sasp_employee', 'is_ems_employee', 'is_mechanic_employee'
+    )
     search_fields = ('username', 'email', 'discord_username', 'discord_id')
     readonly_fields = ('discord_id', 'discord_username', 'discord_discriminator', 'discord_avatar')
     
@@ -23,6 +28,11 @@ class CustomUserAdmin(UserAdmin):
                 'is_whitelisted', 'is_staff_member',
                 'can_review_sasp', 'can_review_ems', 'can_review_mechanic',
                 'groups', 'user_permissions',
+            ),
+        }),
+        ('Employment Status', {
+            'fields': (
+                'is_sasp_employee', 'is_ems_employee', 'is_mechanic_employee',
             ),
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
