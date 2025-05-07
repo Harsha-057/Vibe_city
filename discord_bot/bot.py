@@ -356,7 +356,7 @@ def send_application_result(application):
             # Set image based on status
             if application.status == 'approved':
                 embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
-            else:
+            elif application.status == 'rejected':
                 embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
 
             # Mention the user in the channel message content
@@ -707,7 +707,7 @@ def send_job_application_result(application):
                                     public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445258/1_vakqr9.jpg")
                                 elif application.job_type == 'MECHANIC':
                                     public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445290/2_snyeko.jpg")
-                            elif application.status == 'FIRED' or 'REJECTED' in application.status:
+                            elif application.status == 'FIRED' or application.status == 'REJECTED' or application.status == 'REJECTED_INTERVIEW':
                                 if application.job_type == 'SASP':
                                     public_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445310/1_hwtnj7.jpg")
                                 elif application.job_type == 'EMS':
