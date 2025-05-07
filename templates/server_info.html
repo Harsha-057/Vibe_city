@@ -137,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const endpoints = info.connectEndPoints || [];
             const [ipWithPort] = endpoints;
             if (ipWithPort) {
-                const [ip, port] = ipWithPort.split(':');
+                let cleanUrl = ipWithPort.replace(/^https?:\/\//, '').replace(/\/$/, '');
+                const [ip, port] = cleanUrl.split(':');
                 document.getElementById("server-ip").textContent = ip || "Unknown";
                 document.getElementById("server-port").textContent = port || "30120";
             }
