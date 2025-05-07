@@ -357,7 +357,7 @@ def send_application_result(application):
             if application.status == 'approved':
                 embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
             elif application.status == 'rejected':
-                embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
+                embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_y5kla9.jpg")
 
             # Mention the user in the channel message content
             await channel.send(content=f"Status update for <@{user.discord_id}>:", embed=embed)
@@ -418,7 +418,7 @@ def send_application_result(application):
                 if application.status == 'approved':
                     dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/1_m1klpk.jpg")
                 else:
-                    dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_xq0z7y.jpg")
+                    dm_embed.set_image(url="https://res.cloudinary.com/dsodx3ntj/image/upload/v1744445339/2_y5kla9.jpg")
 
                 await member.send(embed=dm_embed)
             except Exception as e:
