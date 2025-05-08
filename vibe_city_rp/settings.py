@@ -15,6 +15,9 @@ DEBUG = True
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['vibecityrp.com', 'www.vibecityrp.com', '204.10.193.192', 'localhost', '127.0.0.1', 'https://vibecityrp.com']
 
+TIME_ZONE = 'Asia/Kolkata'
+USE_TZ = True
+
 CSRF_TRUSTED_ORIGINS = [
     'https://vibecityrp.com',
     'https://www.vibecityrp.com',
