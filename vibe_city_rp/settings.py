@@ -15,6 +15,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['vibecityrp.com', 'www.vibecityrp.com', '204.10.193.192', 'localhost', '127.0.0.1', 'https://vibecityrp.com']
 
+# Time zone settings
 TIME_ZONE = 'Asia/Kolkata'
 USE_TZ = True
 
@@ -160,9 +161,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
 USE_I18N = True
-USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
