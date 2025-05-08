@@ -18,7 +18,7 @@
                     <img src="{{ application.user.avatar_url }}" alt="{{ application.user.username }}" class="w-12 h-12 rounded-full mr-4">
                     <div>
                         <h2 class="text-xl font-bold">{{ application.discord_name }}</h2>
-                        <div class="text-sm text-textSecondary">Submitted: {{ application.created_at|date:"F j, Y H:i" }}</div>
+                        <div class="text-sm text-textSecondary">Submitted: {{ application.created_at|date:"F j, Y g:i A" }}</div>
                     </div>
                 </div>
                 
@@ -121,7 +121,7 @@
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
                                     <div class="text-sm text-textSecondary">Reviewed by: {{ application.reviewed_by.discord_tag|default:application.reviewed_by.username }}</div>
-                                    <div class="text-sm text-textSecondary">Reviewed on: {{ application.reviewed_at|date:"F j, Y H:i" }}</div>
+                                    <div class="text-sm text-textSecondary">Reviewed on: {{ application.reviewed_at|date:"F j, Y g:i A" }}</div>
                                 </div>
                                 
                                 <div>
