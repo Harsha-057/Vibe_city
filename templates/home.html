@@ -200,6 +200,25 @@
     ::-webkit-scrollbar-thumb:hover {
         background: var(--primary-dark);
     }
+
+    .job-card {
+        display: flex;
+        flex-direction: column;
+        height: 540px; /* Fixed height for all cards */
+        min-height: 540px;
+        max-height: 540px;
+    }
+    .job-card .p-6 {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .job-card .mb-6:last-child {
+        margin-bottom: 0;
+    }
+    .job-card .block.w-full {
+        margin-top: auto;
+    }
 </style>
 {% endblock %}
 
@@ -332,10 +351,10 @@
         <div class="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <!-- SASP Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
-                        <img src="https://media.invisioncic.com/y305077/monthly_2021_06/large.1604547943_SunsetSASP.png.453cfe2a1dfa1805d17dcdf95edacb06.png" alt="SASP" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557731/image8_sumezx.png" alt="SASP" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
                     </div>
 
@@ -351,18 +370,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">San Andreas State Police</h3>
                             <p class="text-slate-400">Protect & Serve</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">24/7</div>
-                                <div class="text-slate-400 text-sm">Active Duty</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">15+</div>
-                                <div class="text-slate-400 text-sm">Divisions</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
@@ -393,10 +400,10 @@
 
             <!-- EMS Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
-                        <img src="https://i.redd.it/looking-for-a-medical-doctors-ems-serious-rp-averaging-25-v0-mupl8ezz8qjb1.png?width=1680&format=png&auto=webp&s=26928ea23083dbb54027a6be2c4f8c7eb9567265" alt="EMS" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746560521/22_muqe5j.png" alt="EMS" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
                     </div>
 
@@ -412,18 +419,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">Emergency Medical Services</h3>
                             <p class="text-slate-400">Save Lives</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">4</div>
-                                <div class="text-slate-400 text-sm">Stations</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">10+</div>
-                                <div class="text-slate-400 text-sm">Vehicles</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
@@ -454,10 +449,10 @@
 
             <!-- Mechanic Card -->
             <div class="group">
-                <div class="relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
+                <div class="job-card relative bg-slate-900/50 rounded-2xl overflow-hidden backdrop-blur-sm border border-white/5 transition-all duration-300 hover:border-[#FF7300]/30 hover:shadow-[0_0_30px_rgba(255,115,0,0.15)] hover:-translate-y-1">
                     <!-- Header Image -->
                     <div class="h-48 relative overflow-hidden">
-                        <img src="https://forum.eclipse-rp.net/uploadsnew/monthly_2022_03/ef275cc1db4b542d6c822ab0ea62a83e.jpg.74ae60c781b6ca0b4b0d8662859f667b.jpg" alt="Mechanic" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                        <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746558271/image23_mpvcfj.png" alt="Mechanic" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
                     </div>
 
@@ -473,18 +468,6 @@
                             <h3 class="text-2xl font-bold text-white mb-2">Big Tuna Mechanic Service</h3>
                             <p class="text-slate-400">Keep the City Moving</p>
                         </div>
-
-                        <!-- Stats -->
-                        <!-- <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">100+</div>
-                                <div class="text-slate-400 text-sm">Custom Parts</div>
-                            </div>
-                            <div class="bg-slate-800/50 rounded-lg p-3 text-center">
-                                <div class="text-[#FF7300] text-xl font-bold">3</div>
-                                <div class="text-slate-400 text-sm">Locations</div>
-                            </div>
-                        </div> -->
 
                         <!-- Requirements -->
                         <div class="mb-6">
@@ -537,7 +520,7 @@
             <!-- Downtown District -->
             <div class="showcase-card group" data-category="locations">
                 <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src="https://lh5.googleusercontent.com/za0tZzh7-loA10CoBzCz9UCBbJqUBPTHyzD2WJ-8tzzS27pU23Y0E3Ax1MibYseMvwgfeIyvaQaZjyRBJgEnfL5-BPd5ndbKlq7OS1Tzxht0qg2r54G82_EU7aBCVhmUKu8GZVYB8Jn7-N7hM0m_4nWI9YquOJBbMgY11BEopIcCsEn2OFiwsHloL82HFA" alt="Downtown District" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746559201/imaage_ujbqfu.png" alt="Downtown District" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
                         <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Downtown District</h3>
@@ -549,7 +532,7 @@
             <!-- Luxury Cars -->
             <div class="showcase-card group" data-category="vehicles">
                 <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src="https://forum.eclipse-rp.net/uploadsnew/monthly_2019_02/1515543964_1515543843_2018-bmw-m5-f90-replace-hq-template-realphysics.jpg.f97b96401637e73512c2ab3cc71c7ba4.jpg" alt="Luxury Vehicles" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557003/Screenshot_2025-01-04_083930_wcg5yz.png" alt="Luxury Vehicles" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
                         <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Premium Vehicles</h3>
@@ -561,7 +544,7 @@
             <!-- Night Events -->
             <div class="showcase-card group" data-category="events">
                 <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/06/gta-online-11-things-to-do-if-you-are-bored.jpg" alt="Night Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557003/Screenshot_2025-03-01_195305_hhqh75.png" alt="Night Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
                         <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Vibrant Nightlife</h3>
@@ -573,7 +556,7 @@
             <!-- Police HQ -->
             <div class="showcase-card group" data-category="locations">
                 <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src="https://www.gtabase.com/images/jch-optimize/ng/images_gta-5_properties_police-station_mission-row-police-station.webp" alt="Police HQ" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557732/image9_aqjkam.png" alt="Police HQ" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
                         <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">SASP Headquarters</h3>
@@ -585,7 +568,7 @@
             <!-- Racing Events -->
             <div class="showcase-card group" data-category="events">
                 <div class="relative overflow-hidden rounded-xl aspect-[4/3]">
-                    <img src="https://static.wikia.nocookie.net/gtawiki/images/5/56/DominatorASPWeek-GTAO-StreetRacesAdvert.jpg/revision/latest?cb=20210805170649" alt="Racing Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="https://res.cloudinary.com/dsodx3ntj/image/upload/v1746557004/image6_n8kgmg.png" alt="Racing Events" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-6">
                         <h3 class="font-bold text-xl mb-2 text-white group-hover:text-[#FF7300] transition-colors">Racing Scene</h3>

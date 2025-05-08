@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery - Vibe City Roleplay{% endblock %}
+
+{% block extra_css %}
+<style>
+    .gallery-section {
+        position: relative;
+        min-height: 100vh;
+        background: #000;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .gallery-item {
+        position: relative;
+        border-radius: 1rem;
+        overflow: hidden;
+        aspect-ratio: 4/3;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-10px) rotateX(5deg);
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .gallery-item-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 1.5rem;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+        opacity: 1;
+    }
+
+    .gallery-item-title {
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-item-title {
+        transform: translateY(0);
+    }
+
+    .gallery-item-description {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.875rem;
+        transform: translateY(20px);
+        transition: transform 0.3s ease 0.1s;
+    }
+
+    .gallery-item:hover .gallery-item-description {
+        transform: translateY(0);
+    }
+
+    .category-filter {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .category-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        background: rgba(255, 115, 0, 0.1);
+        color: #FF7300;
+        border: 1px solid rgba(255, 115, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .category-button:hover,
+    .category-button.active {
+        background: rgba(255, 115, 0, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .parallax-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parallax-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        transform: translateZ(-1px) scale(2);
+        z-index: -1;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="gallery-section">
+    <div class="parallax-container">
+        <!-- <div class="parallax-bg" style="background-image: url('https://res.cloudinary.com/dsodx3ntj/image/upload/v1746558271/image23_mpvcfj.png');"></div> -->
+        
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-white">Server Gallery</h1>
+                <p class="text-slate-400 text-lg">Explore the stunning visuals and features that await you in Vibe City.</p>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="category-filter">
+                <button class="category-button {% if current_category == 'all' %}active{% endif %}" 
+                        data-category="all">
+                    All
+                </button>
+                {% for value, display in categories %}
+                <button class="category-button {% if current_category == value %}active{% endif %}" 
+                        data-category="{{ value }}">
+                    {{ display }}
+                </button>
+                {% endfor %}
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+                {% for image in images %}
+                <div class="gallery-item animate-fade-in" data-category="{{ image.category }}">
+                    <img src="{{ image.image_url }}" alt="{{ image.title }}" loading="lazy">
+                    <div class="gallery-item-overlay">
+                        <h3 class="gallery-item-title">{{ image.title }}</h3>
+                        {% if image.description %}
+                        <p class="gallery-item-description">{{ image.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Parallax effect
+    const parallaxBg = document.querySelector('.parallax-bg');
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+    });
+
+    // Category filtering
+    const categoryButtons = document.querySelectorAll('.category-button');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.dataset.category;
+            
+            // Update active button
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Filter items
+            galleryItems.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    setTimeout(() => item.style.opacity = '1', 50);
+                } else {
+                    item.style.opacity = '0';
+                    setTimeout(() => item.style.display = 'none', 300);
+                }
+            });
+        });
+    });
+
+    // Intersection Observer for fade-in animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    galleryItems.forEach(item => {
+        observer.observe(item);
+    });
+});
+</script>
+{% endblock %} 
