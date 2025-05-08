@@ -249,7 +249,7 @@ def send_application_notification(application):
             if not channel:
                 print(f"Channel not found: {settings.DISCORD_APPLICATIONS_CHANNEL_ID}")
                 return
-            
+            await channel.send(f"<@&{settings.DISCORD_STAFF_ROLE_ID}>")
             embed = discord.Embed(
                 title="New Whitelist Application Submitted",
                 description=f"A new application has been submitted by {application.user.discord_tag}",
