@@ -62,7 +62,7 @@ def build_discord_embed(payload, commit):
     fields.extend([
         {
             "name": "🔗 Commit",
-            "value": f"[`{commit_id}`]({commit_url})",
+            "value": f"[`{commit_id}`](https://vibecityrp.com/)",
             "inline": True
         },
         {
@@ -71,15 +71,21 @@ def build_discord_embed(payload, commit):
             "inline": False
         },
         {
-            "name": f"**Merged at {merged_time_str}**",
+            "name": f"Merged at {merged_time_str}",
             "value": "\u200b",
             "inline": False
         }
     ])
 
+    # Get author's GitHub avatar if available
+    author_avatar = None
+    if 'author' in commit and 'username' in commit['author']:
+        author_avatar = f"https://github.com/{commit['author']['username']}.png"
+    
     embed = {
         "author": {
-            "name": author
+            "name": author,
+            "icon_url": author_avatar if author_avatar else "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
         },
         "title": "<:new:112233445566778899> New Changes",  # Replace with your custom emoji if needed
         "description": "Successfully merged into main",
@@ -87,8 +93,7 @@ def build_discord_embed(payload, commit):
         "fields": fields,
         "footer": {
             "text": f"Vibe City 2.0 • {footer_time}"
-        },
-        "timestamp": merged_time
+        }
     }
     return embed
 
@@ -111,6 +116,7 @@ def webhook():
             embeds = [build_discord_embed(payload, commit) for commit in payload['commits']]
             discord_payload = {
                 "username": "Vibe City Commits",
+                "avatar_url": "https://media.discordapp.net/attachments/1355815776853954571/1359061850544803850/mainvcrp.jpg?ex=68204c7b&is=681efafb&hm=5a4d7ddbc75ca1b39abd9992c317009e6b8aaeb8e2c21a2f10b3e6db926ec325&=&format=webp&width=778&height=778",
                 "embeds": embeds
             }
             print("Sending to Discord:", discord_payload)  # Debug
